@@ -12,23 +12,23 @@ This repository houses the code for the project. Documentation will most likely 
 
 ## Code Documentation
 
-	* Since this is a Flutter project, the project's system requirements align with the requirements of Flutter itself.
-    	* Windows: 
-        	* Windows 7 x64 and above
-    	* macOS:
-        	* Mac OS X 10.11 El Capitan and above
-      	* Linux:
-        	* Google calls out a few Debian-based distributions as being supported by Flutter. These include Debian 9 and above, Ubuntu 20.04 and Ubuntu 22.04. The rest are not guaranteed.
-        	* Arch Linux has preliminary support for Flutter through the AUR, but be warned: The AUR is maintained by Arch users. Any packages obtained from the AUR are **unsupported** by the Arch Linux developers. Proceed with caution.
-      	* Android:
-        	* Android 4.1 and above
-      	* iOS:
-        	* iOS 11 and above
-      	* Web:
-        	* Edge 1.2.0+
-        	* Chrome 84+
-        	* Firefox 72.0+
-        	* Safari 11.0+
+	Since this is a Flutter project, the project's system requirements align with the requirements of Flutter itself.
+		Windows: 
+        	Windows 7 x64 and above
+    	macOS:
+        	Mac OS X 10.11 El Capitan and above
+      	Linux:
+        	Google calls out a few Debian-based distributions as being supported by Flutter. These include Debian 9 and above, Ubuntu 20.04 and Ubuntu 22.04. The rest are not guaranteed.
+        	Arch Linux has preliminary support for Flutter through the AUR, but be warned: The AUR is maintained by Arch users. Any packages obtained from the AUR are **unsupported** by the Arch Linux developers. Proceed with caution.
+      	Android:
+        	Android 4.1 and above
+      	iOS:
+        	iOS 11 and above
+      	Web:
+        	Edge 1.2.0+
+        	Chrome 84+
+        	Firefox 72.0+
+        	Safari 11.0+
 
 ## Stuff Flutter Generated
 
