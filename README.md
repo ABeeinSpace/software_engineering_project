@@ -1,10 +1,20 @@
-# software_engineering_project
+# Software Engineering Thing Yay
 
-A new Flutter project.
+A new Flutter project (for now... bwahahaha).
 
-## Getting Started
+## SE Things
 
-This project is a starting point for a Flutter application.
+This repository houses the code for the project. Documentation will most likely be Word or G Docs files and will be hosted elsewhere.
+	If Word document...
+		- Hosted in OneDrive and shared externally with the rest of the team.
+	If Google Doc...
+		- Hosted in Google Drive (Duh) and then shared externally with the rest of the team.
+
+## Code Documentation
+
+	* 
+
+## Flutter Stuff
 
 A few resources to get you started if this is your first Flutter project:
 
