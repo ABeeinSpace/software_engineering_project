@@ -13,7 +13,7 @@ This repository houses the code for the project. Documentation will most likely 
 ## Code Documentation
 
 Since this is a Flutter project, the project's system requirements align with the requirements of Flutter itself.
-		Windows: 
+	Windows: 
         	Windows 7 x64 and above
     	macOS:
         	Mac OS X 10.11 El Capitan and above
