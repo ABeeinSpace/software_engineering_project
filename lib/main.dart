@@ -50,19 +50,18 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
   int _numOfThings = 0;
 
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
+  // void _incrementCounter() {
+  //   setState(() {
+  //     // This call to setState tells the Flutter framework that something has
+  //     // changed in this State, which causes it to rerun the build method below
+  //     // so that the display can reflect the updated values. If we changed
+  //     // _counter without calling setState(), then the build method would not be
+  //     // called again, and so nothing would appear to happen.
+  //
+  //   });
+  // }
 
   void _incrementNumOfThings() {
     setState(() {
@@ -79,24 +78,31 @@ class _MyHomePageState extends State<MyHomePage> {
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
     return Scaffold(
-      // Start of Header 
+      // Start of Header
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
         actions: [
           Align(
-            alignment: Alignment.center,
-            child: IconButton(onPressed: _prevButtonPressed, icon: const Icon(Icons.arrow_back))
-          ),
+              alignment: Alignment.center,
+              child: IconButton(
+                  onPressed: _prevButtonPressed,
+				  tooltip: "Previous round",
+                  icon: const Icon(Icons.arrow_back))),
           Align(
             alignment: Alignment.center,
-            child: IconButton(onPressed: _nextButtonPressed, icon: const Icon(Icons.arrow_forward)),
+            child: IconButton(
+                onPressed: _nextButtonPressed,
+				tooltip: "Next round",
+                icon: const Icon(Icons.arrow_forward)),
           ),
           ButtonBar(
             children: [
-              IconButton(onPressed: _addEntity, icon: const Icon(Icons.add)),
-              IconButton(onPressed: _settingsButtonPress, icon: const Icon(Icons.settings))
+              IconButton(onPressed: _addEntity, tooltip: "Add Thing", icon: const Icon(Icons.add)),
+              IconButton(
+                  onPressed: _settingsButtonPress,
+                  icon: const Icon(Icons.settings))
             ],
           ),
         ],
@@ -126,7 +132,7 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             const Text(
-              "You have pushed the button this many times:",
+              "You have added this many things:",
             ),
             Text(
               '$_numOfThings',
@@ -135,14 +141,13 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         ),
       ),
-      floatingActionButton: ElevatedButton(
+      floatingActionButton: ElevatedButton.icon(
         onPressed: _addEntity,
-        
-        child: const Text("Add Thing"),
+		icon: const Icon(Icons.add),
+        label: const Text("Add Thing"),
       ), // This trailing comma makes auto-formatting nicer for build methods.
 
       // End of Body
-
     );
   }
 
@@ -153,10 +158,10 @@ class _MyHomePageState extends State<MyHomePage> {
   void _addEntity() {
     _incrementNumOfThings();
     ScaffoldMessengerState().removeCurrentSnackBar();
-    ScaffoldMessenger.of(context).showSnackBar( 
-    const SnackBar(
-      content: Text("Add thing button pressed!"),
-      duration: Duration(seconds: 2),
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text("Add thing button pressed!"),
+        duration: Duration(seconds: 2),
       ),
     );
     SnackBarBehavior.floating;
