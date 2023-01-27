@@ -142,7 +142,11 @@ class _MyHomePageState extends State<MyHomePage> {
             //   style: Theme.of(context).textTheme.headline4,
             // ),
 
-            EntityCard()
+            Container(
+              
+              // width: 90,
+              child: EntityCard(),
+            )
           ],
         ),
       ),
@@ -192,8 +196,10 @@ class EntityCard extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Card(
+        margin: EdgeInsets.all(8),
+        
           child: Row(
-        	children: [
+          children: [
           Column(
             children: const [
               Text("Initiative"),
@@ -202,6 +208,12 @@ class EntityCard extends StatelessWidget {
               )
             ],
           ),
+          Column(
+            children: [
+              Text("John Doe"),
+              Text("HEALTH BAR GOES HERE")
+            ],
+          )
 
         ],
       )),
