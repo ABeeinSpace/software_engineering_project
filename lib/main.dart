@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 
 void main() {
@@ -24,6 +23,7 @@ class MyApp extends StatelessWidget {
         // or simply save your changes to "hot reload" in a Flutter IDE).
         // Notice that the counter didn't reset back to zero; the application
         // is not restarted.
+        useMaterial3: true,
         primarySwatch: Colors.blue,
       ),
       home: const MyHomePage(title: 'Software Engineering UI Prototype'),
@@ -51,6 +51,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
+  int _numOfThings = 0;
 
   void _incrementCounter() {
     setState(() {
@@ -63,6 +64,12 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  void _incrementNumOfThings() {
+    setState(() {
+      _numOfThings++;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     // This method is rerun every time setState is called, for instance as done
@@ -72,6 +79,7 @@ class _MyHomePageState extends State<MyHomePage> {
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
     return Scaffold(
+      // Start of Header 
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
@@ -79,20 +87,24 @@ class _MyHomePageState extends State<MyHomePage> {
         actions: [
           Align(
             alignment: Alignment.center,
-            child: IconButton(onPressed: prevButtonPressed, icon: const Icon(Icons.arrow_back))
+            child: IconButton(onPressed: _prevButtonPressed, icon: const Icon(Icons.arrow_back))
           ),
           Align(
             alignment: Alignment.center,
-            child: IconButton(onPressed: nextButtonPressed, icon: const Icon(Icons.arrow_forward)),
+            child: IconButton(onPressed: _nextButtonPressed, icon: const Icon(Icons.arrow_forward)),
           ),
           ButtonBar(
             children: [
-              IconButton(onPressed: addEntity, icon: const Icon(Icons.add)),
-              IconButton(onPressed: settingsButtonPress, icon: const Icon(Icons.settings))
+              IconButton(onPressed: _addEntity, icon: const Icon(Icons.add)),
+              IconButton(onPressed: _settingsButtonPress, icon: const Icon(Icons.settings))
             ],
           ),
         ],
       ),
+
+      // End of Header
+
+      // Start of Body
       body: Center(
         // Center is a layout widget. It takes a single child and positions it
         // in the middle of the parent.
@@ -114,36 +126,48 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             const Text(
-              'You have pushed the button this many times:',
+              "You have pushed the button this many times:",
             ),
             Text(
-              '$_counter',
+              '$_numOfThings',
               style: Theme.of(context).textTheme.headline4,
             ),
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
+      floatingActionButton: ElevatedButton(
+        onPressed: _addEntity,
+        
+        child: const Text("Add Thing"),
       ), // This trailing comma makes auto-formatting nicer for build methods.
+
+      // End of Body
+
     );
   }
 
-  void settingsButtonPress() {
+  void _settingsButtonPress() {
     log("Settings button pressed!");
   }
 
-  void addEntity() {
-    log("Add thing button pressed!");
+  void _addEntity() {
+    _incrementNumOfThings();
+    ScaffoldMessengerState().removeCurrentSnackBar();
+    ScaffoldMessenger.of(context).showSnackBar( 
+    const SnackBar(
+      content: Text("Add thing button pressed!"),
+      duration: Duration(seconds: 2),
+      ),
+    );
+    SnackBarBehavior.floating;
+    // log();
   }
 
-  void prevButtonPressed() {
-    log("Previous Page button pressed!");
+  void _prevButtonPressed() {
+    log("Previous Round button pressed!");
   }
 
-  void nextButtonPressed() {
-    log("Next Page button pressed!");
+  void _nextButtonPressed() {
+    log("Next Round button pressed!");
   }
 }
