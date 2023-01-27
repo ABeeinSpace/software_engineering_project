@@ -88,18 +88,21 @@ class _MyHomePageState extends State<MyHomePage> {
               alignment: Alignment.center,
               child: IconButton(
                   onPressed: _prevButtonPressed,
-				  tooltip: "Previous round",
+                  tooltip: "Previous round",
                   icon: const Icon(Icons.arrow_back))),
           Align(
             alignment: Alignment.center,
             child: IconButton(
                 onPressed: _nextButtonPressed,
-				tooltip: "Next round",
+                tooltip: "Next round",
                 icon: const Icon(Icons.arrow_forward)),
           ),
           ButtonBar(
             children: [
-              IconButton(onPressed: _addEntity, tooltip: "Add Thing", icon: const Icon(Icons.add)),
+              IconButton(
+                  onPressed: _addEntity,
+                  tooltip: "Add Thing",
+                  icon: const Icon(Icons.add)),
               IconButton(
                   onPressed: _settingsButtonPress,
                   icon: const Icon(Icons.settings))
@@ -129,21 +132,23 @@ class _MyHomePageState extends State<MyHomePage> {
           // center the children vertically; the main axis here is the vertical
           // axis because Columns are vertical (the cross axis would be
           // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
-            const Text(
-              "You have added this many things:",
-            ),
-            Text(
-              '$_numOfThings',
-              style: Theme.of(context).textTheme.headline4,
-            ),
+            // const Text(
+            //   "You have added this many things:",
+            // ),
+            // Text(
+            //   '$_numOfThings',
+            //   style: Theme.of(context).textTheme.headline4,
+            // ),
+
+            EntityCard()
           ],
         ),
       ),
       floatingActionButton: ElevatedButton.icon(
         onPressed: _addEntity,
-		icon: const Icon(Icons.add),
+        icon: const Icon(Icons.add),
         label: const Text("Add Thing"),
       ), // This trailing comma makes auto-formatting nicer for build methods.
 
@@ -174,5 +179,32 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void _nextButtonPressed() {
     log("Next Round button pressed!");
+  }
+}
+
+class EntityCard extends StatelessWidget {
+  const EntityCard({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Card(
+          child: Row(
+        	children: [
+          Column(
+            children: const [
+              Text("Initiative"),
+              CircleAvatar(
+                child: Text("18"),
+              )
+            ],
+          ),
+
+        ],
+      )),
+    );
   }
 }
