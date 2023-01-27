@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 
 void main() {
@@ -24,7 +26,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const MyHomePage(title: 'Software Engineering UI Prototype'),
     );
   }
 }
@@ -74,6 +76,22 @@ class _MyHomePageState extends State<MyHomePage> {
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
+        actions: [
+          Align(
+            alignment: Alignment.center,
+            child: IconButton(onPressed: prevButtonPressed, icon: const Icon(Icons.arrow_back))
+          ),
+          Align(
+            alignment: Alignment.center,
+            child: IconButton(onPressed: nextButtonPressed, icon: const Icon(Icons.arrow_forward)),
+          ),
+          ButtonBar(
+            children: [
+              IconButton(onPressed: addEntity, icon: const Icon(Icons.add)),
+              IconButton(onPressed: settingsButtonPress, icon: const Icon(Icons.settings))
+            ],
+          ),
+        ],
       ),
       body: Center(
         // Center is a layout widget. It takes a single child and positions it
@@ -111,5 +129,21 @@ class _MyHomePageState extends State<MyHomePage> {
         child: const Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
+  }
+
+  void settingsButtonPress() {
+    log("Settings button pressed!");
+  }
+
+  void addEntity() {
+    log("Add thing button pressed!");
+  }
+
+  void prevButtonPressed() {
+    log("Previous Page button pressed!");
+  }
+
+  void nextButtonPressed() {
+    log("Next Page button pressed!");
   }
 }
