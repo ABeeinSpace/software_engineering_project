@@ -143,7 +143,7 @@ class _MyHomePageState extends State<MyHomePage> {
               //   style: Theme.of(context).textTheme.headline4,
               // ),
 
-              EntityCardContainer(),
+              InitiativeCardContainer(),
             ])
           ],
         ),
@@ -184,8 +184,8 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
-class EntityCardContainer extends StatelessWidget {
-  const EntityCardContainer({
+class InitiativeCardContainer extends StatelessWidget {
+  const InitiativeCardContainer({
     Key? key,
   }) : super(key: key);
 
@@ -195,13 +195,13 @@ class EntityCardContainer extends StatelessWidget {
       alignment: Alignment.centerLeft,
       margin: const EdgeInsets.all(10),
       // width: 90,
-      child: const EntityCard(),
+      child: const InitiativeCard(),
     );
   }
 }
 
-class EntityCard extends StatelessWidget {
-  const EntityCard({
+class InitiativeCard extends StatelessWidget {
+  const InitiativeCard({
     Key? key,
   }) : super(key: key);
 
