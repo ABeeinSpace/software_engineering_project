@@ -50,7 +50,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _numOfThings = 0;
+  // int _numOfThings = 0;
 
   // void _incrementCounter() {
   //   setState(() {
@@ -65,7 +65,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void _incrementNumOfThings() {
     setState(() {
-      _numOfThings++;
+      // _numOfThings++;
     });
   }
 
@@ -117,7 +117,7 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Center(
         // Center is a layout widget. It takes a single child and positions it
         // in the middle of the parent.
-        child: Column(
+        child: ListView(
           // Column is also a layout widget. It takes a list of children and
           // arranges them vertically. By default, it sizes itself to fit its
           // children horizontally, and tries to be as tall as its parent.
@@ -132,22 +132,19 @@ class _MyHomePageState extends State<MyHomePage> {
           // center the children vertically; the main axis here is the vertical
           // axis because Columns are vertical (the cross axis would be
           // horizontal).
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            // const Text(
-            //   "You have added this many things:",
-            // ),
-            // Text(
-            //   '$_numOfThings',
-            //   style: Theme.of(context).textTheme.headline4,
-            // ),
+          // mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Column(children: const [
+              // const Text(
+              //   "You have added this many things:",
+              // ),
+              // Text(
+              //   '$_numOfThings',
+              //   style: Theme.of(context).textTheme.headline4,
+              // ),
 
-            Container(
-              alignment: Alignment.centerLeft,
-              margin: const EdgeInsets.all(10),
-              // width: 90,
-              child: const EntityCard(),
-            )
+              EntityCardContainer(),
+            ])
           ],
         ),
       ),
@@ -187,6 +184,22 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
+class EntityCardContainer extends StatelessWidget {
+  const EntityCardContainer({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      alignment: Alignment.centerLeft,
+      margin: const EdgeInsets.all(10),
+      // width: 90,
+      child: const EntityCard(),
+    );
+  }
+}
+
 class EntityCard extends StatelessWidget {
   const EntityCard({
     Key? key,
@@ -196,17 +209,17 @@ class EntityCard extends StatelessWidget {
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
 
-    return Padding (
+    return Padding(
         padding: const EdgeInsets.all(8.0),
-        child: SizedBox (
+        child: SizedBox(
           width: screenWidth * 0.6,
-          child: Card (
-              child: Container (
+          child: Card(
+              child: Container(
                   padding: const EdgeInsets.all(8),
                   child: Row(
                     // mainAxisSize: MainAxisSize.min,
                     children: [
-                      Column (
+                      Column(
                         children: const [
                           Text("Initiative"),
                           CircleAvatar(
@@ -214,13 +227,17 @@ class EntityCard extends StatelessWidget {
                           )
                         ],
                       ),
-                      Expanded (
+                      Expanded(
                         child: Column(children: const [
-                          Text("John Doe"),
+                          Align(
+                            alignment: Alignment.center,
+                            child: Text(
+                                "John Doe"),
+                          ),
                           Text("HEALTH BAR GOES HERE")
                         ]),
                       ),
-                      Column (
+                      Column(
                         children: [
                           const Text("Status Effects"),
                           IconButton(
