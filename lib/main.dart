@@ -143,14 +143,15 @@ class _MyHomePageState extends State<MyHomePage> {
             // ),
 
             Container(
-              
+              alignment: Alignment.centerLeft,
+              margin: const EdgeInsets.all(10),
               // width: 90,
-              child: EntityCard(),
+              child: const EntityCard(),
             )
           ],
         ),
       ),
-      floatingActionButton: ElevatedButton.icon(
+      floatingActionButton: FloatingActionButton.extended(
         onPressed: _addEntity,
         icon: const Icon(Icons.add),
         label: const Text("Add Thing"),
@@ -193,30 +194,44 @@ class EntityCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Card(
-        margin: EdgeInsets.all(8),
-        
-          child: Row(
-          children: [
-          Column(
-            children: const [
-              Text("Initiative"),
-              CircleAvatar(
-                child: Text("18"),
-              )
-            ],
-          ),
-          Column(
-            children: [
-              Text("John Doe"),
-              Text("HEALTH BAR GOES HERE")
-            ],
-          )
+    double screenWidth = MediaQuery.of(context).size.width;
 
-        ],
-      )),
-    );
+    return Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: SizedBox(
+          width: screenWidth * 0.6,
+          child: Card(
+              child: Container(
+                  padding: const EdgeInsets.all(8),
+                  child: Row(
+                    // mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Column(
+                        children: const [
+                          Text("Initiative"),
+                          CircleAvatar(
+                            child: Text("18"),
+                          )
+                        ],
+                      ),
+                      Expanded(
+                        child: Column(children: const [
+                          Text("John Doe"),
+                          Text("HEALTH BAR GOES HERE")
+                        ]),
+                      ),
+                      Column(
+                        children: [
+                          const Text("Effects"),
+                          IconButton(
+                              onPressed: showEffectsPanel,
+                              icon: const Icon(Icons.star_border_rounded))
+                        ],
+                      )
+                    ],
+                  ))),
+        ));
   }
+
+  void showEffectsPanel() {}
 }
