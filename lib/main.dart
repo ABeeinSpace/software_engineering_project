@@ -196,17 +196,17 @@ class EntityCard extends StatelessWidget {
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
 
-    return Padding(
+    return Padding (
         padding: const EdgeInsets.all(8.0),
-        child: SizedBox(
+        child: SizedBox (
           width: screenWidth * 0.6,
-          child: Card(
-              child: Container(
+          child: Card (
+              child: Container (
                   padding: const EdgeInsets.all(8),
                   child: Row(
                     // mainAxisSize: MainAxisSize.min,
                     children: [
-                      Column(
+                      Column (
                         children: const [
                           Text("Initiative"),
                           CircleAvatar(
@@ -214,15 +214,15 @@ class EntityCard extends StatelessWidget {
                           )
                         ],
                       ),
-                      Expanded(
+                      Expanded (
                         child: Column(children: const [
                           Text("John Doe"),
                           Text("HEALTH BAR GOES HERE")
                         ]),
                       ),
-                      Column(
+                      Column (
                         children: [
-                          const Text("Effects"),
+                          const Text("Status Effects"),
                           IconButton(
                               onPressed: showEffectsPanel,
                               icon: const Icon(Icons.star_border_rounded))
@@ -233,5 +233,7 @@ class EntityCard extends StatelessWidget {
         ));
   }
 
-  void showEffectsPanel() {}
+  void showEffectsPanel() {
+    log("Should show status effects panel");
+  }
 }
