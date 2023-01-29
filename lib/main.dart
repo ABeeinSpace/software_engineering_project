@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
+import 'intiative_card.dart';
 
 void main() {
   runApp(const MyApp());
@@ -24,7 +25,7 @@ class MyApp extends StatelessWidget {
         // Notice that the counter didn't reset back to zero; the application
         // is not restarted.
         useMaterial3: true,
-        primarySwatch: Colors.blue,
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.amber),
       ),
       home: const MyHomePage(title: 'Software Engineering UI Prototype'),
     );
@@ -164,6 +165,12 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void _addEntity() {
     _incrementNumOfThings();
+    SimpleDialog(title: const Text("Creating Initiative"),children: [
+      Column(children: const [
+        Text("Enter the properties of your initiative:"),
+        
+      ],)
+    ],);
     ScaffoldMessengerState().removeCurrentSnackBar();
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
@@ -181,76 +188,5 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void _nextButtonPressed() {
     log("Next Round button pressed!");
-  }
-}
-
-class InitiativeCardContainer extends StatelessWidget {
-  const InitiativeCardContainer({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      alignment: Alignment.centerLeft,
-      margin: const EdgeInsets.all(10),
-      // width: 90,
-      child: const InitiativeCard(),
-    );
-  }
-}
-
-class InitiativeCard extends StatelessWidget {
-  const InitiativeCard({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    double screenWidth = MediaQuery.of(context).size.width;
-
-    return Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: SizedBox(
-          width: screenWidth * 0.6,
-          child: Card(
-              child: Container(
-                  padding: const EdgeInsets.all(8),
-                  child: Row(
-                    // mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Column(
-                        children: const [
-                          Text("Initiative"),
-                          CircleAvatar(
-                            child: Text("18"),
-                          )
-                        ],
-                      ),
-                      Expanded(
-                        child: Column(children: const [
-                          Align(
-                            alignment: Alignment.center,
-                            child: Text(
-                                "John Doe"),
-                          ),
-                          Text("HEALTH BAR GOES HERE")
-                        ]),
-                      ),
-                      Column(
-                        children: [
-                          const Text("Status Effects"),
-                          IconButton(
-                              onPressed: showEffectsPanel,
-                              icon: const Icon(Icons.star_border_rounded))
-                        ],
-                      )
-                    ],
-                  ))),
-        ));
-  }
-
-  void showEffectsPanel() {
-    log("Should show status effects panel");
   }
 }
