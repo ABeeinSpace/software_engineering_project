@@ -33,15 +33,25 @@ class InitiativeCard extends StatelessWidget {
                         child: Column(children: const [
                           Align(
                             alignment: Alignment.center,
-                            child: Text(
-                                "John Doe"),
+                            child: Text("John Doe"),
                           ),
                           Text("HEALTH BAR GOES HERE")
                         ]),
                       ),
                       Column(
                         children: [
-                          const Text("Status Effects"),
+                          const Text("Abilities"),
+                          IconButton(
+                              onPressed: showAbilitiesPanel,
+                              icon: const Icon(Icons.workspaces_outline))
+                        ],
+                      ),
+                      const VerticalDivider(),
+
+                      Column(
+                        children: [
+                          const Text(
+                              "Effects"), //Should consider renaming this to "Status Effects" for clarity
                           IconButton(
                               onPressed: showEffectsPanel,
                               icon: const Icon(Icons.star_border_rounded))
@@ -55,6 +65,10 @@ class InitiativeCard extends StatelessWidget {
   void showEffectsPanel() {
     log("Should show status effects panel");
   }
+
+  void showAbilitiesPanel() {
+    log("Should show Abilities panel");
+  }
 }
 
 class InitiativeCardContainer extends StatelessWidget {
@@ -63,7 +77,7 @@ class InitiativeCardContainer extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context ) {
+  Widget build(BuildContext context) {
     return Container(
       alignment: Alignment.centerLeft,
       margin: const EdgeInsets.all(10),

@@ -101,8 +101,8 @@ class _MyHomePageState extends State<MyHomePage> {
           ButtonBar(
             children: [
               IconButton(
-                  onPressed: _addEntity,
-                  tooltip: "Add Thing",
+                  onPressed: _addInitiative,
+                  tooltip: "Add Initiative",
                   icon: const Icon(Icons.add)),
               IconButton(
                   onPressed: _settingsButtonPress,
@@ -150,9 +150,9 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: _addEntity,
+        onPressed: _addInitiative,
         icon: const Icon(Icons.add),
-        label: const Text("Add Thing"),
+        label: const Text("Add Initiative"),
       ), // This trailing comma makes auto-formatting nicer for build methods.
 
       // End of Body
@@ -163,18 +163,22 @@ class _MyHomePageState extends State<MyHomePage> {
     log("Settings button pressed!");
   }
 
-  void _addEntity() {
+  void _addInitiative() {
     _incrementNumOfThings();
-    SimpleDialog(title: const Text("Creating Initiative"),children: [
+    showDialog(context: context,
+    builder: ((context) {
+      return SimpleDialog(title: const Text("Creating Initiative"),children: [
       Column(children: const [
         Text("Enter the properties of your initiative:"),
         
       ],)
     ],);
+    }))
+    ;
     ScaffoldMessengerState().removeCurrentSnackBar();
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
-        content: Text("Add thing button pressed!"),
+        content: Text("Add initiative button pressed!"),
         duration: Duration(seconds: 2),
       ),
     );
