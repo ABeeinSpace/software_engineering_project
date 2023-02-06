@@ -9,17 +9,17 @@ class InitiativeCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    //This line grabs the current width of the window. I use it to set the width of the initiative cards to 60% of the width of the window
     double screenWidth = MediaQuery.of(context).size.width;
 
     return Padding(
         padding: const EdgeInsets.all(8.0),
         child: SizedBox(
-          width: screenWidth * 0.6,
+          width: screenWidth * 0.6, //uses the MediaQuery defined above to set the card size to 60% of the window (this is to have room for the Status Effects panel without having to do something disgusting like dynamic resizing of the cards based on status effects panel state).
           child: Card(
               child: Container(
                   padding: const EdgeInsets.all(8),
                   child: Row(
-                    // mainAxisSize: MainAxisSize.min,
                     children: [
                       Column(
                         children: const [
@@ -35,6 +35,7 @@ class InitiativeCard extends StatelessWidget {
                             alignment: Alignment.center,
                             child: Text("John Doe"),
                           ),
+                          //TODO: Do the health bar (Which is probably going to Suck to do).
                           Text("HEALTH BAR GOES HERE")
                         ]),
                       ),
@@ -63,10 +64,12 @@ class InitiativeCard extends StatelessWidget {
   }
 
   void showEffectsPanel() {
+    //TODO: Consider adding code to this method to highlight the button in some way when the panel is open
     log("Should show status effects panel");
   }
 
   void showAbilitiesPanel() {
+    //TODO: Consider adding code to this method to highlight the button in some way when the panel is open
     log("Should show Abilities panel");
   }
 }

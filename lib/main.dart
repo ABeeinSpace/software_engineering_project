@@ -104,6 +104,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   onPressed: _addInitiative,
                   tooltip: "Add Initiative",
                   icon: const Icon(Icons.add)),
+                  // This button will display a drop-down to enable addition of prefab monsters in addition to custom initiatives.
               IconButton(
                   onPressed: _settingsButtonPress,
                   icon: const Icon(Icons.settings))
@@ -154,6 +155,7 @@ class _MyHomePageState extends State<MyHomePage> {
         icon: const Icon(Icons.add),
         label: const Text("Add Initiative"),
       ), // This trailing comma makes auto-formatting nicer for build methods.
+      // We should consider making the FAB display a pop-up menu to enable prefab monster addition like the button in the top of the window
 
       // End of Body
     );
@@ -165,6 +167,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void _addInitiative() {
     _incrementNumOfThings();
+    //TODO: Implement the Add Initiative dialog, at least partially
     showDialog(context: context,
     builder: ((context) {
       return SimpleDialog(title: const Text("Creating Initiative"),children: [
