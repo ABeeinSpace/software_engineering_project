@@ -13,7 +13,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Combat Scribe',
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.amber),
       ),
-      home: const MyHomePage(title: 'Software Engineering UI Prototype'),
+      home: const MyHomePage(title: 'Combat Scribe UI Prototype'),
     );
   }
 }

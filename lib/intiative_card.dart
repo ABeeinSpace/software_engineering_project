@@ -17,6 +17,7 @@ class InitiativeCard extends StatelessWidget {
         child: SizedBox(
           width: screenWidth * 0.6, //uses the MediaQuery defined above to set the card size to 60% of the window (this is to have room for the Status Effects panel without having to do something disgusting like dynamic resizing of the cards based on status effects panel state).
           child: Card(
+            elevation: 3,
               child: Container(
                   padding: const EdgeInsets.all(8),
                   child: Row(
