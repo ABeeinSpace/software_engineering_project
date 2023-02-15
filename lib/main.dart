@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
         // Notice that the counter didn't reset back to zero; the application
         // is not restarted.
         useMaterial3: true,
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.amber),
+        primarySwatch: Colors.blue,
       ),
       home: const MyHomePage(title: 'Combat Scribe UI Prototype'),
     );
@@ -104,7 +104,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   onPressed: _addInitiative,
                   tooltip: "Add Initiative",
                   icon: const Icon(Icons.add)),
-                  // This button will display a drop-down to enable addition of prefab monsters in addition to custom initiatives.
+              // This button will display a drop-down to enable addition of prefab monsters in addition to custom initiatives.
               IconButton(
                   onPressed: _settingsButtonPress,
                   icon: const Icon(Icons.settings))
@@ -175,16 +175,20 @@ class _MyHomePageState extends State<MyHomePage> {
   void _addInitiative() {
     _incrementNumOfThings();
     //TODO: Implement the Add Initiative dialog, at least partially
-    showDialog(context: context,
-    builder: ((context) {
-      return SimpleDialog(title: const Text("Creating Initiative"),children: [
-      Column(children: const [
-        Text("Enter the properties of your initiative:"),
-        
-      ],)
-    ],);
-    }))
-    ;
+    showDialog(
+        context: context,
+        builder: ((context) {
+          return SimpleDialog(
+            title: const Text("Creating Initiative"),
+            children: [
+              Column(
+                children: const [
+                  Text("Enter the properties of your initiative:"),
+                ],
+              )
+            ],
+          );
+        }));
     ScaffoldMessengerState().removeCurrentSnackBar();
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(

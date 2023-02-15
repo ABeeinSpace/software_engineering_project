@@ -26,7 +26,7 @@ class InitiativeCard extends StatelessWidget {
                         children: const [
                           Text("Initiative"),
                           CircleAvatar(
-                            backgroundColor: Colors.amber,
+                            // backgroundColor: Colors.amber,
                             child: Text("18"),
                           )
                         ],
