@@ -146,6 +146,13 @@ class _MyHomePageState extends State<MyHomePage> {
               // ),
 
               InitiativeCardContainer(),
+              InitiativeCardContainer(),
+              InitiativeCardContainer(),
+              InitiativeCardContainer(),
+              InitiativeCardContainer(),
+              InitiativeCardContainer(),
+              InitiativeCardContainer(),
+              InitiativeCardContainer(),
             ])
           ],
         ),

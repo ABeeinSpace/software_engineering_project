@@ -26,6 +26,7 @@ class InitiativeCard extends StatelessWidget {
                         children: const [
                           Text("Initiative"),
                           CircleAvatar(
+                            backgroundColor: Colors.amber,
                             child: Text("18"),
                           )
                         ],
@@ -40,14 +41,14 @@ class InitiativeCard extends StatelessWidget {
                           Text("HEALTH BAR GOES HERE")
                         ]),
                       ),
-                      Column(
-                        children: [
-                          const Text("Abilities"),
-                          IconButton(
-                              onPressed: showAbilitiesPanel,
-                              icon: const Icon(Icons.workspaces_outline))
-                        ],
-                      ),
+                      // Column(
+                      //   children: [
+                      //     const Text("Abilities"),
+                      //     IconButton(
+                      //         onPressed: showAbilitiesPanel,
+                      //         icon: const Icon(Icons.workspaces_outline))
+                      //   ],
+                      // ),
                       const VerticalDivider(),
 
                       Column(
