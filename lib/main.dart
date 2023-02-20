@@ -1,4 +1,4 @@
-import 'dart:developer';
+import 'dart:developer'; //This import gives us access to the log() function. It can be safely removed when all buttons are properly implemented.
 import 'package:flutter/material.dart';
 import 'intiative_card.dart';
 
@@ -7,9 +7,14 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({super.key}); // This declaration makes any parameters needed available to instances of the class. The Java equivalent is a constructor method.
 
   // This widget is the root of your application.
+  /// build()
+	/// Parameters: BuildContext context
+	/// Returns: Widget
+	/// Description: Method responsible for constructing the app's window.
+  /// Special: Method overrides Widget.build()
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -33,7 +38,8 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+  // This declaration makes any parameters needed available to instances of the class. The Java equivalent is a constructor method.
+  const MyHomePage({super.key, required this.title}); //The required keyword is the same as making a named parameter in Java. It tells the Dart compiler to emit an error if we attempt to instantiate an instance of the class without a parameter. 
 
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
@@ -46,6 +52,11 @@ class MyHomePage extends StatefulWidget {
 
   final String title;
 
+	/// createState()
+	/// Parameters: BuildContext context
+	/// Returns: Widget
+	/// Description: Method responsible for constructing the home page of the app.
+  /// Special: Method overrides State.createState()
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
@@ -70,6 +81,11 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+	/// build()
+	/// Parameters: BuildContext context
+	/// Returns: Widget
+	/// Description: Method responsible for constructing the State object of the MyHomePage Widget.
+  /// Special: Method overrides Widget.build()
   @override
   Widget build(BuildContext context) {
     // This method is rerun every time setState is called, for instance as done
@@ -90,7 +106,8 @@ class _MyHomePageState extends State<MyHomePage> {
               child: IconButton(
                   onPressed: _prevButtonPressed,
                   tooltip: "Previous round",
-                  icon: const Icon(Icons.arrow_back))),
+                  icon: const Icon(Icons.arrow_back))
+          ),
           Align(
             alignment: Alignment.center,
             child: IconButton(
@@ -106,7 +123,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   icon: const Icon(Icons.add)),
               // This button will display a drop-down to enable addition of prefab monsters in addition to custom initiatives.
               IconButton(
-                  onPressed: _settingsButtonPress,
+                  onPressed: _settingsButtonPressed,
                   icon: const Icon(Icons.settings))
             ],
           ),
@@ -162,16 +179,24 @@ class _MyHomePageState extends State<MyHomePage> {
         icon: const Icon(Icons.add),
         label: const Text("Add Initiative"),
       ), // This trailing comma makes auto-formatting nicer for build methods.
-      // We should consider making the FAB display a pop-up menu to enable prefab monster addition like the button in the top of the window
+      // We should consider making the FAB display a pop-up menu to enable prefab monster addition like the button in the top of the window.
 
       // End of Body
     );
   }
 
-  void _settingsButtonPress() {
+  /// _settingsButtonPressed()
+	/// Parameters: 
+	/// Returns: N/A (void)
+	/// Description: Method responsible for handling the button press event for the Settings button on the app bar.
+  void _settingsButtonPressed() {
     log("Settings button pressed!");
   }
 
+  /// _addInitiative()
+	/// Parameters: 
+	/// Returns: N/A (void)
+	/// Description: Method responsible for adding an initiative to the app. It handles button press events from the plus icon in the app bar and button press events from the FAB.
   void _addInitiative() {
     _incrementNumOfThings();
     //TODO: Implement the Add Initiative dialog, at least partially
@@ -189,6 +214,8 @@ class _MyHomePageState extends State<MyHomePage> {
             ],
           );
         }));
+
+    // This block of code is responsible for displaying the Snack Bar down at the bottom of the window when the add initiative button(s) are pressed.
     ScaffoldMessengerState().removeCurrentSnackBar();
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
@@ -199,11 +226,20 @@ class _MyHomePageState extends State<MyHomePage> {
     SnackBarBehavior.floating;
     // log();
   }
-
+  /// _prevButtonPressed()
+	/// Parameters: 
+	/// Returns: N/A (void)
+	/// Description: Method responsible for handling button press events from the previous round button(s).
+  /// Is a candidate to be moved into the initiative_card file.
   void _prevButtonPressed() {
     log("Previous Round button pressed!");
   }
 
+  /// _prevButtonPressed()
+	/// Parameters: 
+	/// Returns: N/A (void)
+	/// Description: Method responsible for handling button press events from the previous round button(s)
+  /// Is a candidate to be moved into the initiative_card file
   void _nextButtonPressed() {
     log("Next Round button pressed!");
   }
