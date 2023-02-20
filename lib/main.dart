@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
 				useMaterial3: true,
 				primarySwatch: Colors.purple,
 			),
-			home: const MyHomePage(title: 'Combat Scribe UI Prototype'),
+			home: const MyHomePage(title: 'Combat Scribe'),
 		);
 	}
 }
