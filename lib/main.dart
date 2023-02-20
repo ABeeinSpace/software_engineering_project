@@ -7,6 +7,7 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
+
 	const MyApp({super.key}); // This declaration makes any parameters needed available to instances of the class. The Java equivalent is a constructor method.
 
 	// This widget is the root of your application.
