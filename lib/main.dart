@@ -10,6 +10,7 @@ class MyApp extends StatelessWidget {
 	const MyApp({super.key}); // This declaration makes any parameters needed available to instances of the class. The Java equivalent is a constructor method.
 
 	// This widget is the root of your application.
+
 	/// build()
 	/// Parameters: BuildContext context
 	/// Returns: Widget
@@ -162,13 +163,6 @@ class _MyHomePageState extends State<MyHomePage> {
 							//   style: Theme.of(context).textTheme.headline4,
 							// ),
 
-							InitiativeCardContainer(),
-							InitiativeCardContainer(),
-							InitiativeCardContainer(),
-							InitiativeCardContainer(),
-							InitiativeCardContainer(),
-							InitiativeCardContainer(),
-							InitiativeCardContainer(),
 							InitiativeCardContainer(),
 						])
 					],
