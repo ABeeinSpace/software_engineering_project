@@ -2,12 +2,18 @@ import 'dart:developer'; //This import gives us access to the log() function. It
 import 'package:flutter/material.dart';
 import 'initiative.dart'; 
 
-class InitiativeCard extends StatelessWidget {
+class InitiativeCard extends StatefulWidget {
 	// This declaration makes any parameters needed available to instances of the class. The Java equivalent is a constructor method
 	const InitiativeCard({
 		Key? key,
 	}) : super(key: key);
 
+  @override
+  State<InitiativeCard> createState() => _InitiativeCardState();
+}
+
+class _InitiativeCardState extends State<InitiativeCard> {
+  bool _shouldDisplayConditionsCard = false;
 	/// build()
 	/// Parameters: BuildContext context
 	/// Returns: Widget
@@ -62,8 +68,11 @@ class InitiativeCard extends StatelessWidget {
 													const Text(
 															"Effects"), //Should consider renaming this to "Status Effects" for clarity
 													IconButton(
-															onPressed: showEffectsPanel,
-															icon: const Icon(Icons.star_border_rounded))
+															onPressed: _showEffectsPanel,
+															icon: (_shouldDisplayConditionsCard
+                                ? const Icon(Icons.star_rounded)
+                                : const Icon(Icons.star_border_rounded)
+                              ))
 												],
 											)
 										],
@@ -75,11 +84,19 @@ class InitiativeCard extends StatelessWidget {
 	/// Parameters: 
 	/// Returns: N/A (void)
 	/// Description: Method responsible for showing and hiding the Status Effects flyout.
-	void showEffectsPanel() {
+	void _showEffectsPanel() {
 		//TODO: Consider adding code to this method to highlight the button in some way when the panel is open.
-		
-		// InitativeCard will need to be converted to a stateful widget in order to get the icon to change state *fairly* automatically.
-		log("Should show status effects panel");
+
+    setState(() {
+      if (_shouldDisplayConditionsCard) {
+        _shouldDisplayConditionsCard = false;
+      } else {
+        _shouldDisplayConditionsCard = true;
+      }
+    });
+
+		// // InitativeCard will need to be converted to a stateful widget in order to get the icon to change state *fairly* automatically.
+		// log("Should show status effects panel");
 	}
 
 	/// showAbilitiesPanel()
