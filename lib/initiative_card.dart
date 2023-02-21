@@ -1,5 +1,6 @@
 import 'dart:developer'; //This import gives us access to the log() function. It can be safely removed when all buttons are properly implemented.
 import 'package:flutter/material.dart';
+import 'initiative.dart'; 
 
 class InitiativeCard extends StatelessWidget {
 	// This declaration makes any parameters needed available to instances of the class. The Java equivalent is a constructor method
