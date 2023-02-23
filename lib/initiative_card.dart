@@ -50,15 +50,22 @@ class _InitiativeCardState extends State<InitiativeCard> {
                             ],
                           ),
                           Expanded(
-                            child: Column(children: const [
-                              Align(
+                            child: Column(children: [
+                              const Align(
                                 alignment: Alignment.center,
                                 child: Text("John Doe"),
                               ),
                               //TODO: Do the health bar (Which is probably going to Suck to do).
-                              Text("HEALTH BAR GOES HERE")
+                              DecoratedBox(
+                                decoration: BoxDecoration(
+                                    border: Border.all(
+                                        color: Colors.black,
+                                        style: BorderStyle.solid)),
+                                child: Align(child: Text("")),
+                              ),
                             ]),
                           ),
+
                           // Column(
                           //   children: [
                           //     const Text("Abilities"),
@@ -90,32 +97,30 @@ class _InitiativeCardState extends State<InitiativeCard> {
             height: 300,
             margin: const EdgeInsets.fromLTRB(0, 8, 0, 10),
             child: Card(
-              elevation: 3,
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Center(
-                  child: Column(
-                    children: const [
-                      Align(
-                        alignment: Alignment.topLeft,
-                        child: Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: Text("Conditions"),
+                elevation: 3,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Center(
+                    child: Column(
+                      children: const [
+                        Align(
+                          alignment: Alignment.topLeft,
+                          child: Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: Text("Conditions"),
+                          ),
                         ),
-                      ),
-                      Divider(),
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: Text("Blinded"),
-                        )
-                      )
-                    ],
+                        Divider(),
+                        Align(
+                            alignment: Alignment.centerLeft,
+                            child: Padding(
+                              padding: EdgeInsets.all(8.0),
+                              child: Text("Blinded"),
+                            ))
+                      ],
+                    ),
                   ),
-                ),
-              )
-            ),
+                )),
           ),
         )
       ],
@@ -149,7 +154,7 @@ class _InitiativeCardState extends State<InitiativeCard> {
     //TODO: Consider adding code to this method to highlight the button in some way when the panel is open.
 
     // InitativeCard will need to be converted to a stateful widget in order to get the icon to change state *fairly* automatically.
-        setState(() {
+    setState(() {
       if (_shouldDisplayAbilitiesCard) {
         _shouldDisplayAbilitiesCard = false;
       } else {
