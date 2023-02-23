@@ -26,6 +26,7 @@ class _InitiativeCardState extends State<InitiativeCard> {
     double screenWidth = MediaQuery.of(context).size.width;
 
     return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
             padding: const EdgeInsets.all(8.0),
@@ -81,20 +82,26 @@ class _InitiativeCardState extends State<InitiativeCard> {
                         ],
                       ))),
             )),
-        Visibility.maintain(
+        Visibility(
           visible: _shouldDisplayConditionsCard,
           child: Container(
-            width: 200,
+            width: 300,
             height: 300,
             margin: const EdgeInsets.fromLTRB(0, 10, 0, 10),
             child: Card(
-              child: Column(
-                children: [
-                  Text("This is the Conditions Card lol")
-                ],
-              )
-            ),
-            ),
+                child: Column(
+              children: [
+                Text("Conditions"),
+                ListView(
+                  children: [
+                    Row(
+                      children: [Text("Stunned"), Text("5")],
+                    )
+                  ],
+                )
+              ],
+            )),
+          ),
         )
       ],
     );
