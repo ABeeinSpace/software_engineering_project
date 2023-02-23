@@ -29,7 +29,7 @@ class _InitiativeCardState extends State<InitiativeCard> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.fromLTRB(8, 8, 0, 8),
             child: SizedBox(
               width: screenWidth *
                   0.6, //Uses the MediaQuery defined above to set the card size to 60% of the window (this is to have room for the Status Effects panel without having to do something disgusting like dynamic resizing of the cards based on status effects panel state).
@@ -87,20 +87,34 @@ class _InitiativeCardState extends State<InitiativeCard> {
           child: Container(
             width: 300,
             height: 300,
-            margin: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+            margin: const EdgeInsets.fromLTRB(0, 8, 0, 10),
             child: Card(
-                child: Column(
-              children: [
-                Text("Conditions"),
-                ListView(
-                  children: [
-                    Row(
-                      children: [Text("Stunned"), Text("5")],
-                    )
-                  ],
-                )
-              ],
-            )),
+              elevation: 3,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Center(
+                  child: Column(
+                    children: const [
+                      Align(
+                        alignment: Alignment.topLeft,
+                        child: Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Text("Conditions"),
+                        ),
+                      ),
+                      Divider(),
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Text("Blinded"),
+                        )
+                      )
+                    ],
+                  ),
+                ),
+              )
+            ),
           ),
         )
       ],
