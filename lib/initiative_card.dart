@@ -14,6 +14,7 @@ class InitiativeCard extends StatefulWidget {
 
 class _InitiativeCardState extends State<InitiativeCard> {
   bool _shouldDisplayConditionsCard = false;
+  bool _shouldDisplayAbilitiesCard = false;
 
   /// build()
   /// Parameters: BuildContext context
@@ -148,7 +149,13 @@ class _InitiativeCardState extends State<InitiativeCard> {
     //TODO: Consider adding code to this method to highlight the button in some way when the panel is open.
 
     // InitativeCard will need to be converted to a stateful widget in order to get the icon to change state *fairly* automatically.
-    log("Should show Abilities panel");
+        setState(() {
+      if (_shouldDisplayAbilitiesCard) {
+        _shouldDisplayAbilitiesCard = false;
+      } else {
+        _shouldDisplayAbilitiesCard = true;
+      }
+    });
   }
 }
 
