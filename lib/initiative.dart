@@ -1,4 +1,3 @@
-
 class Initative implements Comparable<Initative> {
   String name = "";
   int initiativeCount = 999;
