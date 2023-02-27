@@ -262,10 +262,10 @@ class _MyHomePageState extends State<MyHomePage> {
   Future<String?> openhpDialog() => showDialog<String>(
         context: context,
         builder: (context) => AlertDialog(
-          title: Text('Player HP'),
+          title: Text('Player Initiative'),
           content: TextField(
             autofocus: true,
-            decoration: InputDecoration(hintText: 'Enter Player HP'),
+            decoration: InputDecoration(hintText: 'Enter Player Initiative'),
             controller: controller,
           ),
           actions: [
