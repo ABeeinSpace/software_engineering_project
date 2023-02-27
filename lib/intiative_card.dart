@@ -1,11 +1,18 @@
 import 'dart:developer'; //This import gives us access to the log() function. It can be safely removed when all buttons are properly implemented.
 import 'package:flutter/material.dart';
+import 'main.dart';
 
 class InitiativeCard extends StatelessWidget {
   // This declaration makes any parameters needed available to instances of the class. The Java equivalent is a constructor method
-  const InitiativeCard({
-    Key? key,
-  }) : super(key: key);
+
+  String hp;
+  String name;
+
+  InitiativeCard(this.name, this.hp, {super.key});
+
+  // const InitiativeCard({
+  //   Key? key,
+  // }) : super(key: key);
 
   /// build()
   /// Parameters: BuildContext context
@@ -29,19 +36,19 @@ class InitiativeCard extends StatelessWidget {
                   child: Row(
                     children: [
                       Column(
-                        children: const [
+                        children: [
                           Text("Initiative"),
                           CircleAvatar(
                             // backgroundColor: Colors.amber,
-                            child: Text("18"),
+                            child: Text(hp),
                           )
                         ],
                       ),
                       Expanded(
-                        child: Column(children: const [
+                        child: Column(children: [
                           Align(
                             alignment: Alignment.center,
-                            child: Text("John Doe"),
+                            child: Text(name),
                           ),
                           //TODO: Do the health bar (Which is probably going to Suck to do).
                           Text("HEALTH BAR GOES HERE")
@@ -97,9 +104,14 @@ class InitiativeCard extends StatelessWidget {
 
 class InitiativeCardContainer extends StatelessWidget {
   // This declaration makes any parameters needed available to instances of the class. The Java equivalent is a constructor method
-  const InitiativeCardContainer({
-    Key? key,
-  }) : super(key: key);
+  //  InitiativeCardContainer({
+  //   Key? key,
+  // }) : super(key: key);
+
+  String name;
+  String hp;
+
+  InitiativeCardContainer(this.name, this.hp, {super.key});
 
   /// build()
   /// Parameters: BuildContext context
@@ -112,7 +124,7 @@ class InitiativeCardContainer extends StatelessWidget {
       alignment: Alignment.centerLeft,
       margin: const EdgeInsets.all(10),
       // width: 90,
-      child: const InitiativeCard(),
+      child: InitiativeCard(name, hp),
     );
   }
 }
