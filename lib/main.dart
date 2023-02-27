@@ -103,11 +103,11 @@ class _MyHomePageState extends State<MyHomePage> {
 
   //Array of initatives
   List<InitiativeCardContainer> arr = [
-    InitiativeCardContainer("Name", "HP"),
-    InitiativeCardContainer("Name", "HP"),
-    InitiativeCardContainer("Name", "HP"),
-    InitiativeCardContainer("Name", "HP"),
-    InitiativeCardContainer("Name", "HP"),
+    InitiativeCardContainer("Name", " "),
+    InitiativeCardContainer("Name", " "),
+    InitiativeCardContainer("Name", " "),
+    InitiativeCardContainer("Name", " "),
+    InitiativeCardContainer("Name", " "),
   ];
 
   void _incrementNumOfThings() {
