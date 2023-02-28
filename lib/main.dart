@@ -104,11 +104,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   //Array of initatives
   List<InitiativeCardContainer> arr = [
-    InitiativeCardContainer("Name", " "),
-    InitiativeCardContainer("Name", " "),
-    InitiativeCardContainer("Name", " "),
-    InitiativeCardContainer("Name", " "),
-    InitiativeCardContainer("Name", " "),
+
   ];
 
   void _incrementNumOfThings() {
@@ -296,7 +292,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
 //Add the corresponding inputted values to the next open space in the array
   void editInitiativeCard() {
-    arr[numOfThings] = InitiativeCardContainer(name, hp);
+    Initative initative = new Initative(name: name, initiativeCount: initiativeCount);
+    arr[numOfThings] = InitiativeCardContainer(initative);
     numOfThings++;
   }
 
