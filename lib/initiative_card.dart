@@ -4,8 +4,9 @@ import 'initiative.dart';
 
 class InitiativeCard extends StatefulWidget {
   
-  InitiativeCard(this.currentInitative, {super.key});
-  Initative currentInitative;
+  InitiativeCard(this.name, this.hp, {super.key});
+  String name;
+  String hp;
 
   // This declaration makes any parameters needed available to instances of the class. The Java equivalent is a constructor method
   // String hp;
@@ -19,9 +20,6 @@ class InitiativeCard extends StatefulWidget {
 class _InitiativeCardState extends State<InitiativeCard> {
   bool _shouldDisplayConditionsCard = false;
   bool _shouldDisplayAbilitiesCard = false;
-  
-  var currentInitative;
-  
 
   /// build()
   /// Parameters: BuildContext context
@@ -53,7 +51,7 @@ class _InitiativeCardState extends State<InitiativeCard> {
                               Text("Initiative"),
                               CircleAvatar(
                                 // backgroundColor: Colors.amber,
-                                child: Text(currentInitative.getInitative()),
+                                child: Text(widget.hp),
                               )
                             ],
                           ),
@@ -61,7 +59,7 @@ class _InitiativeCardState extends State<InitiativeCard> {
                             child: Column(children: [
                               Align(
                                 alignment: Alignment.center,
-                                child: Text(currentInitative.getName()),
+                                child: Text(widget.name),
                               ),
                               //TODO: Do the health bar (Which is probably going to Suck to do).
                               DecoratedBox(
@@ -178,9 +176,14 @@ class InitiativeCardContainer extends StatelessWidget {
   //   Key? key,
   // }) : super(key: key);
 
-  Initative currentInitative;
+  String name;
+  String hp;
 
-  InitiativeCardContainer(this.currentInitative, {super.key});
+  InitiativeCardContainer(this.name, this.hp, {super.key});
+
+  InitiativeCardContainer.fromInitative(Initative initative, {super.key}) :
+    name = initative.name,
+    hp = initative.initiativeCount.toString();
 
   /// build()
   /// Parameters: BuildContext context
@@ -192,7 +195,7 @@ class InitiativeCardContainer extends StatelessWidget {
     return Container(
       alignment: Alignment.centerLeft,
       margin: const EdgeInsets.all(10),
-      child: InitiativeCard(currentInitative),
+      child: InitiativeCard(name, hp),
     );
   }
 }
