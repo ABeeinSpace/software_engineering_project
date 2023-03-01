@@ -4,8 +4,9 @@ import 'initiative.dart';
 
 class InitiativeCard extends StatefulWidget {
   
-  InitiativeCard(this.currentInitative, {super.key});
-  Initative currentInitative;
+  String name;
+  String hp;
+  InitiativeCard(this.name, this.hp, {super.key});
 
   // This declaration makes any parameters needed available to instances of the class. The Java equivalent is a constructor method
   // String hp;
@@ -53,7 +54,7 @@ class _InitiativeCardState extends State<InitiativeCard> {
                               Text("Initiative"),
                               CircleAvatar(
                                 // backgroundColor: Colors.amber,
-                                child: Text(currentInitative.getInitative()),
+                                child: Text(widget.hp),
                               )
                             ],
                           ),
@@ -61,7 +62,7 @@ class _InitiativeCardState extends State<InitiativeCard> {
                             child: Column(children: [
                               Align(
                                 alignment: Alignment.center,
-                                child: Text(currentInitative.getName()),
+                                child: Text(widget.name),
                               ),
                               //TODO: Do the health bar (Which is probably going to Suck to do).
                               DecoratedBox(
@@ -178,9 +179,15 @@ class InitiativeCardContainer extends StatelessWidget {
   //   Key? key,
   // }) : super(key: key);
 
-  Initative currentInitative;
+  String name;
+  String hp;
+  // Initative currentInitative;
 
-  InitiativeCardContainer(this.currentInitative, {super.key});
+  InitiativeCardContainer(this.name, this.hp, {super.key});
+
+
+
+  // InitiativeCardContainer.fromInitative(this.currentInitative, {super.key});
 
   /// build()
   /// Parameters: BuildContext context
@@ -192,7 +199,7 @@ class InitiativeCardContainer extends StatelessWidget {
     return Container(
       alignment: Alignment.centerLeft,
       margin: const EdgeInsets.all(10),
-      child: InitiativeCard(currentInitative),
+      child: InitiativeCard(name, hp),
     );
   }
 }

@@ -7,7 +7,7 @@ class Initative implements Comparable<Initative> {
 
   Initative({
     required String name,
-    required int initiativeCount,
+    required String initiativeCount,
     int? totalHealth,
     int? currentHealth,
   });
