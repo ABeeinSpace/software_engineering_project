@@ -1,9 +1,9 @@
 class Initative implements Comparable<Initative> {
   String name = "";
-  int initiativeCount = 0;
+  int initiativeCount = 999;
   int totalHealth = 0;
   int currentHealth = 0;
-  late List<String> conditionsArray;
+  var conditionsArray;
 
   Initative({
     required String name,
