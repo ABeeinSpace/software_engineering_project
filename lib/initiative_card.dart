@@ -4,8 +4,8 @@ import 'initiative.dart';
 
 class InitiativeCard extends StatefulWidget {
   
-  String name;
-  String hp;
+  late String name;
+  late String hp;
   InitiativeCard(this.name, this.hp, {super.key});
 
   // This declaration makes any parameters needed available to instances of the class. The Java equivalent is a constructor method
@@ -21,7 +21,7 @@ class _InitiativeCardState extends State<InitiativeCard> {
   bool _shouldDisplayConditionsCard = false;
   bool _shouldDisplayAbilitiesCard = false;
   
-  var currentInitative;
+  late Initative currentInitative;
   
 
   /// build()
@@ -141,7 +141,6 @@ class _InitiativeCardState extends State<InitiativeCard> {
   /// Returns: N/A (void)
   /// Description: Method responsible for showing and hiding the Status Effects flyout.
   void _showConditionsPanel() {
-    //TODO: Consider adding code to this method to highlight the button in some way when the panel is open.
 
     setState(() {
       if (_shouldDisplayConditionsCard) {
@@ -160,7 +159,6 @@ class _InitiativeCardState extends State<InitiativeCard> {
   /// Returns: N/A (void)
   /// Description: Method responsible for showing and hiding the Abilities drop-down/flyout.
   void _showAbilitiesPanel() {
-    //TODO: Consider adding code to this method to highlight the button in some way when the panel is open.
 
     // InitativeCard will need to be converted to a stateful widget in order to get the icon to change state *fairly* automatically.
     setState(() {
@@ -179,15 +177,18 @@ class InitiativeCardContainer extends StatelessWidget {
   //   Key? key,
   // }) : super(key: key);
 
-  String name;
-  String hp;
+  String name = '';
+  String hp = '';
+  
+  late Initative currentInitative = Initative(name: name, initiativeCount: hp);
   // Initative currentInitative;
 
+
   InitiativeCardContainer(this.name, this.hp, {super.key});
+  InitiativeCardContainer.fromInitative(this.currentInitative, {super.key});
 
 
 
-  // InitiativeCardContainer.fromInitative(this.currentInitative, {super.key});
 
   /// build()
   /// Parameters: BuildContext context

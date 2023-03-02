@@ -26,7 +26,7 @@ class Initative implements Comparable<Initative> {
 
   get getCurrentHealth => currentHealth;
 
-  set setCurrentHealth( currentHealth,) => this.currentHealth = currentHealth;
+  set setCurrentHealth(currentHealth) => this.currentHealth = currentHealth;
 
   get getConditionsArray => conditionsArray;
 
