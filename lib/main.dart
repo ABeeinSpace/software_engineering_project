@@ -220,16 +220,19 @@ class _MyHomePageState extends State<MyHomePage> {
       floatingActionButton: FloatingActionButton.extended(
         ///When the add initative button is pressed, open a dialog for the user to input their name
         onPressed: () async {
-          final name = await openDialog();
-          if (name == null || name.isEmpty) return;
-          setState(() => this.name = name);
+          log("Button Pressed!");
+          showDialogWithFields();
+          // final name = await openDialog();
+          // if (name == null || name.isEmpty) return;
+          // setState(() => this.name = name);
 
-          //When the user has submitted a name, open a dialog for them to input the Initiative
-          final Initiative = await openInitiativeDialog();
-          if (Initiative == null || Initiative.isEmpty) return;
-          setState(() => this.Initiative = Initiative);
+          // //When the user has submitted a name, open a dialog for them to input the Initiative
+          // final Initiative = await openInitiativeDialog();
+          // if (Initiative == null || Initiative.isEmpty) return;
+          // setState(() => this.Initiative = Initiative);
 
-          editInitiativeCard();
+          // editInitiativeCard();
+          //TODO: Fix so it actually updates the data
         },
         icon: const Icon(Icons.add),
         label: const Text("Add Initiative"),
@@ -237,6 +240,48 @@ class _MyHomePageState extends State<MyHomePage> {
       // We should consider making the FAB display a pop-up menu to enable prefab monster addition like the button in the top of the window.
 
       // End of Body
+    );
+  }
+
+  void showDialogWithFields() {
+    showDialog(
+      context: context,
+      builder: (_) {
+        var nameController = TextEditingController();
+        var initiativeController = TextEditingController();
+        return AlertDialog(
+          title: Text('Enter Player Info'),
+          content: SingleChildScrollView(
+              child: Column(
+            //shrinkWrap: true,
+            children: [
+              TextFormField(
+                controller: nameController,
+                decoration: InputDecoration(hintText: 'Name'),
+              ),
+              TextFormField(
+                controller: initiativeController,
+                decoration: InputDecoration(hintText: 'Initiative'),
+              ),
+            ],
+          )),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                // Send them to your email maybe?
+                //var email = nameController.text;
+                //var message = initiativeController.text;
+                Navigator.pop(context);
+              },
+              child: Text('Send'),
+            ),
+          ],
+        );
+      },
     );
   }
 
