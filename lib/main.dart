@@ -273,8 +273,11 @@ class _MyHomePageState extends State<MyHomePage> {
             TextButton(
               onPressed: () {
                 // Send them to your email maybe?
-                //var email = nameController.text;
-                //var message = initiativeController.text;
+                var name = nameController.text;
+                var initiative = initiativeController.text;
+                editInitiativeCard2(name, initiative);
+                log(name);
+                log(initiative);
                 Navigator.pop(context);
               },
               child: Text('Send'),
@@ -343,6 +346,14 @@ class _MyHomePageState extends State<MyHomePage> {
   void editInitiativeCard() {
     arr[numOfThings] = InitiativeCardContainer(name, Initiative);
     numOfThings++;
+  }
+
+//TODO: this is dumb. Too Bad!
+  void editInitiativeCard2(String name, String init) {
+    setState(() {
+    arr[numOfThings] = InitiativeCardContainer(name, init);
+    numOfThings++;
+    });
   }
 
   /// _settingsButtonPressed()
