@@ -221,12 +221,12 @@ class _MyHomePageState extends State<MyHomePage> {
         ///When the add initative button is pressed, open a dialog for the user to input their name
         onPressed: () async {
           final name = await openDialog();
-          if (name == null || name.isNotEmpty) return;
+          if (name == null || name.isEmpty) return;
           setState(() => this.name = name);
 
           //When the user has submitted a name, open a dialog for them to input the Initiative
           final Initiative = await openInitiativeDialog();
-          if (Initiative == null || Initiative.isNotEmpty) return;
+          if (Initiative == null || Initiative.isEmpty) return;
           setState(() => this.Initiative = Initiative);
 
           editInitiativeCard();
@@ -244,10 +244,10 @@ class _MyHomePageState extends State<MyHomePage> {
   Future<String?> openDialog() => showDialog<String>(
         context: context,
         builder: (context) => AlertDialog(
-          title: Text('Player Name'),
+          title: Text('Block Info'),
           content: TextField(
             autofocus: true,
-            decoration: InputDecoration(hintText: 'Enter Player Name'),
+            decoration: InputDecoration(hintText: 'Enter Name'),
             controller: controller,
           ),
           actions: [
