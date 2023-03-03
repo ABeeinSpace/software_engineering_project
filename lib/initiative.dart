@@ -1,9 +1,11 @@
+import 'package:software_engineering_project/condition.dart';
+
 class Initative implements Comparable<Initative> {
   String name = "";
   int initiativeCount = 0;
   int totalHealth = 0;
   int currentHealth = 0;
-  late List<String> conditionsArray;
+  late List<Condition> conditionsArray;
 
   Initative({
     required String name,
