@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 class Condition implements Comparable<Condition> {
   String name = "";
   int duration = 0;
@@ -21,12 +23,10 @@ class Condition implements Comparable<Condition> {
   get getElapedTime => elapsedTime;
 
   set setElapedTime( elapedTime) => this.elapsedTime = elapedTime;
-
   
   @override
   int compareTo(Condition other) {
     throw UnimplementedError();
   }
-
 }
 

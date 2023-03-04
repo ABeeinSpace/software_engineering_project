@@ -5,7 +5,7 @@ class Initative implements Comparable<Initative> {
   int initiativeCount = 0;
   int totalHealth = 0;
   int currentHealth = 0;
-  late List<Condition> conditionsArray;
+  late List<Condition> conditionsArray = initConditionsArray();
 
   Initative({
     required String name,
@@ -13,6 +13,15 @@ class Initative implements Comparable<Initative> {
     int? totalHealth,
     int? currentHealth,
   });
+
+  List<Condition> initConditionsArray() {
+
+    conditionsArray.add(Condition(name: "Blinded", duration: 10, elapsedTime: 5));
+    conditionsArray.add(Condition(name: "Frightened", duration: 5, elapsedTime: 2));
+    conditionsArray.add(Condition(name: "Exhaustion", duration: 7, elapsedTime: 5));
+    conditionsArray.add(Condition(name: "Restrained", duration: 12, elapsedTime: 4));
+    return conditionsArray;
+  }
 
   get getName => name;
 

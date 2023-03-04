@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'initiative.dart';
 
 class InitiativeCard extends StatefulWidget {
-  
   late String name;
   late String hp;
   InitiativeCard(this.name, this.hp, {super.key});
@@ -12,7 +11,6 @@ class InitiativeCard extends StatefulWidget {
   // String hp;
   // String name;
 
-
   @override
   State<InitiativeCard> createState() => _InitiativeCardState();
 }
@@ -20,9 +18,8 @@ class InitiativeCard extends StatefulWidget {
 class _InitiativeCardState extends State<InitiativeCard> {
   bool _shouldDisplayConditionsCard = false;
   bool _shouldDisplayAbilitiesCard = false;
-  
+
   late Initative currentInitative;
-  
 
   /// build()
   /// Parameters: BuildContext context
@@ -36,7 +33,6 @@ class _InitiativeCardState extends State<InitiativeCard> {
 
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
-
       children: [
         Padding(
             padding: const EdgeInsets.fromLTRB(8, 8, 0, 8),
@@ -51,7 +47,7 @@ class _InitiativeCardState extends State<InitiativeCard> {
                         children: [
                           Column(
                             children: [
-                              Text("Initiative"),
+                              const Text("Initiative"),
                               CircleAvatar(
                                 // backgroundColor: Colors.amber,
                                 child: Text(widget.hp),
@@ -70,7 +66,7 @@ class _InitiativeCardState extends State<InitiativeCard> {
                                     border: Border.all(
                                         color: Colors.black,
                                         style: BorderStyle.solid)),
-                                child: Align(child: Text("feck")),
+                                child: const Align(child: Text("feck")),
                               ),
                             ]),
                           ),
@@ -111,20 +107,22 @@ class _InitiativeCardState extends State<InitiativeCard> {
                   padding: const EdgeInsets.all(8.0),
                   child: Center(
                     child: Column(
-                      children: const [
-                        Align(
+                      children: [
+                        const Align(
                           alignment: Alignment.topLeft,
                           child: Padding(
                             padding: EdgeInsets.all(8.0),
                             child: Text("Conditions"),
                           ),
                         ),
-                        Divider(),
+                        const Divider(),
                         Align(
                             alignment: Alignment.centerLeft,
                             child: Padding(
-                              padding: EdgeInsets.all(8.0),
-                              child: Text("Blinded"),
+                              padding: const EdgeInsets.all(8.0),
+                              child: Column(
+                                // children: currentInitative.conditionsArray.map((word)=> const Text("$")).toList(),
+                              ),
                             ))
                       ],
                     ),
@@ -141,7 +139,6 @@ class _InitiativeCardState extends State<InitiativeCard> {
   /// Returns: N/A (void)
   /// Description: Method responsible for showing and hiding the Status Effects flyout.
   void _showConditionsPanel() {
-
     setState(() {
       if (_shouldDisplayConditionsCard) {
         _shouldDisplayConditionsCard = false;
@@ -159,7 +156,6 @@ class _InitiativeCardState extends State<InitiativeCard> {
   /// Returns: N/A (void)
   /// Description: Method responsible for showing and hiding the Abilities drop-down/flyout.
   void _showAbilitiesPanel() {
-
     // InitativeCard will need to be converted to a stateful widget in order to get the icon to change state *fairly* automatically.
     setState(() {
       if (_shouldDisplayAbilitiesCard) {
@@ -179,16 +175,12 @@ class InitiativeCardContainer extends StatelessWidget {
 
   String name = '';
   String hp = '';
-  
+
   late Initative currentInitative = Initative(name: name, initiativeCount: hp);
   // Initative currentInitative;
 
-
   InitiativeCardContainer(this.name, this.hp, {super.key});
   InitiativeCardContainer.fromInitative(this.currentInitative, {super.key});
-
-
-
 
   /// build()
   /// Parameters: BuildContext context

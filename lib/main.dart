@@ -244,15 +244,15 @@ class _MyHomePageState extends State<MyHomePage> {
   Future<String?> openDialog() => showDialog<String>(
         context: context,
         builder: (context) => AlertDialog(
-          title: Text('Player Name'),
+          title: const Text('Player Name'),
           content: TextField(
             autofocus: true,
-            decoration: InputDecoration(hintText: 'Enter Player Name'),
+            decoration: const InputDecoration(hintText: 'Enter Player Name'),
             controller: controller,
           ),
           actions: [
             TextButton(
-              child: Text('SUBMIT'),
+              child: const Text('SUBMIT'),
               onPressed: submit1,
             ),
           ],
@@ -263,16 +263,16 @@ class _MyHomePageState extends State<MyHomePage> {
   Future<String?> openhpDialog() => showDialog<String>(
         context: context,
         builder: (context) => AlertDialog(
-          title: Text('Player Initiative'),
+          title: const Text('Player Initiative'),
           content: TextField(
             autofocus: true,
-            decoration: InputDecoration(hintText: 'Enter Player Initiative'),
+            decoration: const InputDecoration(hintText: 'Enter Player Initiative'),
             controller: controller,
           ),
           actions: [
             TextButton(
-              child: Text('SUBMIT'),
               onPressed: submit,
+              child: const Text('SUBMIT'),
             ),
           ],
         ),
