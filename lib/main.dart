@@ -184,7 +184,7 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Center(
         // Center is a layout widget. It takes a single child and positions it
         // in the middle of the parent.
-        child: Column(
+        child: Column (
           // Column is also a layout widget. It takes a list of children and
           // arranges them vertically. By default, it sizes itself to fit its
           // children horizontally, and tries to be as tall as its parent.
@@ -201,7 +201,7 @@ class _MyHomePageState extends State<MyHomePage> {
           // horizontal).
           // mainAxisAlignment: MainAxisAlignment.start,
           children: 
-
+            arr
               // const Text(
               //   "You have added this many things:",
               // ),
@@ -209,7 +209,6 @@ class _MyHomePageState extends State<MyHomePage> {
               //   '$_numOfThings',
               //   style: Theme.of(context).textTheme.headline4,
               // ),
-              arr,
         ),
       ),
 
@@ -293,7 +292,7 @@ class _MyHomePageState extends State<MyHomePage> {
 //Add the corresponding inputted values to the next open space in the array
   void editInitiativeCard() {
     setState(() {
-      arr.add(InitiativeCardContainer(name, hp));
+      arr.add(InitiativeCardContainer.fromInitiative(Initiative(name: name, initiativeCount: hp)));
       numOfThings++;
     });
   }

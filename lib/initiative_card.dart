@@ -3,9 +3,13 @@ import 'package:flutter/material.dart';
 import 'initiative.dart';
 
 class InitiativeCard extends StatefulWidget {
-  late String name;
-  late String hp;
-  InitiativeCard(this.name, this.hp, {super.key});
+  // late String name;
+  // late String hp;
+  final Initiative currentInitiative;
+
+  // InitiativeCard(this.name, this.hp, {super.key});
+  InitiativeCard.fromInitiative(this.currentInitiative, {super.key});
+
 
   // This declaration makes any parameters needed available to instances of the class. The Java equivalent is a constructor method
   // String hp;
@@ -18,8 +22,6 @@ class InitiativeCard extends StatefulWidget {
 class _InitiativeCardState extends State<InitiativeCard> {
   bool _shouldDisplayConditionsCard = false;
   bool _shouldDisplayAbilitiesCard = false;
-
-  late Initative currentInitative;
 
   /// build()
   /// Parameters: BuildContext context
@@ -50,7 +52,7 @@ class _InitiativeCardState extends State<InitiativeCard> {
                               const Text("Initiative"),
                               CircleAvatar(
                                 // backgroundColor: Colors.amber,
-                                child: Text(widget.hp),
+                                child: Text("$widget.currentInitiative.initiativeCount"),
                               )
                             ],
                           ),
@@ -58,7 +60,7 @@ class _InitiativeCardState extends State<InitiativeCard> {
                             child: Column(children: [
                               Align(
                                 alignment: Alignment.center,
-                                child: Text(widget.name),
+                                child: Text(widget.currentInitiative.name),
                               ),
                               //TODO: Do the health bar (Which is probably going to Suck to do).
                               DecoratedBox(
@@ -120,8 +122,8 @@ class _InitiativeCardState extends State<InitiativeCard> {
                             alignment: Alignment.centerLeft,
                             child: Padding(
                               padding: const EdgeInsets.all(8.0),
-                              child: Column(
-                                // children: currentInitative.conditionsArray.map((word)=> const Text("$")).toList(),
+                              child: Column (
+                                children: [Text(widget.currentInitiative.conditionsArray[0].toString())]
                               ),
                             ))
                       ],
@@ -168,6 +170,7 @@ class _InitiativeCardState extends State<InitiativeCard> {
 }
 
 class InitiativeCardContainer extends StatelessWidget {
+  final Initiative currentInitiative;
   // This declaration makes any parameters needed available to instances of the class. The Java equivalent is a constructor method
   // const InitiativeCardContainer({
   //   Key? key,
@@ -176,11 +179,10 @@ class InitiativeCardContainer extends StatelessWidget {
   String name = '';
   String hp = '';
 
-  late Initative currentInitative = Initative(name: name, initiativeCount: hp);
-  // Initative currentInitative;
 
-  InitiativeCardContainer(this.name, this.hp, {super.key});
-  InitiativeCardContainer.fromInitative(this.currentInitative, {super.key});
+  // InitiativeCardContainer(this.name, this.hp, {super.key});
+  InitiativeCardContainer.fromInitiative(this.currentInitiative, {super.key});
+
 
   /// build()
   /// Parameters: BuildContext context
@@ -192,7 +194,9 @@ class InitiativeCardContainer extends StatelessWidget {
     return Container(
       alignment: Alignment.centerLeft,
       margin: const EdgeInsets.all(10),
-      child: InitiativeCard(name, hp),
+      child: 
+      InitiativeCard.fromInitiative(currentInitiative),
     );
   }
+  
 }

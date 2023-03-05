@@ -1,13 +1,13 @@
 import 'package:software_engineering_project/condition.dart';
 
-class Initative implements Comparable<Initative> {
+class Initiative implements Comparable<Initiative> {
   String name = "";
   int initiativeCount = 0;
   int totalHealth = 0;
   int currentHealth = 0;
   late List<Condition> conditionsArray = initConditionsArray();
 
-  Initative({
+  Initiative({
     required String name,
     required String initiativeCount,
     int? totalHealth,
@@ -15,7 +15,6 @@ class Initative implements Comparable<Initative> {
   });
 
   List<Condition> initConditionsArray() {
-
     conditionsArray.add(Condition(name: "Blinded", duration: 10, elapsedTime: 5));
     conditionsArray.add(Condition(name: "Frightened", duration: 5, elapsedTime: 2));
     conditionsArray.add(Condition(name: "Exhaustion", duration: 7, elapsedTime: 5));
@@ -44,7 +43,7 @@ class Initative implements Comparable<Initative> {
   set setConditionsArray( conditionsArray) => this.conditionsArray = conditionsArray;
   
   @override
-  int compareTo(Initative other) {
+  int compareTo(Initiative other) {
     if (initiativeCount < other.initiativeCount) {
       return -1;
     } else if (initiativeCount > other.initiativeCount) {
