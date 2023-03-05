@@ -104,11 +104,11 @@ class _MyHomePageState extends State<MyHomePage> {
 
   //Array of initatives
   List<InitiativeCardContainer> arr = [
-    InitiativeCardContainer("Name", " "),
-    InitiativeCardContainer("Name", " "),
-    InitiativeCardContainer("Name", " "),
-    InitiativeCardContainer("Name", " "),
-    InitiativeCardContainer("Name", " "),
+    // InitiativeCardContainer("Name", " "),
+    // InitiativeCardContainer("Name", " "),
+    // InitiativeCardContainer("Name", " "),
+    // InitiativeCardContainer("Name", " "),
+    // InitiativeCardContainer("Name", " "),
   ];
 
   void _incrementNumOfThings() {
@@ -184,7 +184,7 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Center(
         // Center is a layout widget. It takes a single child and positions it
         // in the middle of the parent.
-        child: ListView(
+        child: Column(
           // Column is also a layout widget. It takes a list of children and
           // arranges them vertically. By default, it sizes itself to fit its
           // children horizontally, and tries to be as tall as its parent.
@@ -200,8 +200,8 @@ class _MyHomePageState extends State<MyHomePage> {
           // axis because Columns are vertical (the cross axis would be
           // horizontal).
           // mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Column(children: [
+          children: 
+
               // const Text(
               //   "You have added this many things:",
               // ),
@@ -209,11 +209,7 @@ class _MyHomePageState extends State<MyHomePage> {
               //   '$_numOfThings',
               //   style: Theme.of(context).textTheme.headline4,
               // ),
-              arr[0],
-              arr[1],
-              arr[2],
-            ])
-          ],
+              arr,
         ),
       ),
 
@@ -296,8 +292,10 @@ class _MyHomePageState extends State<MyHomePage> {
 
 //Add the corresponding inputted values to the next open space in the array
   void editInitiativeCard() {
-    arr[numOfThings] = InitiativeCardContainer(name, hp);
-    numOfThings++;
+    setState(() {
+      arr.add(InitiativeCardContainer(name, hp));
+      numOfThings++;
+    });
   }
 
   /// _settingsButtonPressed()
