@@ -1,13 +1,9 @@
 class Condition implements Comparable<Condition> {
-  String name = "";
-  int duration = 0;
-  int elapsedTime = 0;
+  String name;
+  int duration;
+  int? elapsedTime;
   
-  Condition({
-    required String name,
-    required int duration,
-    required int elapsedTime
-    });
+  Condition({required this.name, required this.duration, this.elapsedTime});
   
   
   get getName => name;

@@ -292,7 +292,7 @@ class _MyHomePageState extends State<MyHomePage> {
 //Add the corresponding inputted values to the next open space in the array
   void editInitiativeCard() {
     setState(() {
-      arr.add(InitiativeCardContainer.fromInitiative(Initiative(name: name, initiativeCount: hp)));
+      arr.add(InitiativeCardContainer.fromInitiative(Initiative(initiativeCount: int.parse(hp), name: name)));
       numOfThings++;
     });
   }

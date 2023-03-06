@@ -1,26 +1,15 @@
 import 'package:software_engineering_project/condition.dart';
 
 class Initiative implements Comparable<Initiative> {
-  String name = "";
-  int initiativeCount = 0;
-  int totalHealth = 0;
-  int currentHealth = 0;
-  late List<Condition> conditionsArray = initConditionsArray();
+  String name;
+  int initiativeCount;
+  int? totalHealth;
+  int? currentHealth;
+  List<Condition>? conditionsArray = [];
+  // conditionsArray = initConditionsArray();
 
-  Initiative({
-    required String name,
-    required String initiativeCount,
-    int? totalHealth,
-    int? currentHealth,
-  });
-
-  List<Condition> initConditionsArray() {
-    conditionsArray.add(Condition(name: "Blinded", duration: 10, elapsedTime: 5));
-    conditionsArray.add(Condition(name: "Frightened", duration: 5, elapsedTime: 2));
-    conditionsArray.add(Condition(name: "Exhaustion", duration: 7, elapsedTime: 5));
-    conditionsArray.add(Condition(name: "Restrained", duration: 12, elapsedTime: 4));
-    return conditionsArray;
-  }
+  Initiative({required this.name, required this.initiativeCount, this.totalHealth, this.currentHealth, this.conditionsArray});
+    // ;);
 
   get getName => name;
 
@@ -54,5 +43,9 @@ class Initiative implements Comparable<Initiative> {
 
   }
 
+  @override
+  String toString() {
+    return "$name $initiativeCount $conditionsArray";
+  }
 
 }

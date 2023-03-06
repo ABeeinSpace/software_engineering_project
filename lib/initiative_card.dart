@@ -1,14 +1,16 @@
-import 'dart:developer'; //This import gives us access to the log() function. It can be safely removed when all buttons are properly implemented.
+// import 'dart:developer'; //This import gives us access to the log() function. It can be safely removed when all buttons are properly implemented.
 import 'package:flutter/material.dart';
+import 'package:software_engineering_project/condition.dart';
 import 'initiative.dart';
 
 class InitiativeCard extends StatefulWidget {
   // late String name;
   // late String hp;
-  final Initiative currentInitiative;
+  
+  InitiativeCard.fromInitiative(this.currentInitiative, {super.key});
+  Initiative currentInitiative;
 
   // InitiativeCard(this.name, this.hp, {super.key});
-  InitiativeCard.fromInitiative(this.currentInitiative, {super.key});
 
 
   // This declaration makes any parameters needed available to instances of the class. The Java equivalent is a constructor method
@@ -32,6 +34,7 @@ class _InitiativeCardState extends State<InitiativeCard> {
   Widget build(BuildContext context) {
     //This line grabs the current width of the window. I use it to set the width of the initiative cards to 60% of the width of the application's window
     double screenWidth = MediaQuery.of(context).size.width;
+    widget.currentInitiative.conditionsArray = initConditionsArray();
 
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -52,7 +55,7 @@ class _InitiativeCardState extends State<InitiativeCard> {
                               const Text("Initiative"),
                               CircleAvatar(
                                 // backgroundColor: Colors.amber,
-                                child: Text("$widget.currentInitiative.initiativeCount"),
+                                child: Text("${widget.currentInitiative.initiativeCount}"),
                               )
                             ],
                           ),
@@ -60,7 +63,7 @@ class _InitiativeCardState extends State<InitiativeCard> {
                             child: Column(children: [
                               Align(
                                 alignment: Alignment.center,
-                                child: Text(widget.currentInitiative.name),
+                                child: Text("${widget.currentInitiative.name}"),
                               ),
                               //TODO: Do the health bar (Which is probably going to Suck to do).
                               DecoratedBox(
@@ -123,7 +126,7 @@ class _InitiativeCardState extends State<InitiativeCard> {
                             child: Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Column (
-                                children: [Text(widget.currentInitiative.conditionsArray[0].toString())]
+                                children: [Text(widget.currentInitiative.conditionsArray!.toString())]
                               ),
                             ))
                       ],
@@ -167,21 +170,25 @@ class _InitiativeCardState extends State<InitiativeCard> {
       }
     });
   }
+
+  List<Condition> initConditionsArray() {
+    List<Condition> conditionsArray = [];
+    conditionsArray.add(Condition(name: "Blinded", duration: 10, elapsedTime: 5));
+    conditionsArray.add(Condition(name: "Frightened", duration: 5, elapsedTime: 2));
+    conditionsArray.add(Condition(name: "Exhaustion", duration: 7, elapsedTime: 5));
+    conditionsArray.add(Condition(name: "Restrained", duration: 12, elapsedTime: 4));
+    return conditionsArray;
+  }
 }
 
 class InitiativeCardContainer extends StatelessWidget {
-  final Initiative currentInitiative;
   // This declaration makes any parameters needed available to instances of the class. The Java equivalent is a constructor method
   // const InitiativeCardContainer({
   //   Key? key,
   // }) : super(key: key);
 
-  String name = '';
-  String hp = '';
-
-
-  // InitiativeCardContainer(this.name, this.hp, {super.key});
   InitiativeCardContainer.fromInitiative(this.currentInitiative, {super.key});
+  Initiative currentInitiative;
 
 
   /// build()
