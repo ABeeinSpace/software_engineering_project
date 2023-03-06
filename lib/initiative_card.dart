@@ -126,7 +126,7 @@ class _InitiativeCardState extends State<InitiativeCard> {
                             child: Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Column (
-                                children: [Text(widget.currentInitiative.conditionsArray!.toString())]
+                                children: widget.currentInitiative.conditionsArray!.map((e) => Text(e.toString())).toList(),
                               ),
                             ))
                       ],

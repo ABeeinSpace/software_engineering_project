@@ -25,7 +25,7 @@ class Condition implements Comparable<Condition> {
 
   @override
   String toString() {
-    return "$name $duration $elapsedTime";
+    return "$name      $duration      $elapsedTime";
   }
 }
 
