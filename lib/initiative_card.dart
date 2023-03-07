@@ -7,8 +7,8 @@ class InitiativeCard extends StatefulWidget {
   // late String name;
   // late String hp;
   
-  InitiativeCard.fromInitiative(this.currentInitiative, {super.key});
-  Initiative currentInitiative;
+  const InitiativeCard.fromInitiative(this.currentInitiative, {super.key});
+  final Initiative currentInitiative;
 
   // InitiativeCard(this.name, this.hp, {super.key});
 
@@ -63,7 +63,7 @@ class _InitiativeCardState extends State<InitiativeCard> {
                             child: Column(children: [
                               Align(
                                 alignment: Alignment.center,
-                                child: Text("${widget.currentInitiative.name}"),
+                                child: Text(widget.currentInitiative.name),
                               ),
                               //TODO: Do the health bar (Which is probably going to Suck to do).
                               DecoratedBox(
@@ -187,8 +187,8 @@ class InitiativeCardContainer extends StatelessWidget {
   //   Key? key,
   // }) : super(key: key);
 
-  InitiativeCardContainer.fromInitiative(this.currentInitiative, {super.key});
-  Initiative currentInitiative;
+  const InitiativeCardContainer.fromInitiative(this.currentInitiative, {super.key});
+  final Initiative currentInitiative;
 
 
   /// build()
