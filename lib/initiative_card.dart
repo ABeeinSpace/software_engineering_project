@@ -103,7 +103,7 @@ class _InitiativeCardState extends State<InitiativeCard> {
         Visibility(
           visible: _shouldDisplayConditionsCard,
           child: Container(
-            width: 300,
+            width: 250,
             height: 300,
             margin: const EdgeInsets.fromLTRB(0, 8, 0, 10),
             child: Card(
