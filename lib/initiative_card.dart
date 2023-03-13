@@ -5,12 +5,12 @@ import 'initiative.dart';
 class InitiativeCard extends StatefulWidget {
   // late String name;
   // late String hp;
-  
-  const InitiativeCard.fromInitiative(this.currentInitiative, {super.key});
+  InitiativeCard.fromInitiative(this.currentInitiative, this.elevate, {super.key});
   final Initiative currentInitiative;
 
-  // InitiativeCard(this.name, this.hp, {super.key});
+  // InitiativeCard(this.name, this.hp, this.elevate, {super.key});
 
+  double elevate;
 
   // This declaration makes any parameters needed available to instances of the class. The Java equivalent is a constructor method
   // String hp;
@@ -44,7 +44,7 @@ class _InitiativeCardState extends State<InitiativeCard> {
               width: screenWidth *
                   0.6, //Uses the MediaQuery defined above to set the card size to 60% of the window (this is to have room for the Status Effects panel without having to do something disgusting like dynamic resizing of the cards based on status effects panel state).
               child: Card(
-                  elevation: 3,
+                  elevation: widget.elevate,
                   child: Container(
                       padding: const EdgeInsets.all(8),
                       child: Row(
@@ -186,10 +186,15 @@ class InitiativeCardContainer extends StatelessWidget {
   //   Key? key,
   // }) : super(key: key);
 
-  const InitiativeCardContainer.fromInitiative(this.currentInitiative, {super.key});
+  const InitiativeCardContainer.fromInitiative(this.currentInitiative, this.elevate, {super.key});
   final Initiative currentInitiative;
+  final double elevate;
+  // InitiativeCardContainer(this.name, this.hp, this.elevate, {super.key});
 
-  // InitiativeCardContainer(this.name, this.hp, {super.key});
+  // InitiativeCardContainer.fromInitative(Initative initative, {super.key})
+  //     : name = initative.name,
+  //       hp = initative.initiativeCount.toString(),
+  //       elevate = initative.elevate;
 
   /// build()
   /// Parameters: BuildContext context
@@ -205,5 +210,16 @@ class InitiativeCardContainer extends StatelessWidget {
       InitiativeCard.fromInitiative(currentInitiative),
     );
   }
-  
+// addDropShadow(InitiativeCardContainer current){
+//   DropShadow({
+//   Key? key,
+//   required this.child,
+//   this.blurRadius = 10.0,
+//   this.borderRadius = 0.0,
+//   this.offset = const Offset(0.0, 8.0),
+//   this.opacity = 1.0,
+//   this.spread = 1.0,
+// })
+// }
+
 }

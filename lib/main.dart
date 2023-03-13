@@ -83,7 +83,6 @@ class _MyHomePageState extends State<MyHomePage> {
   late TextEditingController controller;
 
   //String that will hold the name inputted by the user
-  String name = '';
 
   @override
   void initState() {
@@ -100,7 +99,10 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   //String that will hold the Initiative inputted by the user
+  String name = '';
   String initiative = '';
+  double elevate = 3.0;
+  int currentIndex = 0;
 
   //Array of initatives
   List<InitiativeCardContainer> arr = [];
@@ -140,7 +142,7 @@ class _MyHomePageState extends State<MyHomePage> {
           Align(
             alignment: Alignment.center,
             child: IconButton(
-                onPressed: _nextButtonPressed,
+                onPressed: nextButtonPressed,
                 tooltip: "Next round",
                 icon: const Icon(Icons.arrow_forward)),
           ),
@@ -160,6 +162,9 @@ class _MyHomePageState extends State<MyHomePage> {
                     setState(() => this.initiative = initiative);
 
                     editInitiativeCard();
+                    if (numOfThings == 1) {
+                      addElevation(currentIndex, arr[currentIndex]);
+                    }
                   },
                   tooltip: "Add Initiative",
                   icon: const Icon(Icons.add)),
@@ -220,7 +225,6 @@ class _MyHomePageState extends State<MyHomePage> {
           // setState(() => this.Initiative = Initiative);
 
           // editInitiativeCard();
-          //TODO: Fix so it actually updates the data
         },
         icon: const Icon(Icons.add),
         label: const Text("Add Initiative"),
@@ -280,10 +284,10 @@ class _MyHomePageState extends State<MyHomePage> {
   Future<String?> openDialog() => showDialog<String>(
         context: context,
         builder: (context) => AlertDialog(
-          title: Text('Block Info'),
+          title: const Text('Block Info'),
           content: TextField(
             autofocus: true,
-            decoration: InputDecoration(hintText: 'Enter Name'),
+            decoration: const InputDecoration(hintText: 'Enter Name'),
             controller: controller,
           ),
           actions: [
@@ -333,7 +337,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
 //Add the corresponding inputted values to the next open space in the array
   void editInitiativeCard() {
-    arr.add(InitiativeCardContainer.fromInitiative(Initiative(name: name, initiativeCount: int.parse(initiative))));
+    arr.add(InitiativeCardContainer.fromInitiative(Initiative(name: name, initiativeCount: int.parse(initiative))), elevate);
     numOfThings++;
   }
 
@@ -393,7 +397,27 @@ class _MyHomePageState extends State<MyHomePage> {
   /// Description: Method responsible for handling button press events from the previous round button(s).
   /// Is a candidate to be moved into the initiative_card file.
   void _prevButtonPressed() {
-    log("Previous Round button pressed!");
+    //A setState call to edit the cards with the new elevation
+    setState(() => this.elevate = elevate);
+
+    //Store the index of the card we are moving away from
+    int pastIndex = currentIndex;
+
+    //If we are not already at the first element in the array
+    if (currentIndex > 0) {
+      //Decrement the index
+      currentIndex--;
+      //If we arealready looking at the first element of the array
+    } else {
+      //'Loop' back to the back of the array
+      currentIndex = numOfThings - 1;
+    }
+
+    //Call the addElevation method with the index of the card we are looking at now and the card itself
+    addElevation(currentIndex, arr[currentIndex]);
+
+    //Call the removeElevation method with the index of the card we just looked at and the card itself
+    removeElevation(pastIndex, arr[pastIndex]);
   }
 
   /// _prevButtonPressed()
@@ -401,7 +425,45 @@ class _MyHomePageState extends State<MyHomePage> {
   /// Returns: N/A (void)
   /// Description: Method responsible for handling button press events from the previous round button(s)
   /// Is a candidate to be moved into the initiative_card file
-  void _nextButtonPressed() {
-    log("Next Round button pressed!");
+  void nextButtonPressed() {
+    //A setState call to edit the cards with the new elevation
+    setState(() => this.elevate = elevate);
+
+    //Store the index of the card we are moving away from
+    int pastIndex = currentIndex;
+    //If we are not already at the last element in the array
+    if (currentIndex < numOfThings - 1) {
+      //Increment the index
+      currentIndex++;
+      //If we are already at the last element in the array
+    } else {
+      //'Loop' back to the front of the array
+      currentIndex = 0;
+    }
+
+    //Call the addElevation method with the index of the card we are looking at now and the card itself
+    addElevation(currentIndex, arr[currentIndex]);
+
+    //Call the removeElevation method with the index of the card we just looked at and the card itself
+    removeElevation(pastIndex, arr[pastIndex]);
+  }
+
+  /// addElevation()
+  /// Parameters: The index of the Initiative card we are currently looking at as an int
+  ///             The Initiative card we are looking at as an object
+  /// Returns: N/A (void)
+  /// Description: Method responsible for adding elevation to current initiative card
+  void addElevation(int currentIndex, InitiativeCardContainer currentCard) {
+    arr[currentIndex] =
+        InitiativeCardContainer(currentCard.name, currentCard.hp, 75.0);
+  }
+
+  /// removeElevation
+  /// Parameters:The index of the last Initiative card we looked at as an int
+  ///             The last Initiative card we looked at as an object
+  /// Returns: N/A (void)
+  /// Description: Method responsible for removing elevation from card we just looked at, but are no longer looking at
+  void removeElevation(int pastIndex, InitiativeCardContainer pastCard) {
+    arr[pastIndex] = InitiativeCardContainer(pastCard.name, pastCard.hp, 3.0);
   }
 }
