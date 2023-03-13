@@ -455,7 +455,7 @@ class _MyHomePageState extends State<MyHomePage> {
   /// Description: Method responsible for adding elevation to current initiative card
   void addElevation(int currentIndex, InitiativeCardContainer currentCard) {
     setState(() {
-      arr[currentIndex].elevate = 75;
+      currentCard.elevate = 75;
     });
     // InitiativeCardContainer(currentCard.name, currentCard.hp, 75.0);
   }
@@ -467,7 +467,7 @@ class _MyHomePageState extends State<MyHomePage> {
   /// Description: Method responsible for removing elevation from card we just looked at, but are no longer looking at
   void removeElevation(int pastIndex, InitiativeCardContainer pastCard) {
     setState(() {
-      arr[pastIndex].elevate = 3;
+      pastCard.elevate = 3;
       
     });
   }
