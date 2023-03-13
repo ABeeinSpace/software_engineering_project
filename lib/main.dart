@@ -99,8 +99,8 @@ class _MyHomePageState extends State<MyHomePage> {
     super.dispose();
   }
 
-  //String that will hold the hp inputted by the user
-  String hp = '';
+  //String that will hold the Initiative inputted by the user
+  String Initiative = '';
 
   //Array of initatives
   List<InitiativeCardContainer> arr = [
@@ -160,10 +160,10 @@ class _MyHomePageState extends State<MyHomePage> {
                     if (name == null || name.isEmpty) return;
                     setState(() => this.name = name);
 
-                    //When the user has submitted a name, open a dialog for them to input the hp
-                    final hp = await openhpDialog();
-                    if (hp == null || hp.isEmpty) return;
-                    setState(() => this.hp = hp);
+                    //When the user has submitted a name, open a dialog for them to input the Initiative
+                    final Initiative = await openInitiativeDialog();
+                    if (Initiative == null || Initiative.isEmpty) return;
+                    setState(() => this.Initiative = Initiative);
 
                     editInitiativeCard();
                   },
@@ -220,16 +220,19 @@ class _MyHomePageState extends State<MyHomePage> {
       floatingActionButton: FloatingActionButton.extended(
         ///When the add initative button is pressed, open a dialog for the user to input their name
         onPressed: () async {
-          final name = await openDialog();
-          if (name == null || name.isEmpty) return;
-          setState(() => this.name = name);
+          log("Button Pressed!");
+          showDialogWithFields();
+          // final name = await openDialog();
+          // if (name == null || name.isEmpty) return;
+          // setState(() => this.name = name);
 
-          //When the user has submitted a name, open a dialog for them to input the hp
-          final hp = await openhpDialog();
-          if (hp == null || hp.isEmpty) return;
-          setState(() => this.hp = hp);
+          // //When the user has submitted a name, open a dialog for them to input the Initiative
+          // final Initiative = await openInitiativeDialog();
+          // if (Initiative == null || Initiative.isEmpty) return;
+          // setState(() => this.Initiative = Initiative);
 
-          editInitiativeCard();
+          // editInitiativeCard();
+          //TODO: Fix so it actually updates the data
         },
         icon: const Icon(Icons.add),
         label: const Text("Add Initiative"),
@@ -240,14 +243,59 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
+  void showDialogWithFields() {
+    showDialog(
+      context: context,
+      builder: (_) {
+        var nameController = TextEditingController();
+        var initiativeController = TextEditingController();
+        return AlertDialog(
+          title: Text('Enter Player Info'),
+          content: SingleChildScrollView(
+              child: Column(
+            //shrinkWrap: true,
+            children: [
+              TextFormField(
+                controller: nameController,
+                decoration: InputDecoration(hintText: 'Name'),
+              ),
+              TextFormField(
+                controller: initiativeController,
+                decoration: InputDecoration(hintText: 'Initiative'),
+              ),
+            ],
+          )),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                // Send them to your email maybe?
+                var name = nameController.text;
+                var initiative = initiativeController.text;
+                editInitiativeCard2(name, initiative);
+                log(name);
+                log(initiative);
+                Navigator.pop(context);
+              },
+              child: Text('Send'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
 //Dialog box for inputting name
   Future<String?> openDialog() => showDialog<String>(
         context: context,
         builder: (context) => AlertDialog(
-          title: Text('Player Name'),
+          title: Text('Block Info'),
           content: TextField(
             autofocus: true,
-            decoration: InputDecoration(hintText: 'Enter Player Name'),
+            decoration: InputDecoration(hintText: 'Enter Name'),
             controller: controller,
           ),
           actions: [
@@ -259,8 +307,8 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       );
 
-//Dialog box for inputting hp
-  Future<String?> openhpDialog() => showDialog<String>(
+//Dialog box for inputting Initiative
+  Future<String?> openInitiativeDialog() => showDialog<String>(
         context: context,
         builder: (context) => AlertDialog(
           title: Text('Player Initiative'),
@@ -278,26 +326,34 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       );
 
-//Submit function for name that pops the text into the awaiting string and calls the hp dialog
+//Submit function for name that pops the text into the awaiting string and calls the Initiative dialog
   void submit1() {
     Navigator.of(context).pop(controller.text);
     controller.clear();
-    openhpDialog();
+    openInitiativeDialog();
   }
 
-//Submit function for hp that pops the text into the awaiting string
+//Submit function for Initiative that pops the text into the awaiting string
   void submit() {
     Navigator.of(context).pop(controller.text);
     controller.clear();
     Navigator.of(context).pop();
 
-    // hold = InitiativeCardContainer(name, hp);
+    // hold = InitiativeCardContainer(name, Initiative);
   }
 
 //Add the corresponding inputted values to the next open space in the array
   void editInitiativeCard() {
-    arr[numOfThings] = InitiativeCardContainer(name, hp);
+    arr[numOfThings] = InitiativeCardContainer(name, Initiative);
     numOfThings++;
+  }
+
+//TODO: this is dumb. Too Bad!
+  void editInitiativeCard2(String name, String init) {
+    setState(() {
+    arr[numOfThings] = InitiativeCardContainer(name, init);
+    numOfThings++;
+    });
   }
 
   /// _settingsButtonPressed()
