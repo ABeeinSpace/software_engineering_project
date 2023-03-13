@@ -157,8 +157,8 @@ class _MyHomePageState extends State<MyHomePage> {
                     setState(() => this.name = name);
 
                     //When the user has submitted a name, open a dialog for them to input the Initiative
-                    final Initiative = await openInitiativeDialog();
-                    if (Initiative == null || Initiative.isEmpty) return;
+                    final initiative = await openInitiativeDialog();
+                    if (initiative == null || initiative.isEmpty) return;
                     setState(() => this.initiative = initiative);
 
                     editInitiativeCard();
@@ -427,7 +427,7 @@ class _MyHomePageState extends State<MyHomePage> {
   /// Is a candidate to be moved into the initiative_card file
   void nextButtonPressed() {
     //A setState call to edit the cards with the new elevation
-    setState(() => this.elevate = elevate);
+    // setState(() => this.elevate = elevate);
 
     //Store the index of the card we are moving away from
     int pastIndex = currentIndex;
