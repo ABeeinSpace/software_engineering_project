@@ -9,7 +9,6 @@ class InitiativeCard extends StatefulWidget {
   final Initiative currentInitiative;
 
   // InitiativeCard(this.name, this.hp, this.elevate, {super.key});
-
   double elevate;
 
   // This declaration makes any parameters needed available to instances of the class. The Java equivalent is a constructor method
@@ -186,9 +185,9 @@ class InitiativeCardContainer extends StatelessWidget {
   //   Key? key,
   // }) : super(key: key);
 
-  const InitiativeCardContainer.fromInitiative(this.currentInitiative, this.elevate, {super.key});
+  InitiativeCardContainer.fromInitiative(this.currentInitiative, this.elevate, {super.key});
   final Initiative currentInitiative;
-  final double elevate;
+  double elevate;
   // InitiativeCardContainer(this.name, this.hp, this.elevate, {super.key});
 
   // InitiativeCardContainer.fromInitative(Initative initative, {super.key})
@@ -207,7 +206,7 @@ class InitiativeCardContainer extends StatelessWidget {
       alignment: Alignment.centerLeft,
       margin: const EdgeInsets.all(10),
       child: 
-      InitiativeCard.fromInitiative(currentInitiative),
+      InitiativeCard.fromInitiative(currentInitiative, elevate),
     );
   }
 // addDropShadow(InitiativeCardContainer current){

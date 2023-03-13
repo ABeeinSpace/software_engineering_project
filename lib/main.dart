@@ -337,14 +337,14 @@ class _MyHomePageState extends State<MyHomePage> {
 
 //Add the corresponding inputted values to the next open space in the array
   void editInitiativeCard() {
-    arr.add(InitiativeCardContainer.fromInitiative(Initiative(name: name, initiativeCount: int.parse(initiative))), elevate);
+    arr.add(InitiativeCardContainer.fromInitiative(Initiative(name: name, initiativeCount: int.parse(initiative)), elevate));
     numOfThings++;
   }
 
 //TODO: this is dumb. Too Bad!
   void editInitiativeCard2(String name, String init) {
     setState(() {
-    arr.add(InitiativeCardContainer.fromInitiative(Initiative(name: name, initiativeCount: int.parse(init))));
+    arr.add(InitiativeCardContainer.fromInitiative(Initiative(name: name, initiativeCount: int.parse(init)), elevate));
     numOfThings++;
     });
   }
@@ -454,8 +454,10 @@ class _MyHomePageState extends State<MyHomePage> {
   /// Returns: N/A (void)
   /// Description: Method responsible for adding elevation to current initiative card
   void addElevation(int currentIndex, InitiativeCardContainer currentCard) {
-    arr[currentIndex] =
-        InitiativeCardContainer(currentCard.name, currentCard.hp, 75.0);
+    setState(() {
+      arr[currentIndex].elevate = 75;
+    });
+    // InitiativeCardContainer(currentCard.name, currentCard.hp, 75.0);
   }
 
   /// removeElevation
@@ -464,6 +466,9 @@ class _MyHomePageState extends State<MyHomePage> {
   /// Returns: N/A (void)
   /// Description: Method responsible for removing elevation from card we just looked at, but are no longer looking at
   void removeElevation(int pastIndex, InitiativeCardContainer pastCard) {
-    arr[pastIndex] = InitiativeCardContainer(pastCard.name, pastCard.hp, 3.0);
+    setState(() {
+      arr[pastIndex].elevate = 3;
+      
+    });
   }
 }
