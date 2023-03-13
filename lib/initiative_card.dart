@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:software_engineering_project/condition.dart';
 import 'initiative.dart';
 
 class InitiativeCard extends StatefulWidget {
-  
-  InitiativeCard(this.name, this.hp, {super.key});
-  String name;
-  String hp;
+  // late String name;
+  // late String hp;
+  InitiativeCard.fromInitiative(this.currentInitiative, this.elevate, {super.key});
+  final Initiative currentInitiative;
+
+  // InitiativeCard(this.name, this.hp, this.elevate, {super.key});
+  double elevate;
 
   // This declaration makes any parameters needed available to instances of the class. The Java equivalent is a constructor method
   // String hp;
   // String name;
-
 
   @override
   State<InitiativeCard> createState() => _InitiativeCardState();
@@ -19,7 +22,6 @@ class InitiativeCard extends StatefulWidget {
 class _InitiativeCardState extends State<InitiativeCard> {
   bool _shouldDisplayConditionsCard = false;
   bool _shouldDisplayAbilitiesCard = false;
-  
 
   /// build()
   /// Parameters: BuildContext context
@@ -30,10 +32,10 @@ class _InitiativeCardState extends State<InitiativeCard> {
   Widget build(BuildContext context) {
     //This line grabs the current width of the window. I use it to set the width of the initiative cards to 60% of the width of the application's window
     double screenWidth = MediaQuery.of(context).size.width;
+    widget.currentInitiative.conditionsArray = initConditionsArray();
 
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
-
       children: [
         Padding(
             padding: const EdgeInsets.fromLTRB(8, 8, 0, 8),
@@ -41,17 +43,17 @@ class _InitiativeCardState extends State<InitiativeCard> {
               width: screenWidth *
                   0.6, //Uses the MediaQuery defined above to set the card size to 60% of the window (this is to have room for the Status Effects panel without having to do something disgusting like dynamic resizing of the cards based on status effects panel state).
               child: Card(
-                  elevation: 3,
+                  elevation: widget.elevate,
                   child: Container(
                       padding: const EdgeInsets.all(8),
                       child: Row(
                         children: [
                           Column(
                             children: [
-                              Text("Initiative"),
+                              const Text("Initiative"),
                               CircleAvatar(
                                 // backgroundColor: Colors.amber,
-                                child: Text(widget.hp),
+                                child: Text("${widget.currentInitiative.initiativeCount}"),
                               )
                             ],
                           ),
@@ -59,7 +61,7 @@ class _InitiativeCardState extends State<InitiativeCard> {
                             child: Column(children: [
                               Align(
                                 alignment: Alignment.center,
-                                child: Text(widget.name),
+                                child: Text(widget.currentInitiative.name),
                               ),
                               //TODO: Do the health bar (Which is probably going to Suck to do).
                               DecoratedBox(
@@ -67,7 +69,7 @@ class _InitiativeCardState extends State<InitiativeCard> {
                                     border: Border.all(
                                         color: Colors.black,
                                         style: BorderStyle.solid)),
-                                child: Align(child: Text("feck")),
+                                child: const Align(child: Text("feck")),
                               ),
                             ]),
                           ),
@@ -99,7 +101,7 @@ class _InitiativeCardState extends State<InitiativeCard> {
         Visibility(
           visible: _shouldDisplayConditionsCard,
           child: Container(
-            width: 300,
+            width: 250,
             height: 300,
             margin: const EdgeInsets.fromLTRB(0, 8, 0, 10),
             child: Card(
@@ -108,20 +110,22 @@ class _InitiativeCardState extends State<InitiativeCard> {
                   padding: const EdgeInsets.all(8.0),
                   child: Center(
                     child: Column(
-                      children: const [
-                        Align(
+                      children: [
+                        const Align(
                           alignment: Alignment.topLeft,
                           child: Padding(
                             padding: EdgeInsets.all(8.0),
                             child: Text("Conditions"),
                           ),
                         ),
-                        Divider(),
+                        const Divider(),
                         Align(
                             alignment: Alignment.centerLeft,
                             child: Padding(
-                              padding: EdgeInsets.all(8.0),
-                              child: Text("Blinded"),
+                              padding: const EdgeInsets.all(8.0),
+                              child: Column (
+                                children: widget.currentInitiative.conditionsArray!.map((e) => Text(e.toString())).toList(),
+                              ),
                             ))
                       ],
                     ),
@@ -133,13 +137,11 @@ class _InitiativeCardState extends State<InitiativeCard> {
     );
   }
 
-  /// showEffectsPanel()
+  /// showConditionsPanel()
   /// Parameters:
   /// Returns: N/A (void)
   /// Description: Method responsible for showing and hiding the Status Effects flyout.
   void _showConditionsPanel() {
-    //TODO: Consider adding code to this method to highlight the button in some way when the panel is open.
-
     setState(() {
       if (_shouldDisplayConditionsCard) {
         _shouldDisplayConditionsCard = false;
@@ -147,9 +149,6 @@ class _InitiativeCardState extends State<InitiativeCard> {
         _shouldDisplayConditionsCard = true;
       }
     });
-
-    // // InitativeCard will need to be converted to a stateful widget in order to get the icon to change state *fairly* automatically.
-    // log("Should show status effects panel");
   }
 
   /// showAbilitiesPanel()
@@ -157,8 +156,6 @@ class _InitiativeCardState extends State<InitiativeCard> {
   /// Returns: N/A (void)
   /// Description: Method responsible for showing and hiding the Abilities drop-down/flyout.
   void _showAbilitiesPanel() {
-    //TODO: Consider adding code to this method to highlight the button in some way when the panel is open.
-
     // InitativeCard will need to be converted to a stateful widget in order to get the icon to change state *fairly* automatically.
     setState(() {
       if (_shouldDisplayAbilitiesCard) {
@@ -168,6 +165,15 @@ class _InitiativeCardState extends State<InitiativeCard> {
       }
     });
   }
+
+  List<Condition> initConditionsArray() {
+    List<Condition> conditionsArray = [];
+    conditionsArray.add(Condition(name: "Blinded", duration: 10, elapsedTime: 5));
+    conditionsArray.add(Condition(name: "Frightened", duration: 5, elapsedTime: 2));
+    conditionsArray.add(Condition(name: "Exhaustion", duration: 7, elapsedTime: 5));
+    conditionsArray.add(Condition(name: "Restrained", duration: 12, elapsedTime: 4));
+    return conditionsArray;
+  }
 }
 
 class InitiativeCardContainer extends StatelessWidget {
@@ -176,14 +182,15 @@ class InitiativeCardContainer extends StatelessWidget {
   //   Key? key,
   // }) : super(key: key);
 
-  String name;
-  String hp;
+  InitiativeCardContainer.fromInitiative(this.currentInitiative, this.elevate, {super.key});
+  final Initiative currentInitiative;
+  double elevate;
+  // InitiativeCardContainer(this.name, this.hp, this.elevate, {super.key});
 
-  InitiativeCardContainer(this.name, this.hp, {super.key});
-
-  InitiativeCardContainer.fromInitative(Initative initative, {super.key}) :
-    name = initative.name,
-    hp = initative.initiativeCount.toString();
+  // InitiativeCardContainer.fromInitative(Initative initative, {super.key})
+  //     : name = initative.name,
+  //       hp = initative.initiativeCount.toString(),
+  //       elevate = initative.elevate;
 
   /// build()
   /// Parameters: BuildContext context
@@ -195,7 +202,20 @@ class InitiativeCardContainer extends StatelessWidget {
     return Container(
       alignment: Alignment.centerLeft,
       margin: const EdgeInsets.all(10),
-      child: InitiativeCard(name, hp),
+      child: 
+      InitiativeCard.fromInitiative(currentInitiative, elevate),
     );
   }
+// addDropShadow(InitiativeCardContainer current){
+//   DropShadow({
+//   Key? key,
+//   required this.child,
+//   this.blurRadius = 10.0,
+//   this.borderRadius = 0.0,
+//   this.offset = const Offset(0.0, 8.0),
+//   this.opacity = 1.0,
+//   this.spread = 1.0,
+// })
+// }
+
 }

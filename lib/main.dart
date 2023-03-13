@@ -83,7 +83,6 @@ class _MyHomePageState extends State<MyHomePage> {
   late TextEditingController controller;
 
   //String that will hold the name inputted by the user
-  String name = '';
 
   @override
   void initState() {
@@ -99,17 +98,14 @@ class _MyHomePageState extends State<MyHomePage> {
     super.dispose();
   }
 
-  //String that will hold the hp inputted by the user
-  String hp = '';
+  //String that will hold the Initiative inputted by the user
+  String name = '';
+  String initiative = '';
+  double elevate = 3.0;
+  int currentIndex = 0;
 
   //Array of initatives
-  List<InitiativeCardContainer> arr = [
-    InitiativeCardContainer("Name", " "),
-    InitiativeCardContainer("Name", " "),
-    InitiativeCardContainer("Name", " "),
-    InitiativeCardContainer("Name", " "),
-    InitiativeCardContainer("Name", " "),
-  ];
+  List<InitiativeCardContainer> arr = [];
 
   void _incrementNumOfThings() {
     setState(() {
@@ -146,7 +142,7 @@ class _MyHomePageState extends State<MyHomePage> {
           Align(
             alignment: Alignment.center,
             child: IconButton(
-                onPressed: _nextButtonPressed,
+                onPressed: nextButtonPressed,
                 tooltip: "Next round",
                 icon: const Icon(Icons.arrow_forward)),
           ),
@@ -160,12 +156,15 @@ class _MyHomePageState extends State<MyHomePage> {
                     if (name == null || name.isEmpty) return;
                     setState(() => this.name = name);
 
-                    //When the user has submitted a name, open a dialog for them to input the hp
-                    final hp = await openhpDialog();
-                    if (hp == null || hp.isEmpty) return;
-                    setState(() => this.hp = hp);
+                    //When the user has submitted a name, open a dialog for them to input the Initiative
+                    final initiative = await openInitiativeDialog();
+                    if (initiative == null || initiative.isEmpty) return;
+                    setState(() => this.initiative = initiative);
 
                     editInitiativeCard();
+                    if (numOfThings == 1) {
+                      addElevation(currentIndex, arr[currentIndex]);
+                    }
                   },
                   tooltip: "Add Initiative",
                   icon: const Icon(Icons.add)),
@@ -184,24 +183,25 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Center(
         // Center is a layout widget. It takes a single child and positions it
         // in the middle of the parent.
-        child: ListView(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          // mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Column(children: [
+        child: SingleChildScrollView(
+          child: Column(
+              // Column is also a layout widget. It takes a list of children and
+              // arranges them vertically. By default, it sizes itself to fit its
+              // children horizontally, and tries to be as tall as its parent.
+              //
+              // Invoke "debug painting" (press "p" in the console, choose the
+              // "Toggle Debug Paint" action from the Flutter Inspector in Android
+              // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
+              // to see the wireframe for each widget.
+              //
+              // Column has various properties to control how it sizes itself and
+              // how it positions its children. Here we use mainAxisAlignment to
+              // center the children vertically; the main axis here is the vertical
+              // axis because Columns are vertical (the cross axis would be
+              // horizontal).
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: arr
               // const Text(
               //   "You have added this many things:",
               // ),
@@ -209,27 +209,25 @@ class _MyHomePageState extends State<MyHomePage> {
               //   '$_numOfThings',
               //   style: Theme.of(context).textTheme.headline4,
               // ),
-              arr[0],
-              arr[1],
-              arr[2],
-            ])
-          ],
+              ),
         ),
       ),
 
       floatingActionButton: FloatingActionButton.extended(
         ///When the add initative button is pressed, open a dialog for the user to input their name
         onPressed: () async {
-          final name = await openDialog();
-          if (name == null || name.isEmpty) return;
-          setState(() => this.name = name);
+          log("Button Pressed!");
+          showDialogWithFields();
+          // final name = await openDialog();
+          // if (name == null || name.isEmpty) return;
+          // setState(() => this.name = name);
 
-          //When the user has submitted a name, open a dialog for them to input the hp
-          final hp = await openhpDialog();
-          if (hp == null || hp.isEmpty) return;
-          setState(() => this.hp = hp);
+          // //When the user has submitted a name, open a dialog for them to input the Initiative
+          // final Initiative = await openInitiativeDialog();
+          // if (Initiative == null || Initiative.isEmpty) return;
+          // setState(() => this.Initiative = Initiative);
 
-          editInitiativeCard();
+          // editInitiativeCard();
         },
         icon: const Icon(Icons.add),
         label: const Text("Add Initiative"),
@@ -240,64 +238,121 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
+  void showDialogWithFields() {
+    showDialog(
+      context: context,
+      builder: (_) {
+        var nameController = TextEditingController();
+        var initiativeController = TextEditingController();
+        return AlertDialog(
+          title: Text('Enter Player Info'),
+          content: SingleChildScrollView(
+              child: Column(
+            //shrinkWrap: true,
+            children: [
+              TextFormField(
+                controller: nameController,
+                decoration: InputDecoration(hintText: 'Name'),
+              ),
+              TextFormField(
+                controller: initiativeController,
+                decoration: InputDecoration(hintText: 'Initiative'),
+              ),
+            ],
+          )),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                // Send them to your email maybe?
+                var name = nameController.text;
+                var initiative = initiativeController.text;
+                editInitiativeCard2(name, initiative);
+                log(name);
+                log(initiative);
+                Navigator.pop(context);
+              },
+              child: Text('Send'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
 //Dialog box for inputting name
   Future<String?> openDialog() => showDialog<String>(
         context: context,
         builder: (context) => AlertDialog(
-          title: Text('Player Name'),
+          title: const Text('Block Info'),
           content: TextField(
             autofocus: true,
-            decoration: InputDecoration(hintText: 'Enter Player Name'),
+            decoration: const InputDecoration(hintText: 'Enter Name'),
             controller: controller,
           ),
           actions: [
             TextButton(
-              child: Text('SUBMIT'),
               onPressed: submit1,
+              child: const Text('SUBMIT'),
             ),
           ],
         ),
       );
 
-//Dialog box for inputting hp
-  Future<String?> openhpDialog() => showDialog<String>(
+//Dialog box for inputting Initiative
+  Future<String?> openInitiativeDialog() => showDialog<String>(
         context: context,
         builder: (context) => AlertDialog(
-          title: Text('Player Initiative'),
+          title: const Text('Player Initiative'),
           content: TextField(
             autofocus: true,
-            decoration: InputDecoration(hintText: 'Enter Player Initiative'),
+            decoration:
+                const InputDecoration(hintText: 'Enter Player Initiative'),
             controller: controller,
           ),
           actions: [
             TextButton(
-              child: Text('SUBMIT'),
               onPressed: submit,
+              child: const Text('SUBMIT'),
             ),
           ],
         ),
       );
 
-//Submit function for name that pops the text into the awaiting string and calls the hp dialog
+//Submit function for name that pops the text into the awaiting string and calls the Initiative dialog
   void submit1() {
     Navigator.of(context).pop(controller.text);
     controller.clear();
-    openhpDialog();
+    openInitiativeDialog();
   }
 
-//Submit function for hp that pops the text into the awaiting string
+//Submit function for Initiative that pops the text into the awaiting string
   void submit() {
     Navigator.of(context).pop(controller.text);
     controller.clear();
     Navigator.of(context).pop();
 
-    // hold = InitiativeCardContainer(name, hp);
+    // hold = InitiativeCardContainer(name, Initiative);
   }
 
 //Add the corresponding inputted values to the next open space in the array
   void editInitiativeCard() {
-    arr[numOfThings] = InitiativeCardContainer(name, hp);
+    arr.add(InitiativeCardContainer.fromInitiative(
+        Initiative(name: name, initiativeCount: int.parse(initiative)),
+        elevate));
     numOfThings++;
+  }
+
+//TODO: this is dumb. Too Bad!
+  void editInitiativeCard2(String name, String init) {
+    setState(() {
+      arr.add(InitiativeCardContainer.fromInitiative(
+          Initiative(name: name, initiativeCount: int.parse(init)), elevate));
+      numOfThings++;
+    });
   }
 
   /// _settingsButtonPressed()
@@ -348,7 +403,27 @@ class _MyHomePageState extends State<MyHomePage> {
   /// Description: Method responsible for handling button press events from the previous round button(s).
   /// Is a candidate to be moved into the initiative_card file.
   void _prevButtonPressed() {
-    log("Previous Round button pressed!");
+    //A setState call to edit the cards with the new elevation
+    setState(() => this.elevate = elevate);
+
+    //Store the index of the card we are moving away from
+    int pastIndex = currentIndex;
+
+    //If we are not already at the first element in the array
+    if (currentIndex > 0) {
+      //Decrement the index
+      currentIndex--;
+      //If we arealready looking at the first element of the array
+    } else {
+      //'Loop' back to the back of the array
+      currentIndex = numOfThings - 1;
+    }
+
+    //Call the addElevation method with the index of the card we are looking at now and the card itself
+    addElevation(currentIndex, arr[currentIndex]);
+
+    //Call the removeElevation method with the index of the card we just looked at and the card itself
+    removeElevation(pastIndex, arr[pastIndex]);
   }
 
   /// _prevButtonPressed()
@@ -356,7 +431,51 @@ class _MyHomePageState extends State<MyHomePage> {
   /// Returns: N/A (void)
   /// Description: Method responsible for handling button press events from the previous round button(s)
   /// Is a candidate to be moved into the initiative_card file
-  void _nextButtonPressed() {
-    log("Next Round button pressed!");
+  void nextButtonPressed() {
+    //A setState call to edit the cards with the new elevation
+    setState(() => this.elevate = elevate);
+    // 
+
+    //Store the index of the card we are moving away from
+    int pastIndex = currentIndex;
+    //If we are not already at the last element in the array
+    if (currentIndex < numOfThings - 1) {
+      //Increment the index
+      currentIndex++;
+      //If we are already at the last element in the array
+    } else {
+      //'Loop' back to the front of the array
+      currentIndex = 0;
+    }
+
+    //Call the addElevation method with the index of the card we are looking at now and the card itself
+    setState(() {
+      arr[currentIndex].elevate = 15;
+
+    });
+      // addElevation(currentIndex, arr[currentIndex]);
+
+    //Call the removeElevation method with the index of the card we just looked at and the card itself
+      arr[pastIndex].elevate = 3;
+      // removeElevation(pastIndex, arr[pastIndex]);
+  }
+
+  /// addElevation()
+  /// Parameters: The index of the Initiative card we are currently looking at as an int
+  ///             The Initiative card we are looking at as an object
+  /// Returns: N/A (void)
+  /// Description: Method responsible for adding elevation to current initiative card
+  void addElevation(int currentIndex, InitiativeCardContainer currentCard) {
+    currentCard.elevate = 15;
+    // InitiativeCardContainer(currentCard.name, currentCard.hp, 75.0);
+  }
+
+  /// removeElevation
+  /// Parameters:The index of the last Initiative card we looked at as an int
+  ///             The last Initiative card we looked at as an object
+  /// Returns: N/A (void)
+  /// Description: Method responsible for removing elevation from card we just looked at, but are no longer looking at
+  void removeElevation(int pastIndex, InitiativeCardContainer pastCard) {
+    pastCard.elevate = 3;
   }
 }

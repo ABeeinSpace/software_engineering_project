@@ -1,16 +1,15 @@
-class Initative implements Comparable<Initative> {
-  String name = "";
-  int initiativeCount = 0;
-  int totalHealth = 0;
-  int currentHealth = 0;
-  late List<String> conditionsArray;
+import 'package:software_engineering_project/condition.dart';
 
-  Initative({
-    required String name,
-    required int initiativeCount,
-    int? totalHealth,
-    int? currentHealth,
-  });
+class Initiative implements Comparable<Initiative> {
+  String name;
+  int initiativeCount;
+  int? totalHealth;
+  int? currentHealth;
+  List<Condition>? conditionsArray = [];
+  // conditionsArray = initConditionsArray();
+
+  Initiative({required this.name, required this.initiativeCount, this.totalHealth, this.currentHealth, this.conditionsArray});
+    // ;);
 
   get getName => name;
 
@@ -26,14 +25,14 @@ class Initative implements Comparable<Initative> {
 
   get getCurrentHealth => currentHealth;
 
-  set setCurrentHealth( currentHealth,) => this.currentHealth = currentHealth;
+  set setCurrentHealth(currentHealth) => this.currentHealth = currentHealth;
 
   get getConditionsArray => conditionsArray;
 
   set setConditionsArray( conditionsArray) => this.conditionsArray = conditionsArray;
   
   @override
-  int compareTo(Initative other) {
+  int compareTo(Initiative other) {
     if (initiativeCount < other.initiativeCount) {
       return -1;
     } else if (initiativeCount > other.initiativeCount) {
@@ -44,5 +43,9 @@ class Initative implements Comparable<Initative> {
 
   }
 
+  @override
+  String toString() {
+    return "$name $initiativeCount $conditionsArray";
+  }
 
 }
