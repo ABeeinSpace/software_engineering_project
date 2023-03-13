@@ -137,7 +137,7 @@ class _InitiativeCardState extends State<InitiativeCard> {
     );
   }
 
-  /// showEffectsPanel()
+  /// showConditionsPanel()
   /// Parameters:
   /// Returns: N/A (void)
   /// Description: Method responsible for showing and hiding the Status Effects flyout.
@@ -149,9 +149,6 @@ class _InitiativeCardState extends State<InitiativeCard> {
         _shouldDisplayConditionsCard = true;
       }
     });
-
-    // // InitativeCard will need to be converted to a stateful widget in order to get the icon to change state *fairly* automatically.
-    // log("Should show status effects panel");
   }
 
   /// showAbilitiesPanel()

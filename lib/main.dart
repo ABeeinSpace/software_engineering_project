@@ -200,6 +200,7 @@ class _MyHomePageState extends State<MyHomePage> {
               // axis because Columns are vertical (the cross axis would be
               // horizontal).
               mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: arr
               // const Text(
               //   "You have added this many things:",
@@ -339,15 +340,18 @@ class _MyHomePageState extends State<MyHomePage> {
 
 //Add the corresponding inputted values to the next open space in the array
   void editInitiativeCard() {
-    arr.add(InitiativeCardContainer.fromInitiative(Initiative(name: name, initiativeCount: int.parse(initiative)), elevate));
+    arr.add(InitiativeCardContainer.fromInitiative(
+        Initiative(name: name, initiativeCount: int.parse(initiative)),
+        elevate));
     numOfThings++;
   }
 
 //TODO: this is dumb. Too Bad!
   void editInitiativeCard2(String name, String init) {
     setState(() {
-    arr.add(InitiativeCardContainer.fromInitiative(Initiative(name: name, initiativeCount: int.parse(init)), elevate));
-    numOfThings++;
+      arr.add(InitiativeCardContainer.fromInitiative(
+          Initiative(name: name, initiativeCount: int.parse(init)), elevate));
+      numOfThings++;
     });
   }
 
@@ -429,7 +433,8 @@ class _MyHomePageState extends State<MyHomePage> {
   /// Is a candidate to be moved into the initiative_card file
   void nextButtonPressed() {
     //A setState call to edit the cards with the new elevation
-    // setState(() => this.elevate = elevate);
+    setState(() => this.elevate = elevate);
+    // 
 
     //Store the index of the card we are moving away from
     int pastIndex = currentIndex;
@@ -444,10 +449,15 @@ class _MyHomePageState extends State<MyHomePage> {
     }
 
     //Call the addElevation method with the index of the card we are looking at now and the card itself
-    addElevation(currentIndex, arr[currentIndex]);
+    setState(() {
+      arr[currentIndex].elevate = 15;
+
+    });
+      // addElevation(currentIndex, arr[currentIndex]);
 
     //Call the removeElevation method with the index of the card we just looked at and the card itself
-    removeElevation(pastIndex, arr[pastIndex]);
+      arr[pastIndex].elevate = 3;
+      // removeElevation(pastIndex, arr[pastIndex]);
   }
 
   /// addElevation()
@@ -456,9 +466,7 @@ class _MyHomePageState extends State<MyHomePage> {
   /// Returns: N/A (void)
   /// Description: Method responsible for adding elevation to current initiative card
   void addElevation(int currentIndex, InitiativeCardContainer currentCard) {
-    setState(() {
-      currentCard.elevate = 75;
-    });
+    currentCard.elevate = 15;
     // InitiativeCardContainer(currentCard.name, currentCard.hp, 75.0);
   }
 
@@ -468,9 +476,6 @@ class _MyHomePageState extends State<MyHomePage> {
   /// Returns: N/A (void)
   /// Description: Method responsible for removing elevation from card we just looked at, but are no longer looking at
   void removeElevation(int pastIndex, InitiativeCardContainer pastCard) {
-    setState(() {
-      pastCard.elevate = 3;
-      
-    });
+    pastCard.elevate = 3;
   }
 }
