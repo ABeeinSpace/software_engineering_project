@@ -5,11 +5,11 @@ import 'initiative.dart';
 class InitiativeCard extends StatefulWidget {
   // late String name;
   // late String hp;
-  InitiativeCard.fromInitiative(this.currentInitiative, this.elevate, {super.key});
+  InitiativeCard.fromInitiative(this.currentInitiative, this.elevation, {super.key});
   final Initiative currentInitiative;
 
   // InitiativeCard(this.name, this.hp, this.elevate, {super.key});
-  double elevate;
+  double elevation;
 
   // This declaration makes any parameters needed available to instances of the class. The Java equivalent is a constructor method
   // String hp;
@@ -43,7 +43,7 @@ class _InitiativeCardState extends State<InitiativeCard> {
               width: screenWidth *
                   0.6, //Uses the MediaQuery defined above to set the card size to 60% of the window (this is to have room for the Status Effects panel without having to do something disgusting like dynamic resizing of the cards based on status effects panel state).
               child: Card(
-                  elevation: widget.elevate,
+                  elevation: widget.elevation,
                   child: Container(
                       padding: const EdgeInsets.all(8),
                       child: Row(
@@ -105,7 +105,7 @@ class _InitiativeCardState extends State<InitiativeCard> {
             height: 300,
             margin: const EdgeInsets.fromLTRB(0, 8, 0, 10),
             child: Card(
-                elevation: widget.elevate,
+                elevation: widget.elevation,
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Center(
@@ -182,9 +182,9 @@ class InitiativeCardContainer extends StatelessWidget implements Comparable<Init
   //   Key? key,
   // }) : super(key: key);
 
-  InitiativeCardContainer.fromInitiative(this.currentInitiative, this.elevate, {super.key});
+  InitiativeCardContainer.fromInitiative(this.currentInitiative, this.elevation, {super.key});
   final Initiative currentInitiative;
-  double elevate;
+  double elevation;
   // InitiativeCardContainer(this.name, this.hp, this.elevate, {super.key});
 
   // InitiativeCardContainer.fromInitative(Initative initative, {super.key})
@@ -203,7 +203,7 @@ class InitiativeCardContainer extends StatelessWidget implements Comparable<Init
       alignment: Alignment.centerLeft,
       margin: const EdgeInsets.all(10),
       child: 
-      InitiativeCard.fromInitiative(currentInitiative, elevate),
+      InitiativeCard.fromInitiative(currentInitiative, elevation),
     );
   }
 

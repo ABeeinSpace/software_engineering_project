@@ -66,7 +66,7 @@ class _MyHomePageState extends State<MyHomePage> {
   //String that will hold the Initiative inputted by the user
   String name = '';
   String initiative = '';
-  double elevate = 3.0;
+  double elevation = 3.0;
   int currentIndex = 0;
   int roundNumber = 1;
   int time = 0;
@@ -247,7 +247,7 @@ class _MyHomePageState extends State<MyHomePage> {
   void editInitiativeCard() {
     arr.add(InitiativeCardContainer.fromInitiative(
         Initiative(name: name, initiativeCount: int.parse(initiative)),
-        elevate));
+        elevation));
     arr.sort();
     numOfThings++;
   }
@@ -256,7 +256,7 @@ class _MyHomePageState extends State<MyHomePage> {
   void editInitiativeCard2(String name, String init) {
     setState(() {
       arr.add(InitiativeCardContainer.fromInitiative(
-          Initiative(name: name, initiativeCount: int.parse(init)), elevate));
+          Initiative(name: name, initiativeCount: int.parse(init)), elevation));
       arr.sort();
       numOfThings++;
     });
@@ -311,7 +311,7 @@ class _MyHomePageState extends State<MyHomePage> {
   /// Is a candidate to be moved into the initiative_card file.
   void _prevButtonPressed() {
     //A setState call to edit the cards with the new elevation
-    setState(() => elevate = elevate);
+    setState(() => elevation = elevation);
 
     //Store the index of the card we are moving away from
     int pastIndex = currentIndex;
@@ -342,7 +342,7 @@ class _MyHomePageState extends State<MyHomePage> {
   /// Is a candidate to be moved into the initiative_card file
   void nextButtonPressed() {
     //A setState call to edit the cards with the new elevation
-    setState(() => elevate = elevate);
+    setState(() => elevation = elevation);
     //
 
     //Store the index of the card we are moving away from
@@ -361,12 +361,12 @@ class _MyHomePageState extends State<MyHomePage> {
 
     //Call the addElevation method with the index of the card we are looking at now and the card itself
     setState(() {
-      arr[currentIndex].elevate = 15;
+      arr[currentIndex].elevation = 15;
     });
     // addElevation(currentIndex, arr[currentIndex]);
 
     //Call the removeElevation method with the index of the card we just looked at and the card itself
-    arr[pastIndex].elevate = 3;
+    arr[pastIndex].elevation = 3;
     // removeElevation(pastIndex, arr[pastIndex]);
 
     // setState(() => this.elevate = elevate);
@@ -396,7 +396,7 @@ class _MyHomePageState extends State<MyHomePage> {
   /// Returns: N/A (void)
   /// Description: Method responsible for adding elevation to current initiative card
   void addElevation(int currentIndex, InitiativeCardContainer currentCard) {
-    currentCard.elevate = 15;
+    currentCard.elevation = 15;
     // InitiativeCardContainer(currentCard.name, currentCard.hp, 75.0);
   }
 
@@ -406,6 +406,6 @@ class _MyHomePageState extends State<MyHomePage> {
   /// Returns: N/A (void)
   /// Description: Method responsible for removing elevation from card we just looked at, but are no longer looking at
   void removeElevation(int pastIndex, InitiativeCardContainer pastCard) {
-    pastCard.elevate = 3;
+    pastCard.elevation = 3;
   }
 }
