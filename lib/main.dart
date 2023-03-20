@@ -103,6 +103,8 @@ class _MyHomePageState extends State<MyHomePage> {
   String initiative = '';
   double elevate = 3.0;
   int currentIndex = 0;
+  int roundNumber = 1;
+  int time = 0;
 
   //Array of initatives
   List<InitiativeCardContainer> arr = [];
@@ -417,6 +419,8 @@ class _MyHomePageState extends State<MyHomePage> {
     } else {
       //'Loop' back to the back of the array
       currentIndex = numOfThings - 1;
+      roundNumber--;
+      time -= 6;
     }
 
     //Call the addElevation method with the index of the card we are looking at now and the card itself
@@ -434,7 +438,7 @@ class _MyHomePageState extends State<MyHomePage> {
   void nextButtonPressed() {
     //A setState call to edit the cards with the new elevation
     setState(() => this.elevate = elevate);
-    // 
+    //
 
     //Store the index of the card we are moving away from
     int pastIndex = currentIndex;
@@ -446,18 +450,39 @@ class _MyHomePageState extends State<MyHomePage> {
     } else {
       //'Loop' back to the front of the array
       currentIndex = 0;
+      roundNumber++;
+      time += 6;
     }
 
     //Call the addElevation method with the index of the card we are looking at now and the card itself
     setState(() {
       arr[currentIndex].elevate = 15;
-
     });
-      // addElevation(currentIndex, arr[currentIndex]);
+    // addElevation(currentIndex, arr[currentIndex]);
 
     //Call the removeElevation method with the index of the card we just looked at and the card itself
-      arr[pastIndex].elevate = 3;
-      // removeElevation(pastIndex, arr[pastIndex]);
+    arr[pastIndex].elevate = 3;
+    // removeElevation(pastIndex, arr[pastIndex]);
+
+    // setState(() => this.elevate = elevate);
+
+    // //Store the index of the card we are moving away from
+    // int pastIndex = currentIndex;
+    // //If we are not already at the last element in the array
+    // if (currentIndex < numOfThings - 1) {
+    //   //Increment the index
+    //   currentIndex++;
+    //   //If we are already at the last element in the array
+    // } else {
+    //   //'Loop' back to the front of the array
+    //   currentIndex = 0;
+    // }
+
+    // //Call the addElevation method with the index of the card we are looking at now and the card itself
+    // addElevation(currentIndex, arr[currentIndex]);
+
+    // //Call the removeElevation method with the index of the card we just looked at and the card itself
+    // removeElevation(pastIndex, arr[pastIndex]);
   }
 
   /// addElevation()
