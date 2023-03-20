@@ -152,24 +152,24 @@ class _MyHomePageState extends State<MyHomePage> {
         var nameController = TextEditingController();
         var initiativeController = TextEditingController();
         return AlertDialog(
-          title: Text('Enter Player Info'),
+          title: const Text('Enter Player Info'),
           content: SingleChildScrollView(
               child: Column(
             children: [
               TextFormField(
                 controller: nameController,
-                decoration: InputDecoration(hintText: 'Name'),
+                decoration: const InputDecoration(hintText: 'Name'),
               ),
               TextFormField(
                 controller: initiativeController,
-                decoration: InputDecoration(hintText: 'Initiative'),
+                decoration: const InputDecoration(hintText: 'Initiative'),
               ),
             ],
           )),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: Text('Cancel'),
+              child: const Text('Cancel'),
             ),
             TextButton(
               onPressed: () {
@@ -180,7 +180,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 log(initiative);
                 Navigator.pop(context);
               },
-              child: Text('Send'),
+              child: const Text('Send'),
             ),
           ],
         );
@@ -248,6 +248,7 @@ class _MyHomePageState extends State<MyHomePage> {
     arr.add(InitiativeCardContainer.fromInitiative(
         Initiative(name: name, initiativeCount: int.parse(initiative)),
         elevate));
+    arr.sort();
     numOfThings++;
   }
 
@@ -256,6 +257,7 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {
       arr.add(InitiativeCardContainer.fromInitiative(
           Initiative(name: name, initiativeCount: int.parse(init)), elevate));
+      arr.sort();
       numOfThings++;
     });
   }
@@ -309,7 +311,7 @@ class _MyHomePageState extends State<MyHomePage> {
   /// Is a candidate to be moved into the initiative_card file.
   void _prevButtonPressed() {
     //A setState call to edit the cards with the new elevation
-    setState(() => this.elevate = elevate);
+    setState(() => elevate = elevate);
 
     //Store the index of the card we are moving away from
     int pastIndex = currentIndex;
@@ -340,7 +342,7 @@ class _MyHomePageState extends State<MyHomePage> {
   /// Is a candidate to be moved into the initiative_card file
   void nextButtonPressed() {
     //A setState call to edit the cards with the new elevation
-    setState(() => this.elevate = elevate);
+    setState(() => elevate = elevate);
     //
 
     //Store the index of the card we are moving away from
