@@ -105,7 +105,7 @@ class _InitiativeCardState extends State<InitiativeCard> {
             height: 300,
             margin: const EdgeInsets.fromLTRB(0, 8, 0, 10),
             child: Card(
-                elevation: 3,
+                elevation: widget.elevate,
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Center(
