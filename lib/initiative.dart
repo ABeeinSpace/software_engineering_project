@@ -6,7 +6,6 @@ class Initiative {
   int? totalHealth;
   int? currentHealth;
   List<Condition>? conditionsArray = [];
-  // conditionsArray = initConditionsArray();
 
   Initiative({required this.name, required this.initiativeCount, this.totalHealth, this.currentHealth, this.conditionsArray});
     // ;);
