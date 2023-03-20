@@ -74,12 +74,6 @@ class _MyHomePageState extends State<MyHomePage> {
   //Array of initatives
   List<InitiativeCardContainer> arr = [];
 
-  void _incrementNumOfThings() {
-    setState(() {
-      // _numOfThings++;
-    });
-  }
-
   /// build()
   /// Parameters: BuildContext context
   /// Returns: Widget
