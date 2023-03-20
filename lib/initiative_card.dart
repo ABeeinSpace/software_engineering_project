@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:software_engineering_project/condition.dart';
 import 'initiative.dart';
 
+// ignore: must_be_immutable
 class InitiativeCard extends StatefulWidget {
   // late String name;
   // late String hp;
@@ -176,6 +177,7 @@ class _InitiativeCardState extends State<InitiativeCard> {
   }
 }
 
+// ignore: must_be_immutable
 class InitiativeCardContainer extends StatelessWidget implements Comparable<InitiativeCardContainer> {
   // This declaration makes any parameters needed available to instances of the class. The Java equivalent is a constructor method
   // const InitiativeCardContainer({
@@ -210,8 +212,6 @@ class InitiativeCardContainer extends StatelessWidget implements Comparable<Init
     } else {
       return 0;
     }
-
   }
-
 
 }
