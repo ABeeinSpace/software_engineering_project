@@ -175,7 +175,7 @@ class _MyHomePageState extends State<MyHomePage> {
               onPressed: () {
                 var name = nameController.text;
                 var initiative = initiativeController.text;
-                editInitiativeCard2(name, initiative);
+                editInitiativeCard(name, initiative);
                 log(name);
                 log(initiative);
                 Navigator.pop(context);
@@ -188,72 +188,8 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-//Dialog box for inputting name
-  Future<String?> openDialog() => showDialog<String>(
-        context: context,
-        builder: (context) => AlertDialog(
-          title: const Text('Block Info'),
-          content: TextField(
-            autofocus: true,
-            decoration: const InputDecoration(hintText: 'Enter Name'),
-            controller: controller,
-          ),
-          actions: [
-            TextButton(
-              onPressed: submit1,
-              child: const Text('SUBMIT'),
-            ),
-          ],
-        ),
-      );
-
-//Dialog box for inputting Initiative
-  Future<String?> openInitiativeDialog() => showDialog<String>(
-        context: context,
-        builder: (context) => AlertDialog(
-          title: const Text('Player Initiative'),
-          content: TextField(
-            autofocus: true,
-            decoration:
-                const InputDecoration(hintText: 'Enter Player Initiative'),
-            controller: controller,
-          ),
-          actions: [
-            TextButton(
-              onPressed: submit,
-              child: const Text('SUBMIT'),
-            ),
-          ],
-        ),
-      );
-
-//Submit function for name that pops the text into the awaiting string and calls the Initiative dialog
-  void submit1() {
-    Navigator.of(context).pop(controller.text);
-    controller.clear();
-    openInitiativeDialog();
-  }
-
-//Submit function for Initiative that pops the text into the awaiting string
-  void submit() {
-    Navigator.of(context).pop(controller.text);
-    controller.clear();
-    Navigator.of(context).pop();
-
-    // hold = InitiativeCardContainer(name, Initiative);
-  }
-
-//Add the corresponding inputted values to the next open space in the array
-  void editInitiativeCard() {
-    arr.add(InitiativeCardContainer.fromInitiative(
-        Initiative(name: name, initiativeCount: int.parse(initiative)),
-        elevation));
-    arr.sort();
-    numOfThings++;
-  }
-
 //TODO: this is dumb. Too Bad!
-  void editInitiativeCard2(String name, String init) {
+  void editInitiativeCard(String name, String init) {
     setState(() {
       arr.add(InitiativeCardContainer.fromInitiative(
           Initiative(name: name, initiativeCount: int.parse(init)), elevation));
@@ -268,40 +204,6 @@ class _MyHomePageState extends State<MyHomePage> {
   /// Description: Method responsible for handling the button press event for the Settings button on the app bar.
   void _settingsButtonPressed() {
     log("Settings button pressed!");
-  }
-
-  /// _addInitiative()
-  /// Parameters:
-  /// Returns: N/A (void)
-  /// Description: Method responsible for adding an initiative to the app. It handles button press events from the plus icon in the app bar and button press events from the FAB.
-  void _addInitiative() {
-    _incrementNumOfThings();
-    //TODO: Implement the Add Initiative dialog, at least partially
-    showDialog(
-        context: context,
-        builder: ((context) {
-          return SimpleDialog(
-            title: const Text("Creating Initiative"),
-            children: [
-              Column(
-                children: const [
-                  Text("Enter the properties of your initiative:"),
-                ],
-              )
-            ],
-          );
-        }));
-
-    // This block of code is responsible for displaying the Snack Bar down at the bottom of the window when the add initiative button(s) are pressed.
-    ScaffoldMessengerState().removeCurrentSnackBar();
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text("Add initiative button pressed!"),
-        duration: Duration(seconds: 2),
-      ),
-    );
-    SnackBarBehavior.floating;
-    // log();
   }
 
   /// _prevButtonPressed()
@@ -400,7 +302,7 @@ class _MyHomePageState extends State<MyHomePage> {
     // InitiativeCardContainer(currentCard.name, currentCard.hp, 75.0);
   }
 
-  /// removeElevation
+  /// removeElevation()
   /// Parameters:The index of the last Initiative card we looked at as an int
   ///             The last Initiative card we looked at as an object
   /// Returns: N/A (void)

@@ -185,12 +185,6 @@ class InitiativeCardContainer extends StatelessWidget implements Comparable<Init
   InitiativeCardContainer.fromInitiative(this.currentInitiative, this.elevation, {super.key});
   final Initiative currentInitiative;
   double elevation;
-  // InitiativeCardContainer(this.name, this.hp, this.elevate, {super.key});
-
-  // InitiativeCardContainer.fromInitative(Initative initative, {super.key})
-  //     : name = initative.name,
-  //       hp = initative.initiativeCount.toString(),
-  //       elevate = initative.elevate;
 
   /// build()
   /// Parameters: BuildContext context
@@ -218,16 +212,6 @@ class InitiativeCardContainer extends StatelessWidget implements Comparable<Init
     }
 
   }
-// addDropShadow(InitiativeCardContainer current){
-//   DropShadow({
-//   Key? key,
-//   required this.child,
-//   this.blurRadius = 10.0,
-//   this.borderRadius = 0.0,
-//   this.offset = const Offset(0.0, 8.0),
-//   this.opacity = 1.0,
-//   this.spread = 1.0,
-// })
-// }
+
 
 }
