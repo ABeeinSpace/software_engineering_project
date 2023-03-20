@@ -343,6 +343,7 @@ class _MyHomePageState extends State<MyHomePage> {
     arr.add(InitiativeCardContainer.fromInitiative(
         Initiative(name: name, initiativeCount: int.parse(initiative)),
         elevate));
+    arr.sort();
     numOfThings++;
   }
 
@@ -351,6 +352,7 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {
       arr.add(InitiativeCardContainer.fromInitiative(
           Initiative(name: name, initiativeCount: int.parse(init)), elevate));
+      arr.sort();
       numOfThings++;
     });
   }
@@ -434,7 +436,7 @@ class _MyHomePageState extends State<MyHomePage> {
   void nextButtonPressed() {
     //A setState call to edit the cards with the new elevation
     setState(() => this.elevate = elevate);
-    // 
+    //
 
     //Store the index of the card we are moving away from
     int pastIndex = currentIndex;
@@ -451,13 +453,12 @@ class _MyHomePageState extends State<MyHomePage> {
     //Call the addElevation method with the index of the card we are looking at now and the card itself
     setState(() {
       arr[currentIndex].elevate = 15;
-
     });
-      // addElevation(currentIndex, arr[currentIndex]);
+    // addElevation(currentIndex, arr[currentIndex]);
 
     //Call the removeElevation method with the index of the card we just looked at and the card itself
-      arr[pastIndex].elevate = 3;
-      // removeElevation(pastIndex, arr[pastIndex]);
+    arr[pastIndex].elevate = 3;
+    // removeElevation(pastIndex, arr[pastIndex]);
   }
 
   /// addElevation()

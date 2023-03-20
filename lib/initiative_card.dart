@@ -176,7 +176,7 @@ class _InitiativeCardState extends State<InitiativeCard> {
   }
 }
 
-class InitiativeCardContainer extends StatelessWidget {
+class InitiativeCardContainer extends StatelessWidget implements Comparable<InitiativeCardContainer> {
   // This declaration makes any parameters needed available to instances of the class. The Java equivalent is a constructor method
   // const InitiativeCardContainer({
   //   Key? key,
@@ -205,6 +205,18 @@ class InitiativeCardContainer extends StatelessWidget {
       child: 
       InitiativeCard.fromInitiative(currentInitiative, elevate),
     );
+  }
+
+  @override
+  int compareTo(InitiativeCardContainer other) {
+    if (currentInitiative.initiativeCount > other.currentInitiative.initiativeCount) {
+      return -1;
+    } else if (currentInitiative.initiativeCount < other.currentInitiative.initiativeCount) {
+      return 1;
+    } else {
+      return 0;
+    }
+
   }
 // addDropShadow(InitiativeCardContainer current){
 //   DropShadow({
