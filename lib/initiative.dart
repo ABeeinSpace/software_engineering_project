@@ -1,6 +1,6 @@
 import 'package:software_engineering_project/condition.dart';
 
-class Initiative implements Comparable<Initiative> {
+class Initiative {
   String name;
   int initiativeCount;
   int? totalHealth;
@@ -31,18 +31,6 @@ class Initiative implements Comparable<Initiative> {
 
   set setConditionsArray( conditionsArray) => this.conditionsArray = conditionsArray;
   
-  @override
-  int compareTo(Initiative other) {
-    if (initiativeCount < other.initiativeCount) {
-      return -1;
-    } else if (initiativeCount > other.initiativeCount) {
-      return 1;
-    } else {
-      return 0;
-    }
-
-  }
-
   @override
   String toString() {
     return "$name $initiativeCount $conditionsArray";
