@@ -115,14 +115,18 @@ class _MyHomePageState extends State<MyHomePage> {
       // End of Header
 
       // Start of Body
-      body: Center(
-        child: SingleChildScrollView(
-          child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: arr),
-        ),
-      ),
+      body: Column(children: [
+        Padding(
+          padding: EdgeInsets.fromLTRB(0, 8, 0, 0),
+          child: SingleChildScrollView(
+            child: Column(
+                textDirection: TextDirection.ltr,
+                mainAxisAlignment: MainAxisAlignment.start,
+                // crossAxisAlignment: CrossAxisAlignment.start,
+                children: arr),
+          ),
+        )
+      ]),
 
       floatingActionButton: FloatingActionButton.extended(
         ///When the add initative button is pressed, open a dialog for the user to input their name
