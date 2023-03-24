@@ -195,6 +195,15 @@ class _InitiativeCardState extends State<InitiativeCard> {
     return conditionsArray;
   }
 
+  //TODO: this
+  void editConditionsCard(String name) {
+    setState(() {
+      widget.currentInitiative.conditionsArray!
+          .add(Condition(name: name, duration: 10, elapsedTime: 0));
+    });
+  }
+
+  //Stuff related to the diologue box
   void conditionBoxDiologueBox() {
     showDialog(
       context: context,
@@ -226,6 +235,7 @@ class _InitiativeCardState extends State<InitiativeCard> {
                 var conditionName = condtionNameController.text;
                 //var initiative = initiativeController.text;
                 //editInitiativeCard(name, initiative);
+                editConditionsCard(conditionName); //TODO: This
                 log(conditionName);
                 //log(initiative);
                 Navigator.pop(context);
