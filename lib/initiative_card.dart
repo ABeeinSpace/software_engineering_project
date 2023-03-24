@@ -184,23 +184,14 @@ class _InitiativeCardState extends State<InitiativeCard> {
 
   List<Condition> initConditionsArray() {
     List<Condition> conditionsArray = [];
-    conditionsArray
-        .add(Condition(name: "Blinded", duration: 10, elapsedTime: 5));
-    conditionsArray
-        .add(Condition(name: "Frightened", duration: 5, elapsedTime: 2));
-    conditionsArray
-        .add(Condition(name: "Exhaustion", duration: 7, elapsedTime: 5));
-    conditionsArray
-        .add(Condition(name: "Restrained", duration: 12, elapsedTime: 4));
     return conditionsArray;
   }
 
   //TODO: this
   void editConditionsCard(String name) {
-    setState(() {
-      widget.currentInitiative.conditionsArray!
-          .add(Condition(name: name, duration: 10, elapsedTime: 0));
-    });
+    widget.currentInitiative.conditionsArray!
+        .add(Condition(name: name, duration: 10, elapsedTime: 0));
+    setState(() {});
   }
 
   //Stuff related to the diologue box
