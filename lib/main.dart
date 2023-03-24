@@ -1,7 +1,9 @@
 import 'dart:developer'; //This import gives us access to the log() function. It can be safely removed when all buttons are properly implemented.
 import 'package:flutter/material.dart';
+import 'package:software_engineering_project/StateManager.dart';
 import 'initiative_card.dart';
 import 'initiative.dart';
+import 'package:provider/provider.dart';
 
 void main() {
   runApp(const MyApp());
@@ -17,13 +19,22 @@ class MyApp extends StatelessWidget {
   /// Special: Method overrides Widget.build()
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Combat Scribe',
-      theme: ThemeData(
-        useMaterial3: true,
-        primarySwatch: Colors.purple,
-      ),
-      home: const MyHomePage(title: 'Combat Scribe'),
+    return ChangeNotifierProvider(
+      create: (BuildContext context) => StateManager(),
+      builder: (context, provider) {
+        return Consumer<StateManager>(
+          builder: (context, notifier, child) {
+            return MaterialApp (
+            title: 'Combat Scribe',
+            theme: ThemeData(
+              useMaterial3: true,
+              primarySwatch: Colors.purple,
+            ),
+            home: const MyHomePage(title: 'Combat Scribe'),
+      );
+          }
+        );
+      }
     );
   }
 }
@@ -96,17 +107,25 @@ class _MyHomePageState extends State<MyHomePage> {
                   icon: const Icon(Icons.arrow_back))),
           Align(
             alignment: Alignment.center,
-            child: IconButton(
-                onPressed: nextButtonPressed,
-                tooltip: "Next round",
-                icon: const Icon(Icons.arrow_forward)),
+            child: Consumer<StateManager>(
+              builder: (context, notifier, child) {
+                return IconButton(
+                    onPressed: nextButtonPressed,
+                    tooltip: "Next round",
+                    icon: const Icon(Icons.arrow_forward));
+              }
+            ),
           ),
           ButtonBar(
             children: [
               // This button will display a drop-down to enable addition of prefab monsters in addition to custom initiatives.
-              IconButton(
-                  onPressed: _settingsButtonPressed,
-                  icon: const Icon(Icons.settings))
+              Consumer<StateManager>(
+                builder: (context, notifier, child) {
+                  return IconButton(
+                      onPressed: _settingsButtonPressed,
+                      icon: const Icon(Icons.settings));
+                }
+              )
             ],
           ),
         ],
@@ -117,7 +136,7 @@ class _MyHomePageState extends State<MyHomePage> {
       // Start of Body
       body: Column(children: [
         Padding(
-          padding: EdgeInsets.fromLTRB(0, 8, 0, 0),
+          padding: const EdgeInsets.fromLTRB(0, 8, 0, 0),
           child: SingleChildScrollView(
             child: Column(
                 textDirection: TextDirection.ltr,

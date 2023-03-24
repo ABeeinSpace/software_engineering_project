@@ -1,6 +1,7 @@
-import 'initiative_card.dart';
-import 'initiative.dart';
+import 'package:flutter/material.dart';
+// import 'initiative_card.dart';
+// import 'initiative.dart';
 
-class StateManager {
-  
+class StateManager extends ChangeNotifier{
+  bool shouldElevate = false;
 }
