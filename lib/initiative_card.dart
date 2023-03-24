@@ -11,6 +11,7 @@ class InitiativeCard extends StatefulWidget {
 
   // InitiativeCard(this.name, this.hp, this.elevate, {super.key});
   double elevation;
+  bool isActive = false;
 
   // This declaration makes any parameters needed available to instances of the class. The Java equivalent is a constructor method
   // String hp;
