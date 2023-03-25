@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
+import 'StateManager.dart';
 import 'condition.dart';
 import 'initiative.dart';
 
@@ -18,8 +20,7 @@ class StatelessInitiativeCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
-        //This line grabs the current width of the window. I use it to set the width of the initiative cards to 60% of the width of the application's window
+    //This line grabs the current width of the window. I use it to set the width of the initiative cards to 60% of the width of the application's window
     double screenWidth = MediaQuery.of(context).size.width;
     currentInitiative.conditionsArray = initConditionsArray();
 
@@ -77,50 +78,58 @@ class StatelessInitiativeCard extends StatelessWidget {
                             children: [
                               const Text(
                                   "Effects"), //Should consider renaming this to "Status Effects" for clarity
-                              IconButton(
-                                  onPressed: _showConditionsPanel,
-                                  icon: (_shouldDisplayConditionsCard
-                                      ? const Icon(Icons.star_rounded)
-                                      : const Icon(Icons.star_border_rounded)))
+                              Consumer<StateManager>(
+                                builder: (context, notifier, child) {
+                                  return IconButton(
+                                      onPressed: _showConditionsPanel,
+                                      icon: (_shouldDisplayConditionsCard
+                                          ? const Icon(Icons.star_rounded)
+                                          : const Icon(Icons.star_border_rounded)));
+                                }
+                              )
                             ],
                           )
                         ],
                       ))),
             )),
-        Visibility(
-          visible: _shouldDisplayConditionsCard,
-          child: Container(
-            width: 250,
-            height: 300,
-            margin: const EdgeInsets.fromLTRB(0, 8, 0, 10),
-            child: Card(
-                elevation: elevation,
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Center(
-                    child: Column(
-                      children: [
-                        const Align(
-                          alignment: Alignment.topLeft,
-                          child: Padding(
-                            padding: EdgeInsets.all(8.0),
-                            child: Text("Conditions"),
-                          ),
-                        ),
-                        const Divider(),
-                        Align(
-                            alignment: Alignment.centerLeft,
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Column (
-                                children: currentInitiative.conditionsArray!.map((e) => Text(e.toString())).toList(),
+        Consumer<StateManager>(
+          builder: (context, notifier, child) {
+            return Visibility(
+              visible: notifier.isActive,
+              child: Container(
+                width: 250,
+                height: 300,
+                margin: const EdgeInsets.fromLTRB(0, 8, 0, 10),
+                child: Card(
+                    elevation: elevation,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Center(
+                        child: Column(
+                          children: [
+                            const Align(
+                              alignment: Alignment.topLeft,
+                              child: Padding(
+                                padding: EdgeInsets.all(8.0),
+                                child: Text("Conditions"),
                               ),
-                            ))
-                      ],
-                    ),
-                  ),
-                )),
-          ),
+                            ),
+                            const Divider(),
+                            Align(
+                                alignment: Alignment.centerLeft,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Column (
+                                    children: currentInitiative.conditionsArray!.map((e) => Text(e.toString())).toList(),
+                                  ),
+                                ))
+                          ],
+                        ),
+                      ),
+                    )),
+              ),
+            );
+          }
         )
       ],
     );
@@ -131,6 +140,7 @@ class StatelessInitiativeCard extends StatelessWidget {
   /// Returns: N/A (void)
   /// Description: Method responsible for showing and hiding the Status Effects flyout.
   void _showConditionsPanel() {
+    // Provider.of<StateManager>().;
       if (_shouldDisplayConditionsCard) {
         _shouldDisplayConditionsCard = false;
       } else {
