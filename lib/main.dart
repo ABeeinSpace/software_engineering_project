@@ -1,7 +1,7 @@
 import 'dart:developer'; //This import gives us access to the log() function. It can be safely removed when all buttons are properly implemented.
 import 'package:flutter/material.dart';
 import 'package:software_engineering_project/StateManager.dart';
-import 'initiative_card.dart';
+import 'stateless_initiative_card.dart';
 import 'initiative.dart';
 import 'package:provider/provider.dart';
 
