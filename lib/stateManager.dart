@@ -1,20 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:software_engineering_project/stateless_initiative_card.dart';
 // import 'initiative_card.dart';
 // import 'initiative.dart';
 
 class StateManager extends ChangeNotifier {
-  bool isActive = false;
+  bool isActive;
 
-  void toggleIsActive() {    
-    if (isActive = true) {
-      isActive = false;
-    } else {
+  StateManager({
+    this.isActive = false,
+  });
+
+  void toggleIsActive() {
+    if (isActive == false) {
       isActive = true;
+    } else {
+      isActive = false;
     }
     notifyListeners();
   }
-  bool get getIsActive => this.isActive;
-
-  set setIsActive(bool isActive) => this.isActive = isActive;
-
 }

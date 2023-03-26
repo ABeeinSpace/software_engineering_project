@@ -1,7 +1,8 @@
 import 'dart:developer'; //This import gives us access to the log() function. It can be safely removed when all buttons are properly implemented.
 import 'package:flutter/material.dart';
 import 'package:software_engineering_project/StateManager.dart';
-import 'stateless_initiative_card.dart';
+import 'package:software_engineering_project/elevation_provider.dart';
+import 'initiative_card.dart';
 import 'initiative.dart';
 import 'package:provider/provider.dart';
 
@@ -19,22 +20,20 @@ class MyApp extends StatelessWidget {
   /// Special: Method overrides Widget.build()
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (BuildContext context) => StateManager(),
-      builder: (context, provider) {
-        return Consumer<StateManager>(
-          builder: (context, notifier, child) {
-            return MaterialApp (
-            title: 'Combat Scribe',
-            theme: ThemeData(
-              useMaterial3: true,
-              primarySwatch: Colors.purple,
-            ),
-            home: const MyHomePage(title: 'Combat Scribe'),
-      );
-          }
-        );
-      }
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => StateManager()),
+        ChangeNotifierProvider(create: (context) => ElevationProvider())
+      ],
+
+      child: MaterialApp (
+        title: 'Combat Scribe',
+        theme: ThemeData(
+          useMaterial3: true,
+          primarySwatch: Colors.purple,
+        ),
+        home: const MyHomePage(title: 'Combat Scribe'),
+      )
     );
   }
 }
@@ -107,14 +106,11 @@ class _MyHomePageState extends State<MyHomePage> {
                   icon: const Icon(Icons.arrow_back))),
           Align(
             alignment: Alignment.center,
-            child: Consumer<StateManager>(
-              builder: (context, notifier, child) {
-                return IconButton(
+            child: IconButton(
                     onPressed: nextButtonPressed,
                     tooltip: "Next round",
-                    icon: const Icon(Icons.arrow_forward));
-              }
-            ),
+                    icon: const Icon(Icons.arrow_forward))
+
           ),
           ButtonBar(
             children: [
@@ -279,34 +275,30 @@ class _MyHomePageState extends State<MyHomePage> {
     }
 
     //Call the addElevation method with the index of the card we are looking at now and the card itself
-    setState(() {
-      arr[currentIndex].elevation = 15;
-    });
-    // addElevation(currentIndex, arr[currentIndex]);
+    addElevation(currentIndex, arr[currentIndex]);
 
     //Call the removeElevation method with the index of the card we just looked at and the card itself
-    arr[pastIndex].elevation = 3;
-    // removeElevation(pastIndex, arr[pastIndex]);
+    removeElevation(pastIndex, arr[pastIndex]);
 
     // setState(() => this.elevate = elevate);
 
-    // //Store the index of the card we are moving away from
-    // int pastIndex = currentIndex;
-    // //If we are not already at the last element in the array
-    // if (currentIndex < numOfThings - 1) {
-    //   //Increment the index
-    //   currentIndex++;
-    //   //If we are already at the last element in the array
-    // } else {
-    //   //'Loop' back to the front of the array
-    //   currentIndex = 0;
-    // }
+    //Store the index of the card we are moving away from
+    pastIndex = currentIndex;
+    //If we are not already at the last element in the array
+    if (currentIndex < numOfThings - 1) {
+      //Increment the index
+      currentIndex++;
+      //If we are already at the last element in the array
+    } else {
+      //'Loop' back to the front of the array
+      currentIndex = 0;
+    }
 
     // //Call the addElevation method with the index of the card we are looking at now and the card itself
-    // addElevation(currentIndex, arr[currentIndex]);
+    addElevation(currentIndex, arr[currentIndex]);
 
     // //Call the removeElevation method with the index of the card we just looked at and the card itself
-    // removeElevation(pastIndex, arr[pastIndex]);
+    removeElevation(pastIndex, arr[pastIndex]);
   }
 
   /// addElevation()
@@ -315,7 +307,7 @@ class _MyHomePageState extends State<MyHomePage> {
   /// Returns: N/A (void)
   /// Description: Method responsible for adding elevation to current initiative card
   void addElevation(int currentIndex, InitiativeCardContainer currentCard) {
-    currentCard.elevation = 15;
+    Provider.of<ElevationProvider>(context, listen: false).toggleElevation(currentCard);
     // InitiativeCardContainer(currentCard.name, currentCard.hp, 75.0);
   }
 
@@ -325,6 +317,6 @@ class _MyHomePageState extends State<MyHomePage> {
   /// Returns: N/A (void)
   /// Description: Method responsible for removing elevation from card we just looked at, but are no longer looking at
   void removeElevation(int pastIndex, InitiativeCardContainer pastCard) {
-    pastCard.elevation = 3;
+    Provider.of<ElevationProvider>(context, listen: false).toggleElevation(pastCard);
   }
 }
