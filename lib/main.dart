@@ -2,7 +2,6 @@ import 'dart:developer'; //This import gives us access to the log() function. It
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:software_engineering_project/StateManager.dart';
-import 'package:software_engineering_project/elevation_provider.dart';
 import 'initiative_card.dart';
 import 'initiative.dart';
 
@@ -312,6 +311,6 @@ class _MyHomePageState extends State<MyHomePage> {
   /// Returns: N/A (void)
   /// Description: Method responsible for removing elevation from card we just looked at, but are no longer looking at
   void removeElevation(int pastIndex, InitiativeCardContainer pastCard) {
-    pastCard.elevation = 3;
+    Provider.of<StateManager>(context, listen: false).toggleIsActive();
   }
 }

@@ -28,6 +28,9 @@ class _InitiativeCardState extends State<InitiativeCard> {
   bool _shouldDisplayConditionsCard = false;
   bool _shouldDisplayAbilitiesCard = false;
   late StateManager _elevationInfoProvider;
+  bool isCardsTurn = false;
+
+  
 
   @override
   @mustCallSuper
