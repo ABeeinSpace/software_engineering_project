@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:software_engineering_project/elevation_provider.dart';
-import 'StateManager.dart';
 import 'condition.dart';
 import 'initiative.dart';
 
@@ -23,118 +21,113 @@ class StatelessInitiativeCard extends StatelessWidget {
     //This line grabs the current width of the window. I use it to set the width of the initiative cards to 60% of the width of the application's window
     double screenWidth = MediaQuery.of(context).size.width;
     currentInitiative.conditionsArray = initConditionsArray();
-    bool isActive = Provider.of<StateManager>(context).isActive;
-    double elevation = context.watch<ElevationProvider>().elevation;
 
-    return Consumer<ElevationProvider>(
-      builder: (context, elevationProvider, __) {
-        return Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-                padding: const EdgeInsets.fromLTRB(8, 8, 0, 8),
-                child: SizedBox(
-                  width: screenWidth *
-                      0.6, //Uses the MediaQuery defined above to set the card size to 60% of the window (this is to have room for the Status Effects panel without having to do something disgusting like dynamic resizing of the cards based on status effects panel state).
-                  child: Card (
-                          elevation: elevation,
-                          child: Container(
-                              padding: const EdgeInsets.all(8),
-                              child: Row(
-                                children: [
-                                  Column(
-                                    children: [
-                                      const Text("Initiative"),
-                                      CircleAvatar(
-                                        // backgroundColor: Colors.amber,
-                                        child: Text(
-                                            "${currentInitiative.initiativeCount}"),
-                                      )
-                                    ],
-                                  ),
-                                  Expanded(
-                                    child: Column(children: [
-                                      Align(
-                                        alignment: Alignment.center,
-                                        child: Text(currentInitiative.name),
-                                      ),
-                                      //TODO: Do the health bar (Which is probably going to Suck to do).
-                                      DecoratedBox(
-                                        decoration: BoxDecoration(
-                                            border: Border.all(
-                                                color: Colors.black,
-                                                style: BorderStyle.solid)),
-                                        child: const Align(child: Text("feck")),
-                                      ),
-                                    ]),
-                                  ),
 
-                                  // Column(
-                                  //   children: [
-                                  //     const Text("Abilities"),
-                                  //     IconButton(
-                                  //         onPressed: _showAbilitiesPanel,
-                                  //         icon: const Icon(Icons.workspaces_outline))
-                                  //   ],
-                                  // ),
-                                  const VerticalDivider(),
-
-                                  Column(
-                                    children: [
-                                      const Text(
-                                          "Effects"), //Should consider renaming this to "Status Effects" for clarity
-                                      IconButton(
-                                          onPressed: () {
-                                            Provider.of<StateManager>(context, listen: false).toggleIsActive();
-                                          },
-                                          icon: (isActive
-                                              ? const Icon(Icons.star_rounded)
-                                              : const Icon(Icons.star_border_rounded)))
-                                    ],
-                                  )
-                                ],
-                              )))
-                )),
-            Visibility(
-              visible: isActive,
-              child: Container(
-                width: 250,
-                height: 300,
-                margin: const EdgeInsets.fromLTRB(0, 8, 0, 10),
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+            padding: const EdgeInsets.fromLTRB(8, 8, 0, 8),
+            child: SizedBox(
+                width: screenWidth *
+                    0.6, //Uses the MediaQuery defined above to set the card size to 60% of the window (this is to have room for the Status Effects panel without having to do something disgusting like dynamic resizing of the cards based on status effects panel state).
                 child: Card(
                     elevation: elevation,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Center(
-                        child: Column(
+                    child: Container(
+                        padding: const EdgeInsets.all(8),
+                        child: Row(
                           children: [
-                            const Align(
-                              alignment: Alignment.topLeft,
-                              child: Padding(
-                                padding: EdgeInsets.all(8.0),
-                                child: Text("Conditions"),
-                              ),
+                            Column(
+                              children: [
+                                const Text("Initiative"),
+                                CircleAvatar(
+                                  // backgroundColor: Colors.amber,
+                                  child: Text(
+                                      "${currentInitiative.initiativeCount}"),
+                                )
+                              ],
                             ),
-                            const Divider(),
-                            Align(
-                                alignment: Alignment.centerLeft,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Column(
-                                    children: currentInitiative.conditionsArray!
-                                        .map((e) => Text(e.toString()))
-                                        .toList(),
-                                  ),
-                                ))
+                            Expanded(
+                              child: Column(children: [
+                                Align(
+                                  alignment: Alignment.center,
+                                  child: Text(currentInitiative.name),
+                                ),
+                                //TODO: Do the health bar (Which is probably going to Suck to do).
+                                DecoratedBox(
+                                  decoration: BoxDecoration(
+                                      border: Border.all(
+                                          color: Colors.black,
+                                          style: BorderStyle.solid)),
+                                  child: const Align(child: Text("feck")),
+                                ),
+                              ]),
+                            ),
+
+                            // Column(
+                            //   children: [
+                            //     const Text("Abilities"),
+                            //     IconButton(
+                            //         onPressed: _showAbilitiesPanel,
+                            //         icon: const Icon(Icons.workspaces_outline))
+                            //   ],
+                            // ),
+                            const VerticalDivider(),
+
+                            Column(
+                              children: [
+                                const Text(
+                                    "Effects"), //Should consider renaming this to "Status Effects" for clarity
+                                IconButton(
+                                    onPressed: () {
+                                    },
+                                    icon: (isActive
+                                        ? const Icon(Icons.star_rounded)
+                                        : const Icon(
+                                            Icons.star_border_rounded)))
+                              ],
+                            )
                           ],
+                        ))))),
+        Visibility(
+          visible: isActive,
+          child: Container(
+            width: 250,
+            height: 300,
+            margin: const EdgeInsets.fromLTRB(0, 8, 0, 10),
+            child: Card(
+                elevation: elevation,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Center(
+                    child: Column(
+                      children: [
+                        const Align(
+                          alignment: Alignment.topLeft,
+                          child: Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: Text("Conditions"),
+                          ),
                         ),
-                      ),
-                    )),
-              ),
-            )
-          ],
-        );
-      });
+                        const Divider(),
+                        Align(
+                            alignment: Alignment.centerLeft,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Column(
+                                children: currentInitiative.conditionsArray!
+                                    .map((e) => Text(e.toString()))
+                                    .toList(),
+                              ),
+                            ))
+                      ],
+                    ),
+                  ),
+                )),
+          ),
+        )
+      ],
+    );
   }
 
   /// showConditionsPanel()
@@ -190,7 +183,6 @@ class InitiativeCardContainer extends StatelessWidget
   double elevation;
   late StatelessInitiativeCard card;
 
-
   /// build()
   /// Parameters: BuildContext context
   /// Returns: Widget
@@ -201,8 +193,8 @@ class InitiativeCardContainer extends StatelessWidget
     return Container(
       alignment: Alignment.centerLeft,
       margin: const EdgeInsets.all(10),
-      child:
-          this.card = StatelessInitiativeCard.fromInitiative(currentInitiative, elevation),
+      child: this.card =
+          StatelessInitiativeCard.fromInitiative(currentInitiative, elevation),
     );
   }
 

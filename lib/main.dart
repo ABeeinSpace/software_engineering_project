@@ -1,10 +1,10 @@
 import 'dart:developer'; //This import gives us access to the log() function. It can be safely removed when all buttons are properly implemented.
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:software_engineering_project/StateManager.dart';
 import 'package:software_engineering_project/elevation_provider.dart';
 import 'initiative_card.dart';
 import 'initiative.dart';
-import 'package:provider/provider.dart';
 
 void main() {
   runApp(const MyApp());
@@ -20,20 +20,22 @@ class MyApp extends StatelessWidget {
   /// Special: Method overrides Widget.build()
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (context) => StateManager()),
-        ChangeNotifierProvider(create: (context) => ElevationProvider())
-      ],
-
-      child: MaterialApp (
-        title: 'Combat Scribe',
-        theme: ThemeData(
-          useMaterial3: true,
-          primarySwatch: Colors.purple,
-        ),
-        home: const MyHomePage(title: 'Combat Scribe'),
-      )
+return ChangeNotifierProvider(
+      create: (BuildContext context) => StateManager(),
+      builder: (context, provider) {
+        return Consumer<StateManager>(
+          builder: (context, notifier, child) {
+            return MaterialApp (
+            title: 'Combat Scribe',
+            theme: ThemeData(
+              useMaterial3: true,
+              primarySwatch: Colors.purple,
+            ),
+            home: const MyHomePage(title: 'Combat Scribe'),
+      );
+          }
+        );
+      }
     );
   }
 }
@@ -105,23 +107,17 @@ class _MyHomePageState extends State<MyHomePage> {
                   tooltip: "Previous round",
                   icon: const Icon(Icons.arrow_back))),
           Align(
-            alignment: Alignment.center,
-            child: IconButton(
-                    onPressed: nextButtonPressed,
-                    tooltip: "Next round",
-                    icon: const Icon(Icons.arrow_forward))
-
-          ),
+              alignment: Alignment.center,
+              child: IconButton(
+                  onPressed: nextButtonPressed,
+                  tooltip: "Next round",
+                  icon: const Icon(Icons.arrow_forward))),
           ButtonBar(
             children: [
-              // This button will display a drop-down to enable addition of prefab monsters in addition to custom initiatives.
-              Consumer<StateManager>(
-                builder: (context, notifier, child) {
-                  return IconButton(
-                      onPressed: _settingsButtonPressed,
-                      icon: const Icon(Icons.settings));
-                }
-              )
+              // This button will display a drop-down to enable addition of prefab monsters in addition to custom initiatives
+              IconButton(
+                  onPressed: _settingsButtonPressed,
+                  icon: const Icon(Icons.settings))
             ],
           ),
         ],
@@ -130,18 +126,10 @@ class _MyHomePageState extends State<MyHomePage> {
       // End of Header
 
       // Start of Body
-      body: Column(children: [
-        Padding(
-          padding: const EdgeInsets.fromLTRB(0, 8, 0, 0),
-          child: SingleChildScrollView(
-            child: Column(
-                textDirection: TextDirection.ltr,
-                mainAxisAlignment: MainAxisAlignment.start,
-                // crossAxisAlignment: CrossAxisAlignment.start,
-                children: arr),
-          ),
-        )
-      ]),
+      body: SingleChildScrollView(
+          child: Column(
+        children: arr,
+      )),
 
       floatingActionButton: FloatingActionButton.extended(
         ///When the add initative button is pressed, open a dialog for the user to input their name
@@ -188,12 +176,19 @@ class _MyHomePageState extends State<MyHomePage> {
               onPressed: () {
                 var name = nameController.text;
                 var initiative = initiativeController.text;
+                // TODO: Actual form field validation
+                try {
+                  int.parse(initiative);
+                } catch (e) {
+                  log("Get better ints, fucko");
+                  return;
+                }
                 editInitiativeCard(name, initiative);
                 log(name);
                 log(initiative);
                 Navigator.pop(context);
               },
-              child: const Text('Send'),
+              child: const Text('OK'),
             ),
           ],
         );
@@ -278,7 +273,7 @@ class _MyHomePageState extends State<MyHomePage> {
     addElevation(currentIndex, arr[currentIndex]);
 
     //Call the removeElevation method with the index of the card we just looked at and the card itself
-    removeElevation(pastIndex, arr[pastIndex]);
+    // removeElevation(pastIndex, arr[pastIndex]);
 
     // setState(() => this.elevate = elevate);
 
@@ -294,11 +289,11 @@ class _MyHomePageState extends State<MyHomePage> {
       currentIndex = 0;
     }
 
-    // //Call the addElevation method with the index of the card we are looking at now and the card itself
-    addElevation(currentIndex, arr[currentIndex]);
+    // Call the addElevation method with the index of the card we are looking at now and the card itself
+    // addElevation(currentIndex, arr[currentIndex]);
 
-    // //Call the removeElevation method with the index of the card we just looked at and the card itself
-    removeElevation(pastIndex, arr[pastIndex]);
+    // Call the removeElevation method with the index of the card we just looked at and the card itself
+    // removeElevation(pastIndex, arr[pastIndex]);
   }
 
   /// addElevation()
@@ -307,7 +302,7 @@ class _MyHomePageState extends State<MyHomePage> {
   /// Returns: N/A (void)
   /// Description: Method responsible for adding elevation to current initiative card
   void addElevation(int currentIndex, InitiativeCardContainer currentCard) {
-    Provider.of<ElevationProvider>(context, listen: false).toggleElevation(currentCard);
+    Provider.of<StateManager>(context, listen: false).toggleIsActive();
     // InitiativeCardContainer(currentCard.name, currentCard.hp, 75.0);
   }
 
@@ -317,6 +312,6 @@ class _MyHomePageState extends State<MyHomePage> {
   /// Returns: N/A (void)
   /// Description: Method responsible for removing elevation from card we just looked at, but are no longer looking at
   void removeElevation(int pastIndex, InitiativeCardContainer pastCard) {
-    Provider.of<ElevationProvider>(context, listen: false).toggleElevation(pastCard);
+    pastCard.elevation = 3;
   }
 }
