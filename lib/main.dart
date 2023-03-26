@@ -87,7 +87,34 @@ class _MyHomePageState extends State<MyHomePage> {
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
+
         actions: [
+          //Create a chip to display the round number
+          Chip(
+            //Create the avatar that will hold the round number
+            avatar: CircleAvatar(
+              //Set the background color of the chip to purple
+              backgroundColor: Colors.purple,
+              //Display the round number as a string in the Circle Avatar
+              child: Text(roundNumber.toString()),
+            ),
+            //Display this text in the remainder of the chip (to the right of the circle avatar)
+            label: Text('Round Number'),
+          ),
+
+          //Create a chip to display the time
+          Chip(
+            //Create the avatar that will hold the time
+            avatar: CircleAvatar(
+              //Set the background color of the chip to purple
+              backgroundColor: Colors.purple,
+              //Display the time as a string in the circle avatar
+              child: Text(time.toString()),
+            ),
+            //Display this text in the remainder of the chip (to the right of the circle avatar)
+            label: Text('Time                 '),
+          ),
+
           Align(
               alignment: Alignment.center,
               child: IconButton(
@@ -115,6 +142,7 @@ class _MyHomePageState extends State<MyHomePage> {
       // End of Header
 
       // Start of Body
+
       body: Column(children: [
         Padding(
           padding: EdgeInsets.fromLTRB(0, 8, 0, 0),
