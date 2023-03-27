@@ -31,6 +31,7 @@ class _InitiativeCardState extends State<InitiativeCard> {
   bool isCardsTurn = false;
 
   
+  
 
   @override
   @mustCallSuper
