@@ -1,7 +1,9 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:software_engineering_project/condition.dart';
+import 'StateManager.dart';
 import 'initiative.dart';
 
 // ignore: must_be_immutable
@@ -14,6 +16,7 @@ class InitiativeCard extends StatefulWidget {
 
   // InitiativeCard(this.name, this.hp, this.elevate, {super.key});
   double elevation;
+  bool isActive = false;
 
   // This declaration makes any parameters needed available to instances of the class. The Java equivalent is a constructor method
   // String hp;
@@ -26,6 +29,20 @@ class InitiativeCard extends StatefulWidget {
 class _InitiativeCardState extends State<InitiativeCard> {
   bool _shouldDisplayConditionsCard = false;
   bool _shouldDisplayAbilitiesCard = false;
+  late StateManager _elevationInfoProvider;
+  bool isCardsTurn = false;
+
+  
+  
+
+  @override
+  @mustCallSuper
+  initState() {
+    super.initState();
+
+    _elevationInfoProvider = context.read<StateManager>();
+    _elevationInfoProvider.addListener(activateCard);
+  }
 
   /// build()
   /// Parameters: BuildContext context
@@ -187,6 +204,16 @@ class _InitiativeCardState extends State<InitiativeCard> {
     return conditionsArray;
   }
 
+  void activateCard() {
+    setState(() {
+      if (Provider.of<StateManager>(context, listen: false).isActive) {
+        widget.elevation = 15.0;
+      } else {
+        widget.elevation = 3.0;
+      }
+    });
+  }
+
   //TODO: this
   void editConditionsCard(String name) {
     widget.currentInitiative.conditionsArray!
@@ -252,6 +279,7 @@ class InitiativeCardContainer extends StatelessWidget
       {super.key});
   final Initiative currentInitiative;
   double elevation;
+  late InitiativeCard card;
 
   /// build()
   /// Parameters: BuildContext context
@@ -263,7 +291,7 @@ class InitiativeCardContainer extends StatelessWidget
     return Container(
       alignment: Alignment.centerLeft,
       margin: const EdgeInsets.all(10),
-      child: InitiativeCard.fromInitiative(currentInitiative, elevation),
+      child: card = InitiativeCard.fromInitiative(currentInitiative, elevation),
     );
   }
 
