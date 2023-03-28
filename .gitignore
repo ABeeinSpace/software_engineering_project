@@ -46,3 +46,4 @@ app.*.map.json
 
 pubspec.lock
 .linux/flutter
+macos/Runner.xcodeproj/project.pbxproj

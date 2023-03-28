@@ -1,16 +1,22 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:software_engineering_project/condition.dart';
+import 'StateManager.dart';
 import 'initiative.dart';
 
 // ignore: must_be_immutable
 class InitiativeCard extends StatefulWidget {
   // late String name;
   // late String hp;
-  InitiativeCard.fromInitiative(this.currentInitiative, this.elevation, {super.key});
+  InitiativeCard.fromInitiative(this.currentInitiative, this.elevation,
+      {super.key});
   final Initiative currentInitiative;
 
   // InitiativeCard(this.name, this.hp, this.elevate, {super.key});
   double elevation;
+  bool isActive = false;
 
   // This declaration makes any parameters needed available to instances of the class. The Java equivalent is a constructor method
   // String hp;
@@ -23,6 +29,20 @@ class InitiativeCard extends StatefulWidget {
 class _InitiativeCardState extends State<InitiativeCard> {
   bool _shouldDisplayConditionsCard = false;
   bool _shouldDisplayAbilitiesCard = false;
+  late StateManager _elevationInfoProvider;
+  bool isCardsTurn = false;
+
+  
+  
+
+  @override
+  @mustCallSuper
+  initState() {
+    super.initState();
+
+    _elevationInfoProvider = context.read<StateManager>();
+    _elevationInfoProvider.addListener(activateCard);
+  }
 
   /// build()
   /// Parameters: BuildContext context
@@ -54,7 +74,8 @@ class _InitiativeCardState extends State<InitiativeCard> {
                               const Text("Initiative"),
                               CircleAvatar(
                                 // backgroundColor: Colors.amber,
-                                child: Text("${widget.currentInitiative.initiativeCount}"),
+                                child: Text(
+                                    "${widget.currentInitiative.initiativeCount}"),
                               )
                             ],
                           ),
@@ -119,13 +140,23 @@ class _InitiativeCardState extends State<InitiativeCard> {
                             child: Text("Conditions"),
                           ),
                         ),
+                        ElevatedButton(
+                          child: Text('Add Condition'),
+                          onPressed: () {
+                            log("new button pressed!");
+                            conditionBoxDiologueBox();
+                          },
+                        ),
                         const Divider(),
                         Align(
                             alignment: Alignment.centerLeft,
                             child: Padding(
                               padding: const EdgeInsets.all(8.0),
-                              child: Column (
-                                children: widget.currentInitiative.conditionsArray!.map((e) => Text(e.toString())).toList(),
+                              child: Column(
+                                children: widget
+                                    .currentInitiative.conditionsArray!
+                                    .map((e) => Text(e.toString()))
+                                    .toList(),
                               ),
                             ))
                       ],
@@ -148,6 +179,7 @@ class _InitiativeCardState extends State<InitiativeCard> {
         _shouldDisplayConditionsCard = false;
       } else {
         _shouldDisplayConditionsCard = true;
+        log('button pressed');
       }
     });
   }
@@ -169,24 +201,85 @@ class _InitiativeCardState extends State<InitiativeCard> {
 
   List<Condition> initConditionsArray() {
     List<Condition> conditionsArray = [];
-    conditionsArray.add(Condition(name: "Blinded", duration: 10, elapsedTime: 5));
-    conditionsArray.add(Condition(name: "Frightened", duration: 5, elapsedTime: 2));
-    conditionsArray.add(Condition(name: "Exhaustion", duration: 7, elapsedTime: 5));
-    conditionsArray.add(Condition(name: "Restrained", duration: 12, elapsedTime: 4));
     return conditionsArray;
+  }
+
+  void activateCard() {
+    setState(() {
+      if (Provider.of<StateManager>(context, listen: false).isActive) {
+        widget.elevation = 15.0;
+      } else {
+        widget.elevation = 3.0;
+      }
+    });
+  }
+
+  //TODO: this
+  void editConditionsCard(String name) {
+    widget.currentInitiative.conditionsArray!
+        .add(Condition(name: name, duration: 10, elapsedTime: 0));
+    setState(() {});
+  }
+
+  //Stuff related to the diologue box
+  void conditionBoxDiologueBox() {
+    showDialog(
+      context: context,
+      builder: (_) {
+        var condtionNameController = TextEditingController();
+        //var initiativeController = TextEditingController();
+        return AlertDialog(
+          title: const Text('Enter Condition Info'),
+          content: SingleChildScrollView(
+              child: Column(
+            children: [
+              TextFormField(
+                controller: condtionNameController,
+                decoration: const InputDecoration(hintText: 'Condition Name'),
+              ),
+              // TextFormField(
+              //   controller: initiativeController,
+              //   decoration: const InputDecoration(hintText: 'Initiative'),
+              // ),
+            ],
+          )),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                var conditionName = condtionNameController.text;
+                //var initiative = initiativeController.text;
+                //editInitiativeCard(name, initiative);
+                editConditionsCard(conditionName); //TODO: This
+                log(conditionName);
+                //log(initiative);
+                Navigator.pop(context);
+              },
+              child: const Text('Send'),
+            ),
+          ],
+        );
+      },
+    );
   }
 }
 
 // ignore: must_be_immutable
-class InitiativeCardContainer extends StatelessWidget implements Comparable<InitiativeCardContainer> {
+class InitiativeCardContainer extends StatelessWidget
+    implements Comparable<InitiativeCardContainer> {
   // This declaration makes any parameters needed available to instances of the class. The Java equivalent is a constructor method
   // const InitiativeCardContainer({
   //   Key? key,
   // }) : super(key: key);
 
-  InitiativeCardContainer.fromInitiative(this.currentInitiative, this.elevation, {super.key});
+  InitiativeCardContainer.fromInitiative(this.currentInitiative, this.elevation,
+      {super.key});
   final Initiative currentInitiative;
   double elevation;
+  late InitiativeCard card;
 
   /// build()
   /// Parameters: BuildContext context
@@ -198,20 +291,20 @@ class InitiativeCardContainer extends StatelessWidget implements Comparable<Init
     return Container(
       alignment: Alignment.centerLeft,
       margin: const EdgeInsets.all(10),
-      child: 
-      InitiativeCard.fromInitiative(currentInitiative, elevation),
+      child: card = InitiativeCard.fromInitiative(currentInitiative, elevation),
     );
   }
 
   @override
   int compareTo(InitiativeCardContainer other) {
-    if (currentInitiative.initiativeCount > other.currentInitiative.initiativeCount) {
+    if (currentInitiative.initiativeCount >
+        other.currentInitiative.initiativeCount) {
       return -1;
-    } else if (currentInitiative.initiativeCount < other.currentInitiative.initiativeCount) {
+    } else if (currentInitiative.initiativeCount <
+        other.currentInitiative.initiativeCount) {
       return 1;
     } else {
       return 0;
     }
   }
-
 }
