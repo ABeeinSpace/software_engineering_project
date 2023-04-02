@@ -30,10 +30,6 @@ class _InitiativeCardState extends State<InitiativeCard> {
   bool _shouldDisplayConditionsCard = false;
   bool _shouldDisplayAbilitiesCard = false;
   late StateManager _elevationInfoProvider;
-  bool isCardsTurn = false;
-
-  
-  
 
   @override
   @mustCallSuper
@@ -205,13 +201,15 @@ class _InitiativeCardState extends State<InitiativeCard> {
   }
 
   void activateCard() {
-    setState(() {
-      if (Provider.of<StateManager>(context, listen: false).isActive) {
-        widget.elevation = 15.0;
-      } else {
-        widget.elevation = 3.0;
-      }
-    });
+    if (widget.currentInitiative.shouldElevate = true) {
+      setState (() {
+        if (Provider.of<StateManager>(context, listen: false).isActive) {
+          widget.elevation = 15.0;
+        } else {
+          widget.elevation = 3.0;
+        }
+      });
+    }
   }
 
   //TODO: this

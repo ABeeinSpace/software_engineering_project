@@ -19,23 +19,20 @@ class MyApp extends StatelessWidget {
   /// Special: Method overrides Widget.build()
   @override
   Widget build(BuildContext context) {
-return ChangeNotifierProvider(
-      create: (BuildContext context) => StateManager(),
-      builder: (context, provider) {
-        return Consumer<StateManager>(
-          builder: (context, notifier, child) {
-            return MaterialApp (
-            title: 'Combat Scribe',
-            theme: ThemeData(
-              useMaterial3: true,
-              primarySwatch: Colors.purple,
-            ),
-            home: const MyHomePage(title: 'Combat Scribe'),
-      );
-          }
-        );
-      }
-    );
+    return ChangeNotifierProvider(
+        create: (BuildContext context) => StateManager(),
+        builder: (context, provider) {
+          return Consumer<StateManager>(builder: (context, notifier, child) {
+            return MaterialApp(
+              title: 'Combat Scribe',
+              theme: ThemeData(
+                useMaterial3: true,
+                primarySwatch: Colors.purple,
+              ),
+              home: const MyHomePage(title: 'Combat Scribe'),
+            );
+          });
+        });
   }
 }
 
@@ -154,16 +151,13 @@ class _MyHomePageState extends State<MyHomePage> {
       // Start of Body
 
       body: Column(children: [
-        Padding(
-          padding: EdgeInsets.fromLTRB(0, 8, 0, 0),
-          child: SingleChildScrollView(
+          SingleChildScrollView(
             child: Column(
                 textDirection: TextDirection.ltr,
                 mainAxisAlignment: MainAxisAlignment.start,
                 // crossAxisAlignment: CrossAxisAlignment.start,
                 children: arr),
           ),
-        )
       ]),
 
       floatingActionButton: FloatingActionButton.extended(
@@ -288,7 +282,6 @@ class _MyHomePageState extends State<MyHomePage> {
   void nextButtonPressed() {
     //A setState call to edit the cards with the new elevation
     setState(() => elevation = elevation);
-    //
 
     //Store the index of the card we are moving away from
     int pastIndex = currentIndex;
@@ -308,7 +301,7 @@ class _MyHomePageState extends State<MyHomePage> {
     addElevation(currentIndex, arr[currentIndex]);
 
     //Call the removeElevation method with the index of the card we just looked at and the card itself
-    // removeElevation(pastIndex, arr[pastIndex]);
+    removeElevation(pastIndex, arr[pastIndex]);
 
     // setState(() => this.elevate = elevate);
 
@@ -324,11 +317,6 @@ class _MyHomePageState extends State<MyHomePage> {
       currentIndex = 0;
     }
 
-    // Call the addElevation method with the index of the card we are looking at now and the card itself
-    // addElevation(currentIndex, arr[currentIndex]);
-
-    // Call the removeElevation method with the index of the card we just looked at and the card itself
-    // removeElevation(pastIndex, arr[pastIndex]);
   }
 
   /// addElevation()
@@ -337,7 +325,10 @@ class _MyHomePageState extends State<MyHomePage> {
   /// Returns: N/A (void)
   /// Description: Method responsible for adding elevation to current initiative card
   void addElevation(int currentIndex, InitiativeCardContainer currentCard) {
-    Provider.of<StateManager>(context, listen: false).toggleIsActive();
+    // Provider.of<StateManager>(context, listen: false).toggleIsActive();
+    setState(() {
+      currentCard.card.currentInitiative.shouldElevate = true;
+    });
     // InitiativeCardContainer(currentCard.name, currentCard.hp, 75.0);
   }
 
@@ -347,6 +338,8 @@ class _MyHomePageState extends State<MyHomePage> {
   /// Returns: N/A (void)
   /// Description: Method responsible for removing elevation from card we just looked at, but are no longer looking at
   void removeElevation(int pastIndex, InitiativeCardContainer pastCard) {
-    Provider.of<StateManager>(context, listen: false).toggleIsActive();
+    setState(() {
+      pastCard.card.currentInitiative.shouldElevate = false;
+    });
   }
 }

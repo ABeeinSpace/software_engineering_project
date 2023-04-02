@@ -5,6 +5,7 @@ class Initiative {
   int initiativeCount;
   int? totalHealth;
   int? currentHealth;
+  bool shouldElevate = false;
   List<Condition>? conditionsArray = [];
 
   Initiative({required this.name, required this.initiativeCount, this.totalHealth, this.currentHealth, this.conditionsArray});
@@ -21,6 +22,10 @@ class Initiative {
   get getTotalHealth => totalHealth;
 
   set setTotalHealth( totalHealth) => this.totalHealth = totalHealth;
+
+  get getShouldElevate => shouldElevate;
+
+  set setShouldElevate( shouldElevate) => this.shouldElevate = shouldElevate;
 
   get getCurrentHealth => currentHealth;
 

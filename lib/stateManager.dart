@@ -5,7 +5,7 @@ class StateManager extends ChangeNotifier {
   bool isActive;
 
   StateManager({
-    this.isActive = false,
+    this.isActive = true,
   });
 
   ///toggleIsActive()
