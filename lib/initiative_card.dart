@@ -7,7 +7,6 @@ import 'initiative.dart';
 
 // ignore: must_be_immutable
 class InitiativeCard extends StatefulWidget {
-
   InitiativeCard.fromInitiative(this.currentInitiative, this.elevation,
       {super.key});
   final Initiative currentInitiative;
@@ -86,13 +85,9 @@ class _InitiativeCardState extends State<InitiativeCard> {
                                     child: Text(widget.currentInitiative.name),
                                   ),
                                   //TODO: Do the health bar (Which is probably going to Suck to do).
-                                  DecoratedBox(
-                                    decoration: BoxDecoration(
-                                        border: Border.all(
-                                            color: Colors.black,
-                                            style: BorderStyle.solid)),
-                                    child: Align(child: Text("${widget.currentInitiative.currentHealth} / ${widget.currentInitiative.totalHealth}")),
-                                  ),
+                                  Align(
+                                      child: Text(
+                                          "Health: ${widget.currentInitiative.currentHealth} / ${widget.currentInitiative.totalHealth}")),
                                 ]),
                               ),
 
@@ -142,7 +137,7 @@ class _InitiativeCardState extends State<InitiativeCard> {
                           ),
                         ),
                         ElevatedButton(
-                          child: Text('Add Condition'),
+                          child: const Text('Add Condition'),
                           onPressed: () {
                             log("new button pressed!");
                             conditionBoxDiologueBox();
@@ -332,8 +327,6 @@ class _InitiativeCardState extends State<InitiativeCard> {
 // ignore: must_be_immutable
 class InitiativeCardContainer extends StatelessWidget
     implements Comparable<InitiativeCardContainer> {
-    
-    
   // This declaration makes any parameters needed available to instances of the class. The Java equivalent is a constructor method
   // const InitiativeCardContainer({
   //   Key? key,

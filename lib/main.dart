@@ -1,6 +1,7 @@
 import 'dart:developer'; //This import gives us access to the log() function. It can be safely removed when all buttons are properly implemented.
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'condition.dart';
 import 'package:software_engineering_project/StateManager.dart';
@@ -106,15 +107,16 @@ class _MyHomePageState extends State<MyHomePage> {
             avatar: CircleAvatar(
               //Set the background color of the chip to purple
               backgroundColor: Colors.purple,
-              
+
               //Display the round number as a string in the Circle Avatar
-              child: Text(roundNumber.toString(), style: TextStyle(color: Colors.white)),
+              child: Text(roundNumber.toString(),
+                  style: const TextStyle(color: Colors.white)),
             ),
             //Display this text in the remainder of the chip (to the right of the circle avatar)
             label: const Text('Round Number'),
           ),
 
-          SizedBox(width: 5.5),
+          const SizedBox(width: 5.5),
 
           //Create a chip to display the time
           Chip(
@@ -125,10 +127,12 @@ class _MyHomePageState extends State<MyHomePage> {
               //Set the background color of the chip to purple
               backgroundColor: Colors.purple,
               //Display the time as a string in the circle avatar
-              child: Center(child: Text(time.toString(), style: TextStyle(color: Colors.white))),
+              child: Center(
+                  child: Text(time.toString(),
+                      style: const TextStyle(color: Colors.white))),
             ),
             //Display this text in the remainder of the chip (to the right of the circle avatar)
-            label: Text('Time                 '),
+            label: const Text('Time                 '),
           ),
 
           Align(
@@ -168,16 +172,14 @@ class _MyHomePageState extends State<MyHomePage> {
       // Start of Body
 
       body: Column(children: [
-        Padding(
-          padding: EdgeInsets.fromLTRB(0, 8, 0, 0),
-          child: SingleChildScrollView(
-            child: Column(
-                textDirection: TextDirection.ltr,
-                mainAxisAlignment: MainAxisAlignment.start,
-                // crossAxisAlignment: CrossAxisAlignment.start,
-                children: arr),
-          ),
-        )
+        SingleChildScrollView(
+          padding: const EdgeInsets.fromLTRB(0, 8, 0, 0),
+          child: Column(
+              textDirection: TextDirection.ltr,
+              mainAxisAlignment: MainAxisAlignment.start,
+              // crossAxisAlignment: CrossAxisAlignment.start,
+              children: arr),
+        ),
       ]),
 
       floatingActionButton: FloatingActionButton.extended(
@@ -298,7 +300,7 @@ class _MyHomePageState extends State<MyHomePage> {
               child: Column(
             children: [
               TextButton(
-                  child: Text('Dice Roller'), onPressed: _diceRollerMenu),
+                  onPressed: _diceRollerMenu, child: const Text('Dice Roller')),
             ],
           )),
           actions: [
@@ -345,7 +347,7 @@ class _MyHomePageState extends State<MyHomePage> {
     //Rebuild a new card with all of the same properties as the old card with the added elevation
     secondaryEditInitiativeCard(
         hold.currentInitiative.name,
-        hold.currentInitiative.initiativeCount.toString(),
+        hold.currentInitiative.initiativeCount,
         hold.currentInitiative.totalHealth,
         hold.currentInitiative.currentHealth,
         hold.currentInitiative.conditionsArray,
@@ -362,7 +364,7 @@ class _MyHomePageState extends State<MyHomePage> {
     //Rebuild a new card with all of the same properties as the old card with the removed elevation
     secondaryEditInitiativeCard(
         pastHold.currentInitiative.name,
-        pastHold.currentInitiative.initiativeCount.toString(),
+        pastHold.currentInitiative.initiativeCount,
         pastHold.currentInitiative.totalHealth,
         pastHold.currentInitiative.currentHealth,
         pastHold.currentInitiative.conditionsArray,
@@ -406,7 +408,7 @@ class _MyHomePageState extends State<MyHomePage> {
     //Rebuild a new card with all of the same properties as the old card with the added elevation
     secondaryEditInitiativeCard(
         hold.currentInitiative.name,
-        hold.currentInitiative.initiativeCount.toString(),
+        hold.currentInitiative.initiativeCount,
         hold.currentInitiative.totalHealth,
         hold.currentInitiative.currentHealth,
         hold.currentInitiative.conditionsArray,
@@ -425,7 +427,7 @@ class _MyHomePageState extends State<MyHomePage> {
     //Rebuild a new card with all of the same properties as the old card with the removed elevation
     secondaryEditInitiativeCard(
         pastHold.currentInitiative.name,
-        pastHold.currentInitiative.initiativeCount.toString(),
+        pastHold.currentInitiative.initiativeCount,
         pastHold.currentInitiative.totalHealth,
         pastHold.currentInitiative.currentHealth,
         pastHold.currentInitiative.conditionsArray,
@@ -438,7 +440,7 @@ class _MyHomePageState extends State<MyHomePage> {
   void secondaryEditInitiativeCard(
       //Read in all necessary parameters
       String name,
-      String init,
+      int init,
       int? totalHealth,
       int? currentHealth,
       List<Condition>? conditionsArray,
@@ -451,7 +453,7 @@ class _MyHomePageState extends State<MyHomePage> {
       arr.add(InitiativeCardContainer.fromInitiative(
           Initiative(
               name: name,
-              initiativeCount: int.parse(init),
+              initiativeCount: init,
               currentHealth: currentHealth,
               totalHealth: totalHealth,
               conditionsArray: conditionsArray,
@@ -478,7 +480,7 @@ class _MyHomePageState extends State<MyHomePage> {
         //Call the function to create a new card with the following parameters from the old card and the updated user parameters
         secondaryEditInitiativeCard(
             hold.currentInitiative.editedName.toString(),
-            hold.currentInitiative.editedInitiativeCount.toString(),
+            hold.currentInitiative.editedInitiativeCount!,
             hold.currentInitiative.totalHealth,
             hold.currentInitiative.currentHealth,
             hold.currentInitiative.conditionsArray,
@@ -506,22 +508,20 @@ class _MyHomePageState extends State<MyHomePage> {
             children: [
               TextFormField(
                 controller: numDiceController,
-                decoration: InputDecoration(hintText: 'Number of Dice'),
+                decoration: const InputDecoration(hintText: 'Number of Dice'),
               ),
               TextFormField(
                 controller: diceTypeController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                     hintText:
                         'Dice Type (enter number of sides ONLY (ex: type 20 for a d20))'),
               ),
               TextFormField(
                 controller: modifierController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                     hintText: 'Modifier (type 0 for no modifier)'),
               ),
-              Container(
-                child: Text(diceOutput),
-              ),
+              Text(diceOutput),
             ],
           )),
           actions: [
@@ -530,16 +530,22 @@ class _MyHomePageState extends State<MyHomePage> {
               child: const Text('Cancel'),
             ),
             TextButton(
-                onPressed: () {
+                onPressed: () async {
                   int numDice = int.parse(numDiceController.text);
                   int diceType = int.parse(diceTypeController.text);
                   int diceModifier = int.parse(modifierController.text);
 
-                  setState(() {
-                    diceOutput = diceRoller(numDice, diceType, diceModifier);
-                  });
+                  diceOutput = diceRoller(numDice, diceType, diceModifier);
+                  Navigator.pop(context);
+                  await Clipboard.setData(ClipboardData(text: diceOutput))
+                      .then((_) => {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                    content:
+                                        Text("Dice roll copied to clipboard!")))
+                          });
                 },
-                child: Text('Roll the Dice!'))
+                child: const Text('Roll the Dice!'))
           ],
         );
       },
