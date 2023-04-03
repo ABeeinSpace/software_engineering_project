@@ -101,25 +101,31 @@ class _MyHomePageState extends State<MyHomePage> {
         actions: [
           //Create a chip to display the round number
           Chip(
+            padding: const EdgeInsets.all(3.5),
             //Create the avatar that will hold the round number
             avatar: CircleAvatar(
               //Set the background color of the chip to purple
               backgroundColor: Colors.purple,
+              
               //Display the round number as a string in the Circle Avatar
-              child: Text(roundNumber.toString()),
+              child: Text(roundNumber.toString(), style: TextStyle(color: Colors.white)),
             ),
             //Display this text in the remainder of the chip (to the right of the circle avatar)
-            label: Text('Round Number'),
+            label: const Text('Round Number'),
           ),
+
+          SizedBox(width: 5.5),
 
           //Create a chip to display the time
           Chip(
+            padding: const EdgeInsets.all(3.5),
+
             //Create the avatar that will hold the time
             avatar: CircleAvatar(
               //Set the background color of the chip to purple
               backgroundColor: Colors.purple,
               //Display the time as a string in the circle avatar
-              child: Text(time.toString()),
+              child: Center(child: Text(time.toString(), style: TextStyle(color: Colors.white))),
             ),
             //Display this text in the remainder of the chip (to the right of the circle avatar)
             label: Text('Time                 '),
@@ -144,7 +150,7 @@ class _MyHomePageState extends State<MyHomePage> {
             child: IconButton(
                 onPressed: updateCards,
                 tooltip: "Update Cards",
-                icon: const Icon(Icons.arrow_forward)),
+                icon: const Icon(Icons.check)),
           ),
           ButtonBar(
             children: [
