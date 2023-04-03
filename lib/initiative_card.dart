@@ -7,6 +7,7 @@ import 'initiative.dart';
 
 // ignore: must_be_immutable
 class InitiativeCard extends StatefulWidget {
+
   InitiativeCard.fromInitiative(this.currentInitiative, this.elevation,
       {super.key});
   final Initiative currentInitiative;
@@ -26,9 +27,6 @@ class _InitiativeCardState extends State<InitiativeCard> {
   bool _shouldDisplayAbilitiesCard = false;
   late StateManager _elevationInfoProvider;
   bool isCardsTurn = false;
-
-  
-  
 
   @override
   @mustCallSuper
@@ -93,7 +91,7 @@ class _InitiativeCardState extends State<InitiativeCard> {
                                         border: Border.all(
                                             color: Colors.black,
                                             style: BorderStyle.solid)),
-                                    child: const Align(child: Text("feck")),
+                                    child: Align(child: Text("${widget.currentInitiative.currentHealth} / ${widget.currentInitiative.totalHealth}")),
                                   ),
                                 ]),
                               ),
@@ -194,6 +192,9 @@ class _InitiativeCardState extends State<InitiativeCard> {
       builder: (_) {
         var nameController = TextEditingController();
         var initiativeController = TextEditingController();
+        var currentHealthController = TextEditingController();
+        var maxHealthController = TextEditingController();
+
         return AlertDialog(
           title: const Text('Edit Player Info'),
           content: SingleChildScrollView(
@@ -206,6 +207,14 @@ class _InitiativeCardState extends State<InitiativeCard> {
               TextFormField(
                 controller: initiativeController,
                 decoration: const InputDecoration(hintText: 'Initiative'),
+              ),
+              TextFormField(
+                controller: currentHealthController,
+                decoration: const InputDecoration(hintText: 'Current Health'),
+              ),
+              TextFormField(
+                controller: maxHealthController,
+                decoration: const InputDecoration(hintText: 'Max Health'),
               ),
             ],
           )),
@@ -323,6 +332,8 @@ class _InitiativeCardState extends State<InitiativeCard> {
 // ignore: must_be_immutable
 class InitiativeCardContainer extends StatelessWidget
     implements Comparable<InitiativeCardContainer> {
+    
+    
   // This declaration makes any parameters needed available to instances of the class. The Java equivalent is a constructor method
   // const InitiativeCardContainer({
   //   Key? key,

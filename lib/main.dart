@@ -195,6 +195,8 @@ class _MyHomePageState extends State<MyHomePage> {
       builder: (_) {
         var nameController = TextEditingController();
         var initiativeController = TextEditingController();
+        var currentHealthController = TextEditingController();
+        var maxHealthController = TextEditingController();
         return AlertDialog(
           title: const Text('Enter Player Info'),
           content: SingleChildScrollView(
@@ -208,6 +210,14 @@ class _MyHomePageState extends State<MyHomePage> {
                 controller: initiativeController,
                 decoration: const InputDecoration(hintText: 'Initiative'),
               ),
+              TextFormField(
+                controller: currentHealthController,
+                decoration: const InputDecoration(hintText: 'Current Health'),
+              ),
+              TextFormField(
+                controller: maxHealthController,
+                decoration: const InputDecoration(hintText: 'Max Health'),
+              ),
             ],
           )),
           actions: [
@@ -219,6 +229,8 @@ class _MyHomePageState extends State<MyHomePage> {
               onPressed: () {
                 var name = nameController.text;
                 var initiative = initiativeController.text;
+                var currentHealth = currentHealthController.text;
+                var maxHealth = maxHealthController.text;
                 // TODO: Actual form field validation
                 try {
                   int.parse(initiative);
@@ -226,7 +238,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   log("Get better ints, fucko");
                   return;
                 }
-                editInitiativeCard(name, initiative);
+                editInitiativeCard(name, initiative, int.parse(currentHealth), int.parse(maxHealth));
                 log(name);
                 log(initiative);
                 Navigator.pop(context);
@@ -240,7 +252,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
 //TODO: this is dumb. Too Bad!
-  void editInitiativeCard(String name, String init) {
+  void editInitiativeCard(String name, String init, int currentHealth, int maxHealth) {
     setState(() {
       if (numOfThings == 0) {
         elevation = 15.0;
@@ -248,7 +260,7 @@ class _MyHomePageState extends State<MyHomePage> {
         elevation = 3.0;
       }
       arr.add(InitiativeCardContainer.fromInitiative(
-          Initiative(name: name, initiativeCount: int.parse(init)), elevation));
+          Initiative(name: name, initiativeCount: int.parse(init), currentHealth: currentHealth, totalHealth: maxHealth), elevation));
       arr.sort();
       numOfThings++;
     });
@@ -428,6 +440,7 @@ class _MyHomePageState extends State<MyHomePage> {
               name: name,
               initiativeCount: int.parse(init),
               currentHealth: currentHealth,
+              totalHealth: totalHealth,
               conditionsArray: conditionsArray,
               editedName: editedName,
               editedInitiativeCount: (editedInitiativeCount)),
