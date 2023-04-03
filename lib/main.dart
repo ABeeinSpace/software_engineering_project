@@ -2,6 +2,7 @@ import 'dart:developer'; //This import gives us access to the log() function. It
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'condition.dart';
 import 'package:software_engineering_project/StateManager.dart';
 import 'initiative_card.dart';
 import 'initiative.dart';
@@ -462,4 +463,102 @@ class _MyHomePageState extends State<MyHomePage> {
       }
     }
   }
+
+    void _diceRollerMenu() {
+    log("Dice Roller Button Pressed");
+    showDialog(
+      context: context,
+      builder: (_) {
+        String diceOutput = "Result of roll goes here";
+        var numDiceController = TextEditingController();
+        var diceTypeController = TextEditingController();
+        var modifierController = TextEditingController();
+        return AlertDialog(
+          title: const Text('Dice Roller'),
+          content: SingleChildScrollView(
+              child: Column(
+            children: [
+              TextFormField(
+                controller: numDiceController,
+                decoration: InputDecoration(hintText: 'Number of Dice'),
+              ),
+              TextFormField(
+                controller: diceTypeController,
+                decoration: InputDecoration(
+                    hintText:
+                        'Dice Type (enter number of sides ONLY (ex: type 20 for a d20))'),
+              ),
+              TextFormField(
+                controller: modifierController,
+                decoration: InputDecoration(
+                    hintText: 'Modifier (type 0 for no modifier)'),
+              ),
+              Container(
+                child: Text(diceOutput),
+              ),
+            ],
+          )),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+                onPressed: () {
+                  int numDice = int.parse(numDiceController.text);
+                  int diceType = int.parse(diceTypeController.text);
+                  int diceModifier = int.parse(modifierController.text);
+
+                  setState(() {
+                    diceOutput = diceRoller(numDice, diceType, diceModifier);
+                  });
+                },
+                child: Text('Roll the Dice!'))
+          ],
+        );
+      },
+    );
+  }
+
+  String diceRoller(int numDice, int diceType, int diceModifier) {
+    log("Dice Rolled!");
+    int totalValue = 0;
+
+    if (numDice <= 0) {
+      log("invalid number of dice");
+      return "invalid number of dice";
+    }
+
+    //Set up the print statement (flutter always formats this to be basically unreadable)
+    String result = (numDice.toString() +
+        'd' +
+        diceType.toString() +
+        " + " +
+        diceModifier.toString() +
+        " = (");
+
+    //set up a for loop to roll the dice
+    for (var i = 1; i <= numDice; i++) {
+      var rolledDice = math.Random().nextInt(diceType) + 1;
+      //increment the total
+      totalValue += rolledDice;
+      //add dice value to result
+      String diceSpacing;
+      if (i == numDice) {
+        diceSpacing = ") ";
+      } else {
+        diceSpacing = ", ";
+      }
+      result = (result + rolledDice.toString() + diceSpacing);
+    }
+
+    //add the modifier
+    totalValue += diceModifier;
+    //get the result
+    result =
+        result + "+ " + diceModifier.toString() + " = " + totalValue.toString();
+    log(result);
+    return result;
+  }
+
 }
