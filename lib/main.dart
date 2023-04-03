@@ -56,8 +56,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
   late TextEditingController controller;
 
-  //String that will hold the name inputted by the user
-
   @override
   void initState() {
     super.initState();
@@ -72,10 +70,12 @@ class _MyHomePageState extends State<MyHomePage> {
     super.dispose();
   }
 
-  //String that will hold the Initiative inputted by the user
+  //Strings to hold user inputs
   String name = '';
   String initiative = '';
+  //Double that indicates current elevation
   double elevation = 3.0;
+  //Ints to keep track of current spot in the array, current round number, and current time
   int currentIndex = 0;
   int roundNumber = 1;
   int time = 0;
@@ -131,11 +131,20 @@ class _MyHomePageState extends State<MyHomePage> {
                   tooltip: "Previous round",
                   icon: const Icon(Icons.arrow_back))),
           Align(
-              alignment: Alignment.center,
-              child: IconButton(
-                  onPressed: nextButtonPressed,
-                  tooltip: "Next round",
-                  icon: const Icon(Icons.arrow_forward))),
+            alignment: Alignment.center,
+            child: IconButton(
+                onPressed: nextButtonPressed,
+                tooltip: "Next round",
+                icon: const Icon(Icons.arrow_forward)),
+          ),
+          //Button that will apply changes to edited cards on press
+          Align(
+            alignment: Alignment.center,
+            child: IconButton(
+                onPressed: updateCards,
+                tooltip: "Update Cards",
+                icon: const Icon(Icons.arrow_forward)),
+          ),
           ButtonBar(
             children: [
               // This button will display a drop-down to enable addition of prefab monsters in addition to custom initiatives
@@ -232,6 +241,11 @@ class _MyHomePageState extends State<MyHomePage> {
 //TODO: this is dumb. Too Bad!
   void editInitiativeCard(String name, String init) {
     setState(() {
+      if (numOfThings == 0) {
+        elevation = 15.0;
+      } else {
+        elevation = 3.0;
+      }
       arr.add(InitiativeCardContainer.fromInitiative(
           Initiative(name: name, initiativeCount: int.parse(init)), elevation));
       arr.sort();
@@ -296,11 +310,39 @@ class _MyHomePageState extends State<MyHomePage> {
       time -= 6;
     }
 
-    //Call the addElevation method with the index of the card we are looking at now and the card itself
-    addElevation(currentIndex, arr[currentIndex]);
+    //Add the elevation to the card we want to look at now
 
-    //Call the removeElevation method with the index of the card we just looked at and the card itself
-    removeElevation(pastIndex, arr[pastIndex]);
+    //Create a hold variable to hold the current card so the card can be safely deleted
+    InitiativeCardContainer hold = arr[currentIndex];
+    //Delete the current card
+    arr.removeAt(currentIndex);
+    //Rebuild a new card with all of the same properties as the old card with the added elevation
+    secondaryEditInitiativeCard(
+        hold.currentInitiative.name,
+        hold.currentInitiative.initiativeCount.toString(),
+        hold.currentInitiative.totalHealth,
+        hold.currentInitiative.currentHealth,
+        hold.currentInitiative.conditionsArray,
+        hold.currentInitiative.editedName,
+        hold.currentInitiative.editedInitiativeCount,
+        15.0);
+
+    //Remove the elevation of the card we just looked at
+
+    //Create a hold variable to hold the current card so the card can be safely deleted
+    InitiativeCardContainer pastHold = arr[pastIndex];
+    //Delete the current card
+    arr.removeAt(pastIndex);
+    //Rebuild a new card with all of the same properties as the old card with the removed elevation
+    secondaryEditInitiativeCard(
+        pastHold.currentInitiative.name,
+        pastHold.currentInitiative.initiativeCount.toString(),
+        pastHold.currentInitiative.totalHealth,
+        pastHold.currentInitiative.currentHealth,
+        pastHold.currentInitiative.conditionsArray,
+        pastHold.currentInitiative.editedName,
+        pastHold.currentInitiative.editedInitiativeCount,
+        3.0);
   }
 
   /// _prevButtonPressed()
@@ -311,6 +353,7 @@ class _MyHomePageState extends State<MyHomePage> {
   void nextButtonPressed() {
     //A setState call to edit the cards with the new elevation
     setState(() => elevation = elevation);
+
     //
 
     //Store the index of the card we are moving away from
@@ -327,146 +370,96 @@ class _MyHomePageState extends State<MyHomePage> {
       time += 6;
     }
 
-    //Call the addElevation method with the index of the card we are looking at now and the card itself
-    addElevation(currentIndex, arr[currentIndex]);
+    //Add elevation to the card we are currently looking at
 
-    //Call the removeElevation method with the index of the card we just looked at and the card itself
-    // removeElevation(pastIndex, arr[pastIndex]);
+    //Create a hold variable to hold the current card so the card can be safely deleted
+    InitiativeCardContainer hold = arr[currentIndex];
+    //Delete the current card
+    arr.removeAt(currentIndex);
 
-    // setState(() => this.elevate = elevate);
-
-    //Store the index of the card we are moving away from
-    pastIndex = currentIndex;
-    //If we are not already at the last element in the array
-    if (currentIndex < numOfThings - 1) {
-      //Increment the index
-      currentIndex++;
-      //If we are already at the last element in the array
-    } else {
-      //'Loop' back to the front of the array
-      currentIndex = 0;
-    }
-
-    // Call the addElevation method with the index of the card we are looking at now and the card itself
+    //Rebuild a new card with all of the same properties as the old card with the added elevation
+    secondaryEditInitiativeCard(
+        hold.currentInitiative.name,
+        hold.currentInitiative.initiativeCount.toString(),
+        hold.currentInitiative.totalHealth,
+        hold.currentInitiative.currentHealth,
+        hold.currentInitiative.conditionsArray,
+        hold.currentInitiative.editedName,
+        hold.currentInitiative.editedInitiativeCount,
+        15.0);
     // addElevation(currentIndex, arr[currentIndex]);
 
-    // Call the removeElevation method with the index of the card we just looked at and the card itself
-    // removeElevation(pastIndex, arr[pastIndex]);
+    //Remove elevation from the card we were just looking at
+
+    //Create a hold variable to hold the current card so the card can be safely deleted
+    InitiativeCardContainer pastHold = arr[pastIndex];
+    //Delete the current card
+    arr.removeAt(pastIndex);
+
+    //Rebuild a new card with all of the same properties as the old card with the removed elevation
+    secondaryEditInitiativeCard(
+        pastHold.currentInitiative.name,
+        pastHold.currentInitiative.initiativeCount.toString(),
+        pastHold.currentInitiative.totalHealth,
+        pastHold.currentInitiative.currentHealth,
+        pastHold.currentInitiative.conditionsArray,
+        pastHold.currentInitiative.editedName,
+        pastHold.currentInitiative.editedInitiativeCount,
+        3.0);
   }
 
-  /// addElevation()
-  /// Parameters: The index of the Initiative card we are currently looking at as an int
-  ///             The Initiative card we are looking at as an object
-  /// Returns: N/A (void)
-  /// Description: Method responsible for adding elevation to current initiative card
-  void addElevation(int currentIndex, InitiativeCardContainer currentCard) {
-    Provider.of<StateManager>(context, listen: false).toggleIsActive();
-    // InitiativeCardContainer(currentCard.name, currentCard.hp, 75.0);
+  //Edit method that builds a new card after manual edits or changes in elevation
+  void secondaryEditInitiativeCard(
+      //Read in all necessary parameters
+      String name,
+      String init,
+      int? totalHealth,
+      int? currentHealth,
+      List<Condition>? conditionsArray,
+      String? editedName,
+      int? editedInitiativeCount,
+      double elevation) {
+    //Update the state
+    setState(() {
+      //Add a new card to the array with the given parameters
+      arr.add(InitiativeCardContainer.fromInitiative(
+          Initiative(
+              name: name,
+              initiativeCount: int.parse(init),
+              currentHealth: currentHealth,
+              conditionsArray: conditionsArray,
+              editedName: editedName,
+              editedInitiativeCount: (editedInitiativeCount)),
+          elevation));
+      arr.sort();
+    });
   }
 
-  /// removeElevation()
-  /// Parameters:The index of the last Initiative card we looked at as an int
-  ///             The last Initiative card we looked at as an object
-  /// Returns: N/A (void)
-  /// Description: Method responsible for removing elevation from card we just looked at, but are no longer looking at
-  void removeElevation(int pastIndex, InitiativeCardContainer pastCard) {
-    Provider.of<StateManager>(context, listen: false).toggleIsActive();
-  }
-
-  void _diceRollerMenu() {
-    log("Dice Roller Button Pressed");
-    showDialog(
-      context: context,
-      builder: (_) {
-        String diceOutput = "Result of roll goes here";
-        var numDiceController = TextEditingController();
-        var diceTypeController = TextEditingController();
-        var modifierController = TextEditingController();
-        return AlertDialog(
-          title: const Text('Dice Roller'),
-          content: SingleChildScrollView(
-              child: Column(
-            children: [
-              TextFormField(
-                controller: numDiceController,
-                decoration: InputDecoration(hintText: 'Number of Dice'),
-              ),
-              TextFormField(
-                controller: diceTypeController,
-                decoration: InputDecoration(
-                    hintText:
-                        'Dice Type (enter number of sides ONLY (ex: type 20 for a d20))'),
-              ),
-              TextFormField(
-                controller: modifierController,
-                decoration: InputDecoration(
-                    hintText: 'Modifier (type 0 for no modifier)'),
-              ),
-              Container(
-                child: Text(diceOutput),
-              ),
-            ],
-          )),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text('Cancel'),
-            ),
-            TextButton(
-                onPressed: () {
-                  int numDice = int.parse(numDiceController.text);
-                  int diceType = int.parse(diceTypeController.text);
-                  int diceModifier = int.parse(modifierController.text);
-
-                  setState(() {
-                    diceOutput = diceRoller(numDice, diceType, diceModifier);
-                  });
-                },
-                child: Text('Roll the Dice!'))
-          ],
-        );
-      },
-    );
-  }
-
-  String diceRoller(int numDice, int diceType, int diceModifier) {
-    log("Dice Rolled!");
-    int totalValue = 0;
-
-    if (numDice <= 0) {
-      log("invalid number of dice");
-      return "invalid number of dice";
-    }
-
-    //Set up the print statement (flutter always formats this to be basically unreadable)
-    String result = (numDice.toString() +
-        'd' +
-        diceType.toString() +
-        " + " +
-        diceModifier.toString() +
-        " = (");
-
-    //set up a for loop to roll the dice
-    for (var i = 1; i <= numDice; i++) {
-      var rolledDice = math.Random().nextInt(diceType) + 1;
-      //increment the total
-      totalValue += rolledDice;
-      //add dice value to result
-      String diceSpacing;
-      if (i == numDice) {
-        diceSpacing = ") ";
-      } else {
-        diceSpacing = ", ";
+  //Method to update the cards when the update cards button is pressed
+  void updateCards() {
+    //Loop over the entire array
+    for (int i = 0; i < arr.length; i++) {
+      //If the user edited the name or the initiative on the card
+      if (arr[i].currentInitiative.name !=
+              arr[i].currentInitiative.editedName.toString() ||
+          arr[i].currentInitiative.initiativeCount !=
+              arr[i].currentInitiative.editedInitiativeCount) {
+        //Create a hold variable to store the current card and allow it to be safely deleted
+        InitiativeCardContainer hold = arr[i];
+        //Delete the old card
+        arr.removeAt(i);
+        //Call the function to create a new card with the following parameters from the old card and the updated user parameters
+        secondaryEditInitiativeCard(
+            hold.currentInitiative.editedName.toString(),
+            hold.currentInitiative.editedInitiativeCount.toString(),
+            hold.currentInitiative.totalHealth,
+            hold.currentInitiative.currentHealth,
+            hold.currentInitiative.conditionsArray,
+            hold.currentInitiative.editedName,
+            hold.currentInitiative.editedInitiativeCount,
+            3.0);
+        break;
       }
-      result = (result + rolledDice.toString() + diceSpacing);
     }
-
-    //add the modifier
-    totalValue += diceModifier;
-    //get the result
-    result =
-        result + "+ " + diceModifier.toString() + " = " + totalValue.toString();
-    log(result);
-    return result;
   }
 }
