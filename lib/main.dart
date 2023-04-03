@@ -238,7 +238,8 @@ class _MyHomePageState extends State<MyHomePage> {
                   log("Get better ints, fucko");
                   return;
                 }
-                editInitiativeCard(name, initiative, int.parse(currentHealth), int.parse(maxHealth));
+                editInitiativeCard(name, initiative, int.parse(currentHealth),
+                    int.parse(maxHealth));
                 log(name);
                 log(initiative);
                 Navigator.pop(context);
@@ -252,7 +253,8 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
 //TODO: this is dumb. Too Bad!
-  void editInitiativeCard(String name, String init, int currentHealth, int maxHealth) {
+  void editInitiativeCard(
+      String name, String init, int currentHealth, int maxHealth) {
     setState(() {
       if (numOfThings == 0) {
         elevation = 15.0;
@@ -260,7 +262,12 @@ class _MyHomePageState extends State<MyHomePage> {
         elevation = 3.0;
       }
       arr.add(InitiativeCardContainer.fromInitiative(
-          Initiative(name: name, initiativeCount: int.parse(init), currentHealth: currentHealth, totalHealth: maxHealth), elevation));
+          Initiative(
+              name: name,
+              initiativeCount: int.parse(init),
+              currentHealth: currentHealth,
+              totalHealth: maxHealth),
+          elevation));
       arr.sort();
       numOfThings++;
     });
@@ -477,7 +484,7 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
-    void _diceRollerMenu() {
+  void _diceRollerMenu() {
     log("Dice Roller Button Pressed");
     showDialog(
       context: context,
@@ -573,5 +580,4 @@ class _MyHomePageState extends State<MyHomePage> {
     log(result);
     return result;
   }
-
 }
