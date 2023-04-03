@@ -1,5 +1,6 @@
 import 'dart:developer'; //This import gives us access to the log() function. It can be safely removed when all buttons are properly implemented.
 import 'package:flutter/material.dart';
+import 'condition.dart';
 import 'initiative_card.dart';
 import 'initiative.dart';
 
@@ -47,8 +48,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
   late TextEditingController controller;
 
-  //String that will hold the name inputted by the user
-
   @override
   void initState() {
     super.initState();
@@ -63,10 +62,12 @@ class _MyHomePageState extends State<MyHomePage> {
     super.dispose();
   }
 
-  //String that will hold the Initiative inputted by the user
+  //Strings to hold user inputs
   String name = '';
   String initiative = '';
+  //Double that indicates current elevation
   double elevation = 3.0;
+  //Ints to keep track of current spot in the array, current round number, and current time
   int currentIndex = 0;
   int roundNumber = 1;
   int time = 0;
@@ -126,6 +127,14 @@ class _MyHomePageState extends State<MyHomePage> {
             child: IconButton(
                 onPressed: nextButtonPressed,
                 tooltip: "Next round",
+                icon: const Icon(Icons.arrow_forward)),
+          ),
+          //Button that will apply changes to edited cards on press
+          Align(
+            alignment: Alignment.center,
+            child: IconButton(
+                onPressed: updateCards,
+                tooltip: "Update Cards",
                 icon: const Icon(Icons.arrow_forward)),
           ),
           ButtonBar(
@@ -217,6 +226,11 @@ class _MyHomePageState extends State<MyHomePage> {
 //TODO: this is dumb. Too Bad!
   void editInitiativeCard(String name, String init) {
     setState(() {
+      if (numOfThings == 0) {
+        elevation = 15.0;
+      } else {
+        elevation = 3.0;
+      }
       arr.add(InitiativeCardContainer.fromInitiative(
           Initiative(name: name, initiativeCount: int.parse(init)), elevation));
       arr.sort();
@@ -256,11 +270,39 @@ class _MyHomePageState extends State<MyHomePage> {
       time -= 6;
     }
 
-    //Call the addElevation method with the index of the card we are looking at now and the card itself
-    addElevation(currentIndex, arr[currentIndex]);
+    //Add the elevation to the card we want to look at now
 
-    //Call the removeElevation method with the index of the card we just looked at and the card itself
-    removeElevation(pastIndex, arr[pastIndex]);
+    //Create a hold variable to hold the current card so the card can be safely deleted
+    InitiativeCardContainer hold = arr[currentIndex];
+    //Delete the current card
+    arr.removeAt(currentIndex);
+    //Rebuild a new card with all of the same properties as the old card with the added elevation
+    secondaryEditInitiativeCard(
+        hold.currentInitiative.name,
+        hold.currentInitiative.initiativeCount.toString(),
+        hold.currentInitiative.totalHealth,
+        hold.currentInitiative.currentHealth,
+        hold.currentInitiative.conditionsArray,
+        hold.currentInitiative.editedName,
+        hold.currentInitiative.editedInitiativeCount,
+        15.0);
+
+    //Remove the elevation of the card we just looked at
+
+    //Create a hold variable to hold the current card so the card can be safely deleted
+    InitiativeCardContainer pastHold = arr[pastIndex];
+    //Delete the current card
+    arr.removeAt(pastIndex);
+    //Rebuild a new card with all of the same properties as the old card with the removed elevation
+    secondaryEditInitiativeCard(
+        pastHold.currentInitiative.name,
+        pastHold.currentInitiative.initiativeCount.toString(),
+        pastHold.currentInitiative.totalHealth,
+        pastHold.currentInitiative.currentHealth,
+        pastHold.currentInitiative.conditionsArray,
+        pastHold.currentInitiative.editedName,
+        pastHold.currentInitiative.editedInitiativeCount,
+        3.0);
   }
 
   /// _prevButtonPressed()
@@ -271,6 +313,7 @@ class _MyHomePageState extends State<MyHomePage> {
   void nextButtonPressed() {
     //A setState call to edit the cards with the new elevation
     setState(() => elevation = elevation);
+
     //
 
     //Store the index of the card we are moving away from
@@ -287,53 +330,96 @@ class _MyHomePageState extends State<MyHomePage> {
       time += 6;
     }
 
-    //Call the addElevation method with the index of the card we are looking at now and the card itself
+    //Add elevation to the card we are currently looking at
+
+    //Create a hold variable to hold the current card so the card can be safely deleted
+    InitiativeCardContainer hold = arr[currentIndex];
+    //Delete the current card
+    arr.removeAt(currentIndex);
+
+    //Rebuild a new card with all of the same properties as the old card with the added elevation
+    secondaryEditInitiativeCard(
+        hold.currentInitiative.name,
+        hold.currentInitiative.initiativeCount.toString(),
+        hold.currentInitiative.totalHealth,
+        hold.currentInitiative.currentHealth,
+        hold.currentInitiative.conditionsArray,
+        hold.currentInitiative.editedName,
+        hold.currentInitiative.editedInitiativeCount,
+        15.0);
+    // addElevation(currentIndex, arr[currentIndex]);
+
+    //Remove elevation from the card we were just looking at
+
+    //Create a hold variable to hold the current card so the card can be safely deleted
+    InitiativeCardContainer pastHold = arr[pastIndex];
+    //Delete the current card
+    arr.removeAt(pastIndex);
+
+    //Rebuild a new card with all of the same properties as the old card with the removed elevation
+    secondaryEditInitiativeCard(
+        pastHold.currentInitiative.name,
+        pastHold.currentInitiative.initiativeCount.toString(),
+        pastHold.currentInitiative.totalHealth,
+        pastHold.currentInitiative.currentHealth,
+        pastHold.currentInitiative.conditionsArray,
+        pastHold.currentInitiative.editedName,
+        pastHold.currentInitiative.editedInitiativeCount,
+        3.0);
+  }
+
+  //Edit method that builds a new card after manual edits or changes in elevation
+  void secondaryEditInitiativeCard(
+      //Read in all necessary parameters
+      String name,
+      String init,
+      int? totalHealth,
+      int? currentHealth,
+      List<Condition>? conditionsArray,
+      String? editedName,
+      int? editedInitiativeCount,
+      double elevation) {
+    //Update the state
     setState(() {
-      arr[currentIndex].elevation = 15;
+      //Add a new card to the array with the given parameters
+      arr.add(InitiativeCardContainer.fromInitiative(
+          Initiative(
+              name: name,
+              initiativeCount: int.parse(init),
+              currentHealth: currentHealth,
+              conditionsArray: conditionsArray,
+              editedName: editedName,
+              editedInitiativeCount: (editedInitiativeCount)),
+          elevation));
+      arr.sort();
     });
-    // addElevation(currentIndex, arr[currentIndex]);
-
-    //Call the removeElevation method with the index of the card we just looked at and the card itself
-    arr[pastIndex].elevation = 3;
-    // removeElevation(pastIndex, arr[pastIndex]);
-
-    // setState(() => this.elevate = elevate);
-
-    // //Store the index of the card we are moving away from
-    // int pastIndex = currentIndex;
-    // //If we are not already at the last element in the array
-    // if (currentIndex < numOfThings - 1) {
-    //   //Increment the index
-    //   currentIndex++;
-    //   //If we are already at the last element in the array
-    // } else {
-    //   //'Loop' back to the front of the array
-    //   currentIndex = 0;
-    // }
-
-    // //Call the addElevation method with the index of the card we are looking at now and the card itself
-    // addElevation(currentIndex, arr[currentIndex]);
-
-    // //Call the removeElevation method with the index of the card we just looked at and the card itself
-    // removeElevation(pastIndex, arr[pastIndex]);
   }
 
-  /// addElevation()
-  /// Parameters: The index of the Initiative card we are currently looking at as an int
-  ///             The Initiative card we are looking at as an object
-  /// Returns: N/A (void)
-  /// Description: Method responsible for adding elevation to current initiative card
-  void addElevation(int currentIndex, InitiativeCardContainer currentCard) {
-    currentCard.elevation = 15;
-    // InitiativeCardContainer(currentCard.name, currentCard.hp, 75.0);
-  }
-
-  /// removeElevation()
-  /// Parameters:The index of the last Initiative card we looked at as an int
-  ///             The last Initiative card we looked at as an object
-  /// Returns: N/A (void)
-  /// Description: Method responsible for removing elevation from card we just looked at, but are no longer looking at
-  void removeElevation(int pastIndex, InitiativeCardContainer pastCard) {
-    pastCard.elevation = 3;
+  //Method to update the cards when the update cards button is pressed
+  void updateCards() {
+    //Loop over the entire array
+    for (int i = 0; i < arr.length; i++) {
+      //If the user edited the name or the initiative on the card
+      if (arr[i].currentInitiative.name !=
+              arr[i].currentInitiative.editedName.toString() ||
+          arr[i].currentInitiative.initiativeCount !=
+              arr[i].currentInitiative.editedInitiativeCount) {
+        //Create a hold variable to store the current card and allow it to be safely deleted
+        InitiativeCardContainer hold = arr[i];
+        //Delete the old card
+        arr.removeAt(i);
+        //Call the function to create a new card with the following parameters from the old card and the updated user parameters
+        secondaryEditInitiativeCard(
+            hold.currentInitiative.editedName.toString(),
+            hold.currentInitiative.editedInitiativeCount.toString(),
+            hold.currentInitiative.totalHealth,
+            hold.currentInitiative.currentHealth,
+            hold.currentInitiative.conditionsArray,
+            hold.currentInitiative.editedName,
+            hold.currentInitiative.editedInitiativeCount,
+            3.0);
+        break;
+      }
+    }
   }
 }

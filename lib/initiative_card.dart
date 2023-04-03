@@ -1,20 +1,18 @@
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:software_engineering_project/condition.dart';
 import 'initiative.dart';
 
 // ignore: must_be_immutable
 class InitiativeCard extends StatefulWidget {
-  // late String name;
-  // late String hp;
-  InitiativeCard.fromInitiative(this.currentInitiative, this.elevation, {super.key});
+  InitiativeCard.fromInitiative(this.currentInitiative, this.elevation,
+      {super.key});
   final Initiative currentInitiative;
 
   // InitiativeCard(this.name, this.hp, this.elevate, {super.key});
   double elevation;
 
   // This declaration makes any parameters needed available to instances of the class. The Java equivalent is a constructor method
-  // String hp;
-  // String name;
 
   @override
   State<InitiativeCard> createState() => _InitiativeCardState();
@@ -41,64 +39,73 @@ class _InitiativeCardState extends State<InitiativeCard> {
         Padding(
             padding: const EdgeInsets.fromLTRB(8, 8, 0, 8),
             child: SizedBox(
-              width: screenWidth *
-                  0.6, //Uses the MediaQuery defined above to set the card size to 60% of the window (this is to have room for the Status Effects panel without having to do something disgusting like dynamic resizing of the cards based on status effects panel state).
-              child: Card(
+                width: screenWidth *
+                    0.6, //Uses the MediaQuery defined above to set the card size to 60% of the window (this is to have room for the Status Effects panel without having to do something disgusting like dynamic resizing of the cards based on status effects panel state).
+
+                child: Card(
                   elevation: widget.elevation,
-                  child: Container(
-                      padding: const EdgeInsets.all(8),
-                      child: Row(
-                        children: [
-                          Column(
+                  child: InkWell(
+                      //When the card is clicked on
+                      onTap: () {
+                        //Call the method that will pop up with a dialog box
+                        showDialogWithFields();
+                      },
+                      child: Container(
+                          padding: const EdgeInsets.all(8),
+                          child: Row(
                             children: [
-                              const Text("Initiative"),
-                              CircleAvatar(
-                                // backgroundColor: Colors.amber,
-                                child: Text("${widget.currentInitiative.initiativeCount}"),
+                              Column(
+                                children: [
+                                  const Text("Initiative"),
+                                  CircleAvatar(
+                                    // backgroundColor: Colors.amber,
+                                    child: Text(
+                                        "${widget.currentInitiative.initiativeCount}"),
+                                  )
+                                ],
+                              ),
+                              Expanded(
+                                child: Column(children: [
+                                  Align(
+                                    alignment: Alignment.center,
+                                    child: Text(widget.currentInitiative.name),
+                                  ),
+                                  //TODO: Do the health bar (Which is probably going to Suck to do).
+                                  DecoratedBox(
+                                    decoration: BoxDecoration(
+                                        border: Border.all(
+                                            color: Colors.black,
+                                            style: BorderStyle.solid)),
+                                    child: const Align(child: Text("feck")),
+                                  ),
+                                ]),
+                              ),
+
+                              // Column(
+                              //   children: [
+                              //     const Text("Abilities"),
+                              //     IconButton(
+                              //         onPressed: _showAbilitiesPanel,
+                              //         icon: const Icon(Icons.workspaces_outline))
+                              //   ],
+                              // ),
+                              const VerticalDivider(),
+
+                              Column(
+                                children: [
+                                  const Text(
+                                      "Effects"), //Should consider renaming this to "Status Effects" for clarity
+                                  IconButton(
+                                      onPressed: _showConditionsPanel,
+                                      icon: (_shouldDisplayConditionsCard
+                                          ? const Icon(Icons.star_rounded)
+                                          : const Icon(
+                                              Icons.star_border_rounded)))
+                                ],
                               )
                             ],
-                          ),
-                          Expanded(
-                            child: Column(children: [
-                              Align(
-                                alignment: Alignment.center,
-                                child: Text(widget.currentInitiative.name),
-                              ),
-                              //TODO: Do the health bar (Which is probably going to Suck to do).
-                              DecoratedBox(
-                                decoration: BoxDecoration(
-                                    border: Border.all(
-                                        color: Colors.black,
-                                        style: BorderStyle.solid)),
-                                child: const Align(child: Text("feck")),
-                              ),
-                            ]),
-                          ),
-
-                          // Column(
-                          //   children: [
-                          //     const Text("Abilities"),
-                          //     IconButton(
-                          //         onPressed: _showAbilitiesPanel,
-                          //         icon: const Icon(Icons.workspaces_outline))
-                          //   ],
-                          // ),
-                          const VerticalDivider(),
-
-                          Column(
-                            children: [
-                              const Text(
-                                  "Effects"), //Should consider renaming this to "Status Effects" for clarity
-                              IconButton(
-                                  onPressed: _showConditionsPanel,
-                                  icon: (_shouldDisplayConditionsCard
-                                      ? const Icon(Icons.star_rounded)
-                                      : const Icon(Icons.star_border_rounded)))
-                            ],
-                          )
-                        ],
-                      ))),
-            )),
+                          ))),
+                ))),
         Visibility(
           visible: _shouldDisplayConditionsCard,
           child: Container(
@@ -124,8 +131,11 @@ class _InitiativeCardState extends State<InitiativeCard> {
                             alignment: Alignment.centerLeft,
                             child: Padding(
                               padding: const EdgeInsets.all(8.0),
-                              child: Column (
-                                children: widget.currentInitiative.conditionsArray!.map((e) => Text(e.toString())).toList(),
+                              child: Column(
+                                children: widget
+                                    .currentInitiative.conditionsArray!
+                                    .map((e) => Text(e.toString()))
+                                    .toList(),
                               ),
                             ))
                       ],
@@ -152,6 +162,56 @@ class _InitiativeCardState extends State<InitiativeCard> {
     });
   }
 
+//Method that pops up with a dialog box that allows users to edit info
+  void showDialogWithFields() {
+    showDialog(
+      context: context,
+      builder: (_) {
+        var nameController = TextEditingController();
+        var initiativeController = TextEditingController();
+        return AlertDialog(
+          title: const Text('Edit Player Info'),
+          content: SingleChildScrollView(
+              child: Column(
+            children: [
+              TextFormField(
+                controller: nameController,
+                decoration: const InputDecoration(hintText: 'Name'),
+              ),
+              TextFormField(
+                controller: initiativeController,
+                decoration: const InputDecoration(hintText: 'Initiative'),
+              ),
+            ],
+          )),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              //When the user submits their text inputs
+              onPressed: () {
+                //Save the inputted name into a variable
+                var name = nameController.text;
+                //Save the inputted initiative into a variable
+                var initiative = initiativeController.text;
+
+                //Update the corresponding initative with these name and initiative changes
+                widget.currentInitiative.setEditedName(name);
+                widget.currentInitiative
+                    .setEditedInitiativeCount(int.parse(initiative));
+
+                Navigator.pop(context);
+              },
+              child: const Text('Send'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   /// showAbilitiesPanel()
   /// Parameters:
   /// Returns: N/A (void)
@@ -169,22 +229,28 @@ class _InitiativeCardState extends State<InitiativeCard> {
 
   List<Condition> initConditionsArray() {
     List<Condition> conditionsArray = [];
-    conditionsArray.add(Condition(name: "Blinded", duration: 10, elapsedTime: 5));
-    conditionsArray.add(Condition(name: "Frightened", duration: 5, elapsedTime: 2));
-    conditionsArray.add(Condition(name: "Exhaustion", duration: 7, elapsedTime: 5));
-    conditionsArray.add(Condition(name: "Restrained", duration: 12, elapsedTime: 4));
+    conditionsArray
+        .add(Condition(name: "Blinded", duration: 10, elapsedTime: 5));
+    conditionsArray
+        .add(Condition(name: "Frightened", duration: 5, elapsedTime: 2));
+    conditionsArray
+        .add(Condition(name: "Exhaustion", duration: 7, elapsedTime: 5));
+    conditionsArray
+        .add(Condition(name: "Restrained", duration: 12, elapsedTime: 4));
     return conditionsArray;
   }
 }
 
 // ignore: must_be_immutable
-class InitiativeCardContainer extends StatelessWidget implements Comparable<InitiativeCardContainer> {
+class InitiativeCardContainer extends StatelessWidget
+    implements Comparable<InitiativeCardContainer> {
   // This declaration makes any parameters needed available to instances of the class. The Java equivalent is a constructor method
   // const InitiativeCardContainer({
   //   Key? key,
   // }) : super(key: key);
 
-  InitiativeCardContainer.fromInitiative(this.currentInitiative, this.elevation, {super.key});
+  InitiativeCardContainer.fromInitiative(this.currentInitiative, this.elevation,
+      {super.key});
   final Initiative currentInitiative;
   double elevation;
 
@@ -198,20 +264,20 @@ class InitiativeCardContainer extends StatelessWidget implements Comparable<Init
     return Container(
       alignment: Alignment.centerLeft,
       margin: const EdgeInsets.all(10),
-      child: 
-      InitiativeCard.fromInitiative(currentInitiative, elevation),
+      child: InitiativeCard.fromInitiative(currentInitiative, elevation),
     );
   }
 
   @override
   int compareTo(InitiativeCardContainer other) {
-    if (currentInitiative.initiativeCount > other.currentInitiative.initiativeCount) {
+    if (currentInitiative.initiativeCount >
+        other.currentInitiative.initiativeCount) {
       return -1;
-    } else if (currentInitiative.initiativeCount < other.currentInitiative.initiativeCount) {
+    } else if (currentInitiative.initiativeCount <
+        other.currentInitiative.initiativeCount) {
       return 1;
     } else {
       return 0;
     }
   }
-
 }
