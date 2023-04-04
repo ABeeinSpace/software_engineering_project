@@ -157,19 +157,21 @@ class _MyHomePageState extends State<MyHomePage> {
                 tooltip: "Update Cards",
                 icon: const Icon(Icons.check)),
           ),
-          PopupMenuButton(
-            onSelected: (value) async {
-              switch (value) {
-                case 'Dice Roller':
-                  _diceRollerMenu();
-                  break;
-                default:
-                  break;
-              }
-            },
-            itemBuilder: (context) {
+          PopupMenuButton(onSelected: (value) async {
+            switch (value) {
+              case 'Dice Roller':
+                _diceRollerMenu();
+                break;
+              case 'Starman':
+                toggleStarman();
+                break;
+              default:
+                break;
+            }
+          }, itemBuilder: (context) {
             return [
-              const PopupMenuItem(value: 'Dice Roller', child: Text("Dice Roller")),
+              const PopupMenuItem(
+                  value: 'Dice Roller', child: Text("Dice Roller")),
               const PopupMenuItem(value: 'Starman', child: Text("Starman")),
             ];
           }),
@@ -599,5 +601,10 @@ class _MyHomePageState extends State<MyHomePage> {
         result + "+ " + diceModifier.toString() + " = " + totalValue.toString();
     log(result);
     return result;
+  }
+
+  void toggleStarman() {
+    ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Bowie, eh? Excellent taste")));
   }
 }
