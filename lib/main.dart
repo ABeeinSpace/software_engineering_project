@@ -28,6 +28,7 @@ class MyApp extends StatelessWidget {
           return Consumer<StateManager>(builder: (context, notifier, child) {
             return MaterialApp(
               title: 'Combat Scribe',
+              debugShowCheckedModeBanner: false,
               theme: ThemeData(
                 useMaterial3: true,
                 primarySwatch: Colors.purple,
@@ -156,14 +157,22 @@ class _MyHomePageState extends State<MyHomePage> {
                 tooltip: "Update Cards",
                 icon: const Icon(Icons.check)),
           ),
-          ButtonBar(
-            children: [
-              // This button will display a drop-down to enable addition of prefab monsters in addition to custom initiatives
-              IconButton(
-                  onPressed: _settingsButtonPressed,
-                  icon: const Icon(Icons.settings))
-            ],
-          ),
+          PopupMenuButton(
+            onSelected: (value) async {
+              switch (value) {
+                case 'Dice Roller':
+                  _diceRollerMenu();
+                  break;
+                default:
+                  break;
+              }
+            },
+            itemBuilder: (context) {
+            return [
+              const PopupMenuItem(value: 'Dice Roller', child: Text("Dice Roller")),
+              const PopupMenuItem(value: 'Starman', child: Text("Starman")),
+            ];
+          }),
         ],
       ),
 
@@ -265,7 +274,7 @@ class _MyHomePageState extends State<MyHomePage> {
       String name, String init, int currentHealth, int maxHealth) {
     setState(() {
       if (numOfThings == 0) {
-        elevation = 15.0;
+        elevation = 75.0;
       } else {
         elevation = 3.0;
       }
@@ -536,7 +545,6 @@ class _MyHomePageState extends State<MyHomePage> {
                   int diceModifier = int.parse(modifierController.text);
 
                   diceOutput = diceRoller(numDice, diceType, diceModifier);
-                  Navigator.pop(context);
                   await Clipboard.setData(ClipboardData(text: diceOutput))
                       .then((_) => {
                             ScaffoldMessenger.of(context).showSnackBar(

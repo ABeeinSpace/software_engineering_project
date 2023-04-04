@@ -87,7 +87,7 @@ class _InitiativeCardState extends State<InitiativeCard> {
                                   //TODO: Do the health bar (Which is probably going to Suck to do).
                                   Align(
                                       child: Text(
-                                          "Health: ${widget.currentInitiative.currentHealth} / ${widget.currentInitiative.totalHealth}")),
+                                          "Health: ${widget.currentInitiative.currentHealth} / ${widget.currentInitiative.totalHealth}"))
                                 ]),
                               ),
 
@@ -264,7 +264,7 @@ class _InitiativeCardState extends State<InitiativeCard> {
   void activateCard() {
     setState(() {
       if (Provider.of<StateManager>(context, listen: false).isActive) {
-        widget.elevation = 15.0;
+        widget.elevation = 75.0;
       } else {
         widget.elevation = 3.0;
       }
