@@ -3,6 +3,7 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:software_engineering_project/StarmanProvider.dart';
 import 'condition.dart';
 import 'package:software_engineering_project/StateManager.dart';
 import 'initiative_card.dart';
@@ -23,9 +24,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-        create: (BuildContext context) => StateManager(),
+        create: (BuildContext context) => StarmanProvider(),
         builder: (context, provider) {
-          return Consumer<StateManager>(builder: (context, notifier, child) {
+          return Consumer<StarmanProvider>(builder: (context, notifier, child) {
             return MaterialApp(
               title: 'Combat Scribe',
               debugShowCheckedModeBanner: false,
@@ -276,7 +277,12 @@ class _MyHomePageState extends State<MyHomePage> {
       String name, String init, int currentHealth, int maxHealth) {
     setState(() {
       if (numOfThings == 0) {
-        elevation = 75.0;
+        if (Provider.of<StarmanProvider>(context, listen: false).bowie ==
+            true) {
+          elevation = 75.0;
+        } else {
+          elevation = 15.0;
+        }
       } else {
         elevation = 3.0;
       }
@@ -356,15 +362,27 @@ class _MyHomePageState extends State<MyHomePage> {
     //Delete the current card
     arr.removeAt(currentIndex);
     //Rebuild a new card with all of the same properties as the old card with the added elevation
-    secondaryEditInitiativeCard(
-        hold.currentInitiative.name,
-        hold.currentInitiative.initiativeCount,
-        hold.currentInitiative.totalHealth,
-        hold.currentInitiative.currentHealth,
-        hold.currentInitiative.conditionsArray,
-        hold.currentInitiative.editedName,
-        hold.currentInitiative.editedInitiativeCount,
-        15.0);
+    if (Provider.of<StarmanProvider>(context).bowie) {
+      secondaryEditInitiativeCard(
+          hold.currentInitiative.name,
+          hold.currentInitiative.initiativeCount,
+          hold.currentInitiative.totalHealth,
+          hold.currentInitiative.currentHealth,
+          hold.currentInitiative.conditionsArray,
+          hold.currentInitiative.editedName,
+          hold.currentInitiative.editedInitiativeCount,
+          75.0);
+    } else {
+      secondaryEditInitiativeCard(
+          hold.currentInitiative.name,
+          hold.currentInitiative.initiativeCount,
+          hold.currentInitiative.totalHealth,
+          hold.currentInitiative.currentHealth,
+          hold.currentInitiative.conditionsArray,
+          hold.currentInitiative.editedName,
+          hold.currentInitiative.editedInitiativeCount,
+          15.0);
+    }
 
     //Remove the elevation of the card we just looked at
 
@@ -483,22 +501,25 @@ class _MyHomePageState extends State<MyHomePage> {
       if (arr[i].currentInitiative.name !=
               arr[i].currentInitiative.editedName.toString() ||
           arr[i].currentInitiative.initiativeCount !=
-              arr[i].currentInitiative.editedInitiativeCount) {
+                  arr[i].currentInitiative.editedInitiativeCount &&
+              arr[i].currentInitiative.editedInitiativeCount != null) {
         //Create a hold variable to store the current card and allow it to be safely deleted
         InitiativeCardContainer hold = arr[i];
         //Delete the old card
-        arr.removeAt(i);
         //Call the function to create a new card with the following parameters from the old card and the updated user parameters
-        secondaryEditInitiativeCard(
-            hold.currentInitiative.editedName.toString(),
-            hold.currentInitiative.editedInitiativeCount!,
-            hold.currentInitiative.totalHealth,
-            hold.currentInitiative.currentHealth,
-            hold.currentInitiative.conditionsArray,
-            hold.currentInitiative.editedName,
-            hold.currentInitiative.editedInitiativeCount,
-            3.0);
-        break;
+        if (hold.currentInitiative.editedInitiativeCount != null) {
+          arr.removeAt(i);
+          secondaryEditInitiativeCard(
+              hold.currentInitiative.editedName.toString(),
+              hold.currentInitiative.editedInitiativeCount!,
+              hold.currentInitiative.totalHealth,
+              hold.currentInitiative.currentHealth,
+              hold.currentInitiative.conditionsArray,
+              hold.currentInitiative.editedName,
+              hold.currentInitiative.editedInitiativeCount,
+              3.0);
+          break;
+        }
       }
     }
   }

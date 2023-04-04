@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:software_engineering_project/condition.dart';
+import 'package:software_engineering_project/StarmanProvider.dart';
 import 'StateManager.dart';
 import 'initiative.dart';
 
@@ -24,7 +25,7 @@ class InitiativeCard extends StatefulWidget {
 class _InitiativeCardState extends State<InitiativeCard> {
   bool _shouldDisplayConditionsCard = false;
   bool _shouldDisplayAbilitiesCard = false;
-  late StateManager _elevationInfoProvider;
+  late StarmanProvider _elevationInfoProvider;
   bool isCardsTurn = false;
 
   @override
@@ -32,7 +33,7 @@ class _InitiativeCardState extends State<InitiativeCard> {
   initState() {
     super.initState();
 
-    _elevationInfoProvider = context.read<StateManager>();
+    _elevationInfoProvider = context.read<StarmanProvider>();
     _elevationInfoProvider.addListener(activateCard);
   }
 
@@ -227,9 +228,11 @@ class _InitiativeCardState extends State<InitiativeCard> {
                 var initiative = initiativeController.text;
 
                 //Update the corresponding initative with these name and initiative changes
+                if (initiative != "null") {
                 widget.currentInitiative.setEditedName(name);
                 widget.currentInitiative
                     .setEditedInitiativeCount(int.parse(initiative));
+                }
 
                 Navigator.pop(context);
               },
@@ -264,7 +267,7 @@ class _InitiativeCardState extends State<InitiativeCard> {
   void activateCard() {
     setState(() {
       if (Provider.of<StateManager>(context, listen: false).isActive) {
-        widget.elevation = 75.0;
+        widget.elevation = 15.0;
       } else {
         widget.elevation = 3.0;
       }
