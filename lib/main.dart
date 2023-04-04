@@ -639,6 +639,6 @@ class _MyHomePageState extends State<MyHomePage> {
     ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("Bowie, eh? Excellent taste")));
 
-    Provider.of<StarmanProvider>(context, listen: false).toggleIsActive();
+    Provider.of<StarmanProvider>(context, listen: false).toggleStarman();
   }
 }

@@ -7,11 +7,11 @@ class StarmanProvider extends ChangeNotifier {
     this.bowie = false,
   });
 
-  ///toggleIsActive()
+  ///toggleStarman()
   ///Parameters: N/A
   ///Returns: Nothing (void return)
   ///description: Toggles the isActive state on or off
-  void toggleIsActive() {
+  void toggleStarman() {
     if (bowie == false) {
       bowie = true;
     } else {
