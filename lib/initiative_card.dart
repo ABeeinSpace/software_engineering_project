@@ -266,7 +266,7 @@ class _InitiativeCardState extends State<InitiativeCard> {
 
   void activateCard() {
     setState(() {
-      if (Provider.of<StateManager>(context, listen: false).isActive) {
+      if (Provider.of<StarmanProvider>(context, listen: false).bowie) {
         widget.elevation = 15.0;
       } else {
         widget.elevation = 3.0;

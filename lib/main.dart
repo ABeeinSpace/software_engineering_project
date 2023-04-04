@@ -183,8 +183,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
       // Start of Body
 
-      body: Column(children: [
-        SingleChildScrollView(
+      body: Container(
+        child: SingleChildScrollView(
           padding: const EdgeInsets.fromLTRB(0, 8, 0, 0),
           child: Column(
               textDirection: TextDirection.ltr,
@@ -192,7 +192,7 @@ class _MyHomePageState extends State<MyHomePage> {
               // crossAxisAlignment: CrossAxisAlignment.start,
               children: arr),
         ),
-      ]),
+      ),
 
       floatingActionButton: FloatingActionButton.extended(
         ///When the add initative button is pressed, open a dialog for the user to input their name
@@ -362,7 +362,7 @@ class _MyHomePageState extends State<MyHomePage> {
     //Delete the current card
     arr.removeAt(currentIndex);
     //Rebuild a new card with all of the same properties as the old card with the added elevation
-    if (Provider.of<StarmanProvider>(context).bowie) {
+    if (Provider.of<StarmanProvider>(context, listen: false).bowie == true) {
       secondaryEditInitiativeCard(
           hold.currentInitiative.name,
           hold.currentInitiative.initiativeCount,
@@ -434,16 +434,27 @@ class _MyHomePageState extends State<MyHomePage> {
     //Delete the current card
     arr.removeAt(currentIndex);
 
-    //Rebuild a new card with all of the same properties as the old card with the added elevation
-    secondaryEditInitiativeCard(
-        hold.currentInitiative.name,
-        hold.currentInitiative.initiativeCount,
-        hold.currentInitiative.totalHealth,
-        hold.currentInitiative.currentHealth,
-        hold.currentInitiative.conditionsArray,
-        hold.currentInitiative.editedName,
-        hold.currentInitiative.editedInitiativeCount,
-        15.0);
+    if (Provider.of<StarmanProvider>(context, listen: false).bowie == true) {
+      secondaryEditInitiativeCard(
+          hold.currentInitiative.name,
+          hold.currentInitiative.initiativeCount,
+          hold.currentInitiative.totalHealth,
+          hold.currentInitiative.currentHealth,
+          hold.currentInitiative.conditionsArray,
+          hold.currentInitiative.editedName,
+          hold.currentInitiative.editedInitiativeCount,
+          75.0);
+    } else {
+      secondaryEditInitiativeCard(
+          hold.currentInitiative.name,
+          hold.currentInitiative.initiativeCount,
+          hold.currentInitiative.totalHealth,
+          hold.currentInitiative.currentHealth,
+          hold.currentInitiative.conditionsArray,
+          hold.currentInitiative.editedName,
+          hold.currentInitiative.editedInitiativeCount,
+          15.0);
+    }
     // addElevation(currentIndex, arr[currentIndex]);
 
     //Remove elevation from the card we were just looking at
@@ -627,5 +638,7 @@ class _MyHomePageState extends State<MyHomePage> {
   void toggleStarman() {
     ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("Bowie, eh? Excellent taste")));
+
+    Provider.of<StarmanProvider>(context, listen: false).toggleIsActive();
   }
 }
