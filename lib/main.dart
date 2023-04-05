@@ -5,7 +5,6 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:software_engineering_project/StarmanProvider.dart';
 import 'condition.dart';
-import 'package:software_engineering_project/StateManager.dart';
 import 'initiative_card.dart';
 import 'initiative.dart';
 
@@ -146,7 +145,7 @@ class _MyHomePageState extends State<MyHomePage> {
           Align(
             alignment: Alignment.center,
             child: IconButton(
-                onPressed: nextButtonPressed,
+                onPressed: _nextButtonPressed,
                 tooltip: "Next round",
                 icon: const Icon(Icons.arrow_forward)),
           ),
@@ -183,33 +182,34 @@ class _MyHomePageState extends State<MyHomePage> {
 
       // Start of Body
 
-      body: Container(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.fromLTRB(0, 8, 0, 0),
-          child: Column(
-              textDirection: TextDirection.ltr,
-              mainAxisAlignment: MainAxisAlignment.start,
-              // crossAxisAlignment: CrossAxisAlignment.start,
-              children: arr),
-        ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.fromLTRB(0, 8, 0, 0),
+        child: Column(
+            textDirection: TextDirection.ltr,
+            mainAxisAlignment: MainAxisAlignment.start,
+            // crossAxisAlignment: CrossAxisAlignment.start,
+            children: arr),
       ),
 
       floatingActionButton: FloatingActionButton.extended(
         ///When the add initative button is pressed, open a dialog for the user to input their name
         onPressed: () async {
           log("Button Pressed!");
-          showDialogWithFields();
+          showAddCardDialog();
         },
         icon: const Icon(Icons.add),
         label: const Text("Add Initiative"),
       ), // This trailing comma makes auto-formatting nicer for build methods.
-      // We should consider making the FAB display a pop-up menu to enable prefab monster addition like the button in the top of the window.
 
       // End of Body
     );
   }
 
-  void showDialogWithFields() {
+  /// showAddCardDialog()
+  /// Parameters: None
+  /// Returns: N/A (void)
+  /// Description: Method responsible for showing the dialog box in which the user can edit initiative blocks
+  void showAddCardDialog() {
     showDialog(
       context: context,
       builder: (_) {
@@ -249,16 +249,17 @@ class _MyHomePageState extends State<MyHomePage> {
               onPressed: () {
                 var name = nameController.text;
                 var initiative = initiativeController.text;
+                int initiativeInt;
                 var currentHealth = currentHealthController.text;
                 var maxHealth = maxHealthController.text;
                 // TODO: Actual form field validation
                 try {
-                  int.parse(initiative);
+                  initiativeInt = int.parse(initiative);
                 } catch (e) {
                   log("Get better ints, fucko");
                   return;
                 }
-                editInitiativeCard(name, initiative, int.parse(currentHealth),
+                editInitiativeCard(name, initiativeInt, int.parse(currentHealth),
                     int.parse(maxHealth));
                 log(name);
                 log(initiative);
@@ -272,9 +273,13 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
+  /// showAddCardDialog()
+  /// Parameters: String name, String init, int currentHealth, int maxHealth
+  /// Returns: N/A (void)
+  /// Description: Method responsible for editing initiative blocks
 //TODO: this is dumb. Too Bad!
   void editInitiativeCard(
-      String name, String init, int currentHealth, int maxHealth) {
+      String name, int initiative, int currentHealth, int maxHealth) {
     setState(() {
       if (numOfThings == 0) {
         if (Provider.of<StarmanProvider>(context, listen: false).bowie ==
@@ -289,7 +294,7 @@ class _MyHomePageState extends State<MyHomePage> {
       arr.add(InitiativeCardContainer.fromInitiative(
           Initiative(
               name: name,
-              initiativeCount: int.parse(init),
+              initiativeCount: initiative,
               currentHealth: currentHealth,
               totalHealth: maxHealth),
           elevation));
@@ -298,44 +303,11 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  /// _settingsButtonPressed()
-  /// Parameters:
-  /// Returns: N/A (void)
-  /// Description: Method responsible for handling the button press event for the Settings button on the app bar.
-  void _settingsButtonPressed() {
-    log("Settings button pressed!");
-    //var selections = ['Dice Roller', 'Options'];
-    // DropdownButton(
-    //   value:
-    // );
-    showDialog(
-      context: context,
-      builder: (_) {
-        return AlertDialog(
-          title: const Text('Other Features'),
-          content: SingleChildScrollView(
-              child: Column(
-            children: [
-              TextButton(
-                  onPressed: _diceRollerMenu, child: const Text('Dice Roller')),
-            ],
-          )),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text('Cancel'),
-            ),
-          ],
-        );
-      },
-    );
-  }
 
   /// _prevButtonPressed()
   /// Parameters:
   /// Returns: N/A (void)
   /// Description: Method responsible for handling button press events from the previous round button(s).
-  /// Is a candidate to be moved into the initiative_card file.
   void _prevButtonPressed() {
     //A setState call to edit the cards with the new elevation
     setState(() => elevation = elevation);
@@ -407,7 +379,7 @@ class _MyHomePageState extends State<MyHomePage> {
   /// Returns: N/A (void)
   /// Description: Method responsible for handling button press events from the previous round button(s)
   /// Is a candidate to be moved into the initiative_card file
-  void nextButtonPressed() {
+  void _nextButtonPressed() {
     //A setState call to edit the cards with the new elevation
     setState(() => elevation = elevation);
 
@@ -476,7 +448,10 @@ class _MyHomePageState extends State<MyHomePage> {
         3.0);
   }
 
-  //Edit method that builds a new card after manual edits or changes in elevation
+  /// secondaryEditInitiativeCard()
+  /// Parameters: String name, int initiative, int? totalHealth, int? currentHealth, List<Condition>? conditionsArray, String? editedName, int? editedInitativeCount, double elevation
+  /// Returns: N/A (void)
+  /// Description: Edit method that builds a new card after manual edits or changes in elevation
   void secondaryEditInitiativeCard(
       //Read in all necessary parameters
       String name,
@@ -504,7 +479,10 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  //Method to update the cards when the update cards button is pressed
+  /// updateCards()
+  /// Parameters:
+  /// Returns: N/A (void)
+  /// Description: Method to update the cards when the update cards button is pressed.
   void updateCards() {
     //Loop over the entire array
     for (int i = 0; i < arr.length; i++) {
@@ -535,6 +513,10 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
+  /// _diceRollerMenu()
+  /// Parameters:
+  /// Returns: N/A (void)
+  /// Description: Method display a dialog box for the dice roller feature
   void _diceRollerMenu() {
     log("Dice Roller Button Pressed");
     showDialog(
@@ -594,6 +576,10 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
+  /// diceRoller()
+  /// Parameters: int numDice, int diceType, int diceModifier
+  /// Returns: N/A (void)
+  /// Description: Supporting method for _diceRollerMenu(). This method actually does the RNG.
   String diceRoller(int numDice, int diceType, int diceModifier) {
     log("Dice Rolled!");
     int totalValue = 0;
@@ -603,7 +589,7 @@ class _MyHomePageState extends State<MyHomePage> {
       return "invalid number of dice";
     }
 
-    //Set up the print statement (flutter always formats this to be basically unreadable)
+    //Set up the print statement (Flutter always formats this to be basically unreadable) Lol - A.B.
     String result = (numDice.toString() +
         'd' +
         diceType.toString() +
@@ -630,7 +616,7 @@ class _MyHomePageState extends State<MyHomePage> {
     totalValue += diceModifier;
     //get the result
     result =
-        result + "+ " + diceModifier.toString() + " = " + totalValue.toString();
+        "$result+ $diceModifier = $totalValue";
     log(result);
     return result;
   }

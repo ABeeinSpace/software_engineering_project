@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:software_engineering_project/condition.dart';
 import 'package:software_engineering_project/StarmanProvider.dart';
-import 'StateManager.dart';
 import 'initiative.dart';
 
 // ignore: must_be_immutable
@@ -141,7 +140,7 @@ class _InitiativeCardState extends State<InitiativeCard> {
                           child: const Text('Add Condition'),
                           onPressed: () {
                             log("new button pressed!");
-                            conditionBoxDiologueBox();
+                            conditionBoxDialogBox();
                           },
                         ),
                         const Divider(),
@@ -181,7 +180,10 @@ class _InitiativeCardState extends State<InitiativeCard> {
     });
   }
 
-//Method that pops up with a dialog box that allows users to edit info
+  /// showDialogWithFields()
+  /// Parameters:
+  /// Returns: N/A (void)
+  /// Description: Method that pops up with a dialog box that allows users to edit info
   void showDialogWithFields() {
     showDialog(
       context: context,
@@ -264,6 +266,10 @@ class _InitiativeCardState extends State<InitiativeCard> {
     return conditionsArray;
   }
 
+  /// activateCard()
+  /// Parameters:
+  /// Returns: N/A (void)
+  /// Description: Handler method for events coming in from the Provider
   void activateCard() {
     setState(() {
       if (Provider.of<StarmanProvider>(context, listen: false).bowie) {
@@ -274,15 +280,21 @@ class _InitiativeCardState extends State<InitiativeCard> {
     });
   }
 
-  //TODO: this
+  /// editConditionsCard()
+  /// Parameters: String name
+  /// Returns: N/A (void)
+  /// Description: Method to update the conditions card.
   void editConditionsCard(String name) {
     widget.currentInitiative.conditionsArray!
         .add(Condition(name: name, duration: 10, elapsedTime: 0));
     setState(() {});
   }
 
-  //Stuff related to the diologue box
-  void conditionBoxDiologueBox() {
+  /// ConditionBoxDialogBox()
+  /// Parameters:
+  /// Returns: N/A (void)
+  /// Description: Method to update the cards when the update cards button is pressed.
+  void conditionBoxDialogBox() {
     showDialog(
       context: context,
       builder: (_) {
