@@ -337,7 +337,7 @@ class _MyHomePageState extends State<MyHomePage> {
     //Delete the current card
     arr.removeAt(currentIndex);
     //Rebuild a new card with all of the same properties as the old card with the added elevation
-    secondaryEditInitiativeCard(
+    elevationEditInitiativeCard(
         hold.currentInitiative.name,
         hold.currentInitiative.initiativeCount.toString(),
         hold.currentInitiative.totalHealth,
@@ -345,7 +345,8 @@ class _MyHomePageState extends State<MyHomePage> {
         hold.currentInitiative.conditionsArray,
         hold.currentInitiative.editedName,
         hold.currentInitiative.editedInitiativeCount,
-        15.0);
+        15.0,
+        currentIndex);
 
     //Remove the elevation of the card we just looked at
 
@@ -354,7 +355,7 @@ class _MyHomePageState extends State<MyHomePage> {
     //Delete the current card
     arr.removeAt(pastIndex);
     //Rebuild a new card with all of the same properties as the old card with the removed elevation
-    secondaryEditInitiativeCard(
+    elevationEditInitiativeCard(
         pastHold.currentInitiative.name,
         pastHold.currentInitiative.initiativeCount.toString(),
         pastHold.currentInitiative.totalHealth,
@@ -362,7 +363,8 @@ class _MyHomePageState extends State<MyHomePage> {
         pastHold.currentInitiative.conditionsArray,
         pastHold.currentInitiative.editedName,
         pastHold.currentInitiative.editedInitiativeCount,
-        3.0);
+        3.0,
+        pastIndex);
   }
 
   /// _prevButtonPressed()
@@ -398,7 +400,7 @@ class _MyHomePageState extends State<MyHomePage> {
     arr.removeAt(currentIndex);
 
     //Rebuild a new card with all of the same properties as the old card with the added elevation
-    secondaryEditInitiativeCard(
+    elevationEditInitiativeCard(
         hold.currentInitiative.name,
         hold.currentInitiative.initiativeCount.toString(),
         hold.currentInitiative.totalHealth,
@@ -406,7 +408,8 @@ class _MyHomePageState extends State<MyHomePage> {
         hold.currentInitiative.conditionsArray,
         hold.currentInitiative.editedName,
         hold.currentInitiative.editedInitiativeCount,
-        15.0);
+        15.0,
+        currentIndex);
     // addElevation(currentIndex, arr[currentIndex]);
 
     //Remove elevation from the card we were just looking at
@@ -417,7 +420,7 @@ class _MyHomePageState extends State<MyHomePage> {
     arr.removeAt(pastIndex);
 
     //Rebuild a new card with all of the same properties as the old card with the removed elevation
-    secondaryEditInitiativeCard(
+    elevationEditInitiativeCard(
         pastHold.currentInitiative.name,
         pastHold.currentInitiative.initiativeCount.toString(),
         pastHold.currentInitiative.totalHealth,
@@ -425,7 +428,8 @@ class _MyHomePageState extends State<MyHomePage> {
         pastHold.currentInitiative.conditionsArray,
         pastHold.currentInitiative.editedName,
         pastHold.currentInitiative.editedInitiativeCount,
-        3.0);
+        3.0,
+        pastIndex);
   }
 
   //Edit method that builds a new card after manual edits or changes in elevation
@@ -456,16 +460,68 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  void elevationEditInitiativeCard(
+      //Read in all necessary parameters
+      String name,
+      String init,
+      int? totalHealth,
+      int? currentHealth,
+      List<Condition>? conditionsArray,
+      String? editedName,
+      int? editedInitiativeCount,
+      double elevation,
+      int index) {
+    //Update the state
+    setState(() {
+      //Add a new card to the array with the given parameters
+      arr.insert(
+          index,
+          InitiativeCardContainer.fromInitiative(
+              Initiative(
+                  name: name,
+                  initiativeCount: int.parse(init),
+                  currentHealth: currentHealth,
+                  totalHealth: totalHealth,
+                  conditionsArray: conditionsArray,
+                  editedName: editedName,
+                  editedInitiativeCount: (editedInitiativeCount)),
+              elevation));
+    });
+  }
+
   //Method to update the cards when the update cards button is pressed
   void updateCards() {
     //Loop over the entire array
     for (int i = 0; i < arr.length; i++) {
       //If the user edited the name or the initiative on the card
-      if (arr[i].currentInitiative.name !=
+      if (arr[i].currentInitiative.conditionsChanged == true) {
+        log('doing the thing');
+        arr[i].currentInitiative.conditionsChanged = false;
+
+        InitiativeCardContainer hold = arr[i];
+        //Delete the old card
+        arr.removeAt(i);
+        log(hold.currentInitiative.editedConditionsArray[0].toString() +
+            'bitches');
+        //Call the function to create a new card with the following parameters from the old card and the updated user parameters
+        secondaryEditInitiativeCard(
+            hold.currentInitiative.name,
+            hold.currentInitiative.initiativeCount.toString(),
+            hold.currentInitiative.totalHealth,
+            hold.currentInitiative.currentHealth,
+            hold.currentInitiative.editedConditionsArray,
+            hold.currentInitiative.name,
+            hold.currentInitiative.initiativeCount,
+            3.0);
+        break;
+      } else if (arr[i].currentInitiative.name !=
               arr[i].currentInitiative.editedName.toString() ||
           arr[i].currentInitiative.initiativeCount !=
               arr[i].currentInitiative.editedInitiativeCount) {
         //Create a hold variable to store the current card and allow it to be safely deleted
+        // log('doing the thing');
+        arr[i].currentInitiative.conditionsChanged = false;
+
         InitiativeCardContainer hold = arr[i];
         //Delete the old card
         arr.removeAt(i);

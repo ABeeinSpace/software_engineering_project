@@ -7,7 +7,6 @@ import 'initiative.dart';
 
 // ignore: must_be_immutable
 class InitiativeCard extends StatefulWidget {
-
   InitiativeCard.fromInitiative(this.currentInitiative, this.elevation,
       {super.key});
   final Initiative currentInitiative;
@@ -91,7 +90,9 @@ class _InitiativeCardState extends State<InitiativeCard> {
                                         border: Border.all(
                                             color: Colors.black,
                                             style: BorderStyle.solid)),
-                                    child: Align(child: Text("${widget.currentInitiative.currentHealth} / ${widget.currentInitiative.totalHealth}")),
+                                    child: Align(
+                                        child: Text(
+                                            "${widget.currentInitiative.currentHealth} / ${widget.currentInitiative.totalHealth}")),
                                   ),
                                 ]),
                               ),
@@ -262,8 +263,7 @@ class _InitiativeCardState extends State<InitiativeCard> {
   }
 
   List<Condition> initConditionsArray() {
-    List<Condition> conditionsArray = [];
-    return conditionsArray;
+    return widget.currentInitiative.editedConditionsArray;
   }
 
   void activateCard() {
@@ -278,9 +278,14 @@ class _InitiativeCardState extends State<InitiativeCard> {
 
   //TODO: this
   void editConditionsCard(String name) {
-    widget.currentInitiative.conditionsArray!
+    widget.currentInitiative.editedConditionsArray
         .add(Condition(name: name, duration: 10, elapsedTime: 0));
-    setState(() {});
+    widget.currentInitiative.conditionsChanged = true;
+    log(widget.currentInitiative.conditionsChanged.toString());
+    widget.currentInitiative.conditionsArray = initConditionsArray();
+    widget.currentInitiative.editedConditionsArray = initConditionsArray();
+
+    // setState(() {});
   }
 
   //Stuff related to the diologue box
@@ -332,8 +337,6 @@ class _InitiativeCardState extends State<InitiativeCard> {
 // ignore: must_be_immutable
 class InitiativeCardContainer extends StatelessWidget
     implements Comparable<InitiativeCardContainer> {
-    
-    
   // This declaration makes any parameters needed available to instances of the class. The Java equivalent is a constructor method
   // const InitiativeCardContainer({
   //   Key? key,

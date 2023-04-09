@@ -8,6 +8,11 @@ class Initiative {
   int? totalHealth;
   int? currentHealth;
   List<Condition>? conditionsArray = [];
+  List<Condition> editedConditionsArray = [
+    Condition(
+        name: 'Screaming Crying Throwing Up', duration: 10, elapsedTime: 0)
+  ];
+  bool conditionsChanged = false;
 
   Initiative(
       {required this.name,
@@ -36,8 +41,7 @@ class Initiative {
 
   get getConditionsArray => conditionsArray;
 
-  set setConditionsArray(conditionsArray) =>
-      this.conditionsArray = conditionsArray;
+  setConditionsArray(conditionsArray) => this.conditionsArray = conditionsArray;
 
   setEditedName(editedName) => this.editedName = editedName;
 
