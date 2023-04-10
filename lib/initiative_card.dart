@@ -2,7 +2,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:software_engineering_project/condition.dart';
-import 'StateManager.dart';
+import 'package:software_engineering_project/StarmanProvider.dart';
 import 'initiative.dart';
 
 // ignore: must_be_immutable
@@ -24,7 +24,7 @@ class InitiativeCard extends StatefulWidget {
 class _InitiativeCardState extends State<InitiativeCard> {
   bool _shouldDisplayConditionsCard = false;
   bool _shouldDisplayAbilitiesCard = false;
-  late StateManager _elevationInfoProvider;
+  late StarmanProvider _elevationInfoProvider;
   bool isCardsTurn = false;
 
   @override
@@ -32,7 +32,7 @@ class _InitiativeCardState extends State<InitiativeCard> {
   initState() {
     super.initState();
 
-    _elevationInfoProvider = context.read<StateManager>();
+    _elevationInfoProvider = context.read<StarmanProvider>();
     _elevationInfoProvider.addListener(activateCard);
   }
 
@@ -143,10 +143,10 @@ class _InitiativeCardState extends State<InitiativeCard> {
                           ),
                         ),
                         ElevatedButton(
-                          child: Text('Add Condition'),
+                          child: const Text('Add Condition'),
                           onPressed: () {
                             log("new button pressed!");
-                            conditionBoxDiologueBox();
+                            conditionBoxDialogBox();
                           },
                         ),
                         const Divider(),
@@ -186,7 +186,10 @@ class _InitiativeCardState extends State<InitiativeCard> {
     });
   }
 
-//Method that pops up with a dialog box that allows users to edit info
+  /// showDialogWithFields()
+  /// Parameters:
+  /// Returns: N/A (void)
+  /// Description: Method that pops up with a dialog box that allows users to edit info
   void showDialogWithFields() {
     showDialog(
       context: context,
@@ -233,9 +236,11 @@ class _InitiativeCardState extends State<InitiativeCard> {
                 var initiative = initiativeController.text;
 
                 //Update the corresponding initative with these name and initiative changes
+                if (initiative != "null") {
                 widget.currentInitiative.setEditedName(name);
                 widget.currentInitiative
                     .setEditedInitiativeCount(int.parse(initiative));
+                }
 
                 Navigator.pop(context);
               },
@@ -267,9 +272,13 @@ class _InitiativeCardState extends State<InitiativeCard> {
     return conditionsArray;
   }
 
+  /// activateCard()
+  /// Parameters:
+  /// Returns: N/A (void)
+  /// Description: Handler method for events coming in from the Provider
   void activateCard() {
     setState(() {
-      if (Provider.of<StateManager>(context, listen: false).isActive) {
+      if (Provider.of<StarmanProvider>(context, listen: false).bowie) {
         widget.elevation = 15.0;
       } else {
         widget.elevation = 3.0;
@@ -286,8 +295,11 @@ class _InitiativeCardState extends State<InitiativeCard> {
     widget.currentInitiative.conditionsChanged = true;
   }
 
-  //Stuff related to the diologue box
-  void conditionBoxDiologueBox() {
+  /// ConditionBoxDialogBox()
+  /// Parameters:
+  /// Returns: N/A (void)
+  /// Description: Method to update the cards when the update cards button is pressed.
+  void conditionBoxDialogBox() {
     showDialog(
       context: context,
       builder: (_) {

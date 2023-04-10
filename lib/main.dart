@@ -1,9 +1,10 @@
 import 'dart:developer'; //This import gives us access to the log() function. It can be safely removed when all buttons are properly implemented.
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:software_engineering_project/StarmanProvider.dart';
 import 'condition.dart';
-import 'package:software_engineering_project/StateManager.dart';
 import 'initiative_card.dart';
 import 'initiative.dart';
 
@@ -22,11 +23,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-        create: (BuildContext context) => StateManager(),
+        create: (BuildContext context) => StarmanProvider(),
         builder: (context, provider) {
-          return Consumer<StateManager>(builder: (context, notifier, child) {
+          return Consumer<StarmanProvider>(builder: (context, notifier, child) {
             return MaterialApp(
               title: 'Combat Scribe',
+              debugShowCheckedModeBanner: false,
               theme: ThemeData(
                 useMaterial3: true,
                 primarySwatch: Colors.purple,
@@ -101,28 +103,37 @@ class _MyHomePageState extends State<MyHomePage> {
         actions: [
           //Create a chip to display the round number
           Chip(
+            padding: const EdgeInsets.all(3.5),
             //Create the avatar that will hold the round number
             avatar: CircleAvatar(
               //Set the background color of the chip to purple
               backgroundColor: Colors.purple,
+
               //Display the round number as a string in the Circle Avatar
-              child: Text(roundNumber.toString()),
+              child: Text(roundNumber.toString(),
+                  style: const TextStyle(color: Colors.white)),
             ),
             //Display this text in the remainder of the chip (to the right of the circle avatar)
-            label: Text('Round Number'),
+            label: const Text('Round Number'),
           ),
+
+          const SizedBox(width: 5.5),
 
           //Create a chip to display the time
           Chip(
+            padding: const EdgeInsets.all(3.5),
+
             //Create the avatar that will hold the time
             avatar: CircleAvatar(
               //Set the background color of the chip to purple
               backgroundColor: Colors.purple,
               //Display the time as a string in the circle avatar
-              child: Text(time.toString()),
+              child: Center(
+                  child: Text(time.toString(),
+                      style: const TextStyle(color: Colors.white))),
             ),
             //Display this text in the remainder of the chip (to the right of the circle avatar)
-            label: Text('Time                 '),
+            label: const Text('Time                 '),
           ),
 
           Align(
@@ -134,7 +145,7 @@ class _MyHomePageState extends State<MyHomePage> {
           Align(
             alignment: Alignment.center,
             child: IconButton(
-                onPressed: nextButtonPressed,
+                onPressed: _nextButtonPressed,
                 tooltip: "Next round",
                 icon: const Icon(Icons.arrow_forward)),
           ),
@@ -144,16 +155,26 @@ class _MyHomePageState extends State<MyHomePage> {
             child: IconButton(
                 onPressed: updateCards,
                 tooltip: "Update Cards",
-                icon: const Icon(Icons.arrow_forward)),
+                icon: const Icon(Icons.check)),
           ),
-          ButtonBar(
-            children: [
-              // This button will display a drop-down to enable addition of prefab monsters in addition to custom initiatives
-              IconButton(
-                  onPressed: _settingsButtonPressed,
-                  icon: const Icon(Icons.settings))
-            ],
-          ),
+          PopupMenuButton(onSelected: (value) async {
+            switch (value) {
+              case 'Dice Roller':
+                _diceRollerMenu();
+                break;
+              case 'Starman':
+                toggleStarman();
+                break;
+              default:
+                break;
+            }
+          }, itemBuilder: (context) {
+            return [
+              const PopupMenuItem(
+                  value: 'Dice Roller', child: Text("Dice Roller")),
+              const PopupMenuItem(value: 'Starman', child: Text("Starman")),
+            ];
+          }),
         ],
       ),
 
@@ -161,35 +182,34 @@ class _MyHomePageState extends State<MyHomePage> {
 
       // Start of Body
 
-      body: Column(children: [
-        Padding(
-          padding: EdgeInsets.fromLTRB(0, 8, 0, 0),
-          child: SingleChildScrollView(
-            child: Column(
-                textDirection: TextDirection.ltr,
-                mainAxisAlignment: MainAxisAlignment.start,
-                // crossAxisAlignment: CrossAxisAlignment.start,
-                children: arr),
-          ),
-        )
-      ]),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.fromLTRB(0, 8, 0, 0),
+        child: Column(
+            textDirection: TextDirection.ltr,
+            mainAxisAlignment: MainAxisAlignment.start,
+            // crossAxisAlignment: CrossAxisAlignment.start,
+            children: arr),
+      ),
 
       floatingActionButton: FloatingActionButton.extended(
         ///When the add initative button is pressed, open a dialog for the user to input their name
         onPressed: () async {
           log("Button Pressed!");
-          showDialogWithFields();
+          showAddCardDialog();
         },
         icon: const Icon(Icons.add),
         label: const Text("Add Initiative"),
       ), // This trailing comma makes auto-formatting nicer for build methods.
-      // We should consider making the FAB display a pop-up menu to enable prefab monster addition like the button in the top of the window.
 
       // End of Body
     );
   }
 
-  void showDialogWithFields() {
+  /// showAddCardDialog()
+  /// Parameters: None
+  /// Returns: N/A (void)
+  /// Description: Method responsible for showing the dialog box in which the user can edit initiative blocks
+  void showAddCardDialog() {
     showDialog(
       context: context,
       builder: (_) {
@@ -229,16 +249,17 @@ class _MyHomePageState extends State<MyHomePage> {
               onPressed: () {
                 var name = nameController.text;
                 var initiative = initiativeController.text;
+                int initiativeInt;
                 var currentHealth = currentHealthController.text;
                 var maxHealth = maxHealthController.text;
                 // TODO: Actual form field validation
                 try {
-                  int.parse(initiative);
+                  initiativeInt = int.parse(initiative);
                 } catch (e) {
                   log("Get better ints, fucko");
                   return;
                 }
-                editInitiativeCard(name, initiative, int.parse(currentHealth),
+                editInitiativeCard(name, initiativeInt, int.parse(currentHealth),
                     int.parse(maxHealth), []);
                 log(name);
                 log(initiative);
@@ -252,19 +273,28 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
+  /// showAddCardDialog()
+  /// Parameters: String name, String init, int currentHealth, int maxHealth
+  /// Returns: N/A (void)
+  /// Description: Method responsible for editing initiative blocks
 //TODO: this is dumb. Too Bad!
-  void editInitiativeCard(String name, String init, int currentHealth,
+  void editInitiativeCard(String name, int initiative, int currentHealth,
       int maxHealth, List<Condition> conditionsArray) {
     setState(() {
       if (numOfThings == 0) {
-        elevation = 15.0;
+        if (Provider.of<StarmanProvider>(context, listen: false).bowie ==
+            true) {
+          elevation = 75.0;
+        } else {
+          elevation = 15.0;
+        }
       } else {
         elevation = 3.0;
       }
       arr.add(InitiativeCardContainer.fromInitiative(
           Initiative(
               name: name,
-              initiativeCount: int.parse(init),
+              initiativeCount: initiative,
               currentHealth: currentHealth,
               conditionsArray: conditionsArray,
               totalHealth: maxHealth),
@@ -274,44 +304,11 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  /// _settingsButtonPressed()
-  /// Parameters:
-  /// Returns: N/A (void)
-  /// Description: Method responsible for handling the button press event for the Settings button on the app bar.
-  void _settingsButtonPressed() {
-    log("Settings button pressed!");
-    //var selections = ['Dice Roller', 'Options'];
-    // DropdownButton(
-    //   value:
-    // );
-    showDialog(
-      context: context,
-      builder: (_) {
-        return AlertDialog(
-          title: const Text('Other Features'),
-          content: SingleChildScrollView(
-              child: Column(
-            children: [
-              TextButton(
-                  child: Text('Dice Roller'), onPressed: _diceRollerMenu),
-            ],
-          )),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text('Cancel'),
-            ),
-          ],
-        );
-      },
-    );
-  }
 
   /// _prevButtonPressed()
   /// Parameters:
   /// Returns: N/A (void)
   /// Description: Method responsible for handling button press events from the previous round button(s).
-  /// Is a candidate to be moved into the initiative_card file.
   void _prevButtonPressed() {
     //A setState call to edit the cards with the new elevation
     setState(() => elevation = elevation);
@@ -347,16 +344,28 @@ class _MyHomePageState extends State<MyHomePage> {
     //Delete the current card
     arr.removeAt(currentIndex);
     //Rebuild a new card with all of the same properties as the old card with the added elevation
-    elevationEditInitiativeCard(
-        hold.currentInitiative.name,
-        hold.currentInitiative.initiativeCount.toString(),
-        hold.currentInitiative.totalHealth,
-        hold.currentInitiative.currentHealth,
-        hold.currentInitiative.conditionsArray,
-        hold.currentInitiative.editedName,
-        hold.currentInitiative.editedInitiativeCount,
-        15.0,
+    if (Provider.of<StarmanProvider>(context, listen: false).bowie == true) {
+      elevationEditInitiativeCard(
+          hold.currentInitiative.name,
+          hold.currentInitiative.initiativeCount,
+          hold.currentInitiative.totalHealth,
+          hold.currentInitiative.currentHealth,
+          hold.currentInitiative.conditionsArray,
+          hold.currentInitiative.editedName,
+          hold.currentInitiative.editedInitiativeCount,
+          75.0, currentIndex);
+    } else {
+      elevationEditInitiativeCard(
+          hold.currentInitiative.name,
+          hold.currentInitiative.initiativeCount,
+          hold.currentInitiative.totalHealth,
+          hold.currentInitiative.currentHealth,
+          hold.currentInitiative.conditionsArray,
+          hold.currentInitiative.editedName,
+          hold.currentInitiative.editedInitiativeCount,
+          15.0,
         currentIndex);
+    }
 
     //Remove the elevation of the card we just looked at
 
@@ -367,7 +376,7 @@ class _MyHomePageState extends State<MyHomePage> {
     //Rebuild a new card with all of the same properties as the old card with the removed elevation
     elevationEditInitiativeCard(
         pastHold.currentInitiative.name,
-        pastHold.currentInitiative.initiativeCount.toString(),
+        pastHold.currentInitiative.initiativeCount,
         pastHold.currentInitiative.totalHealth,
         pastHold.currentInitiative.currentHealth,
         pastHold.currentInitiative.conditionsArray,
@@ -382,7 +391,7 @@ class _MyHomePageState extends State<MyHomePage> {
   /// Returns: N/A (void)
   /// Description: Method responsible for handling button press events from the previous round button(s)
   /// Is a candidate to be moved into the initiative_card file
-  void nextButtonPressed() {
+  void _nextButtonPressed() {
     //A setState call to edit the cards with the new elevation
     setState(() => elevation = elevation);
 
@@ -427,17 +436,28 @@ class _MyHomePageState extends State<MyHomePage> {
     //Delete the current card
     arr.removeAt(currentIndex);
 
-    //Rebuild a new card with all of the same properties as the old card with the added elevation
-    elevationEditInitiativeCard(
-        hold.currentInitiative.name,
-        hold.currentInitiative.initiativeCount.toString(),
-        hold.currentInitiative.totalHealth,
-        hold.currentInitiative.currentHealth,
-        hold.currentInitiative.conditionsArray,
-        hold.currentInitiative.editedName,
-        hold.currentInitiative.editedInitiativeCount,
-        15.0,
+    if (Provider.of<StarmanProvider>(context, listen: false).bowie == true) {
+      elevationEditInitiativeCard(
+          hold.currentInitiative.name,
+          hold.currentInitiative.initiativeCount,
+          hold.currentInitiative.totalHealth,
+          hold.currentInitiative.currentHealth,
+          hold.currentInitiative.conditionsArray,
+          hold.currentInitiative.editedName,
+          hold.currentInitiative.editedInitiativeCount,
+          75.0, currentIndex);
+    } else {
+      elevationEditInitiativeCard(
+          hold.currentInitiative.name,
+          hold.currentInitiative.initiativeCount,
+          hold.currentInitiative.totalHealth,
+          hold.currentInitiative.currentHealth,
+          hold.currentInitiative.conditionsArray,
+          hold.currentInitiative.editedName,
+          hold.currentInitiative.editedInitiativeCount,
+          15.0,
         currentIndex);
+    }
     // addElevation(currentIndex, arr[currentIndex]);
 
     //Remove elevation from the card we were just looking at
@@ -450,7 +470,7 @@ class _MyHomePageState extends State<MyHomePage> {
     //Rebuild a new card with all of the same properties as the old card with the removed elevation
     elevationEditInitiativeCard(
         pastHold.currentInitiative.name,
-        pastHold.currentInitiative.initiativeCount.toString(),
+        pastHold.currentInitiative.initiativeCount,
         pastHold.currentInitiative.totalHealth,
         pastHold.currentInitiative.currentHealth,
         pastHold.currentInitiative.conditionsArray,
@@ -460,11 +480,14 @@ class _MyHomePageState extends State<MyHomePage> {
         pastIndex);
   }
 
-  //Edit method that builds a new card after manual edits or changes in elevation
+  /// secondaryEditInitiativeCard()
+  /// Parameters: String name, int initiative, int? totalHealth, int? currentHealth, List<Condition>? conditionsArray, String? editedName, int? editedInitativeCount, double elevation
+  /// Returns: N/A (void)
+  /// Description: Edit method that builds a new card after manual edits or changes in elevation
   void secondaryEditInitiativeCard(
       //Read in all necessary parameters
       String name,
-      String init,
+      int init,
       int? totalHealth,
       int? currentHealth,
       List<Condition> conditionsArray,
@@ -477,7 +500,7 @@ class _MyHomePageState extends State<MyHomePage> {
       arr.add(InitiativeCardContainer.fromInitiative(
           Initiative(
               name: name,
-              initiativeCount: int.parse(init),
+              initiativeCount: init,
               currentHealth: currentHealth,
               totalHealth: totalHealth,
               conditionsArray: conditionsArray,
@@ -488,10 +511,10 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  void elevationEditInitiativeCard(
+void elevationEditInitiativeCard(
       //Read in all necessary parameters
       String name,
-      String init,
+      int initiative,
       int? totalHealth,
       int? currentHealth,
       List<Condition> conditionsArray,
@@ -507,7 +530,7 @@ class _MyHomePageState extends State<MyHomePage> {
           InitiativeCardContainer.fromInitiative(
               Initiative(
                   name: name,
-                  initiativeCount: int.parse(init),
+                  initiativeCount: initiative,
                   currentHealth: currentHealth,
                   totalHealth: totalHealth,
                   conditionsArray: conditionsArray,
@@ -532,7 +555,7 @@ class _MyHomePageState extends State<MyHomePage> {
         //Call the function to create a new card with the following parameters from the old card and the updated user parameters
         secondaryEditInitiativeCard(
             hold.currentInitiative.name,
-            hold.currentInitiative.initiativeCount.toString(),
+            hold.currentInitiative.initiativeCount,
             hold.currentInitiative.totalHealth,
             hold.currentInitiative.currentHealth,
             hold.currentInitiative.conditionsArray,
@@ -543,18 +566,16 @@ class _MyHomePageState extends State<MyHomePage> {
       } else if (arr[i].currentInitiative.name !=
               arr[i].currentInitiative.editedName.toString() ||
           arr[i].currentInitiative.initiativeCount !=
-              arr[i].currentInitiative.editedInitiativeCount) {
+                  arr[i].currentInitiative.editedInitiativeCount &&
+              arr[i].currentInitiative.editedInitiativeCount != null) {
         //Create a hold variable to store the current card and allow it to be safely deleted
-
-        arr[i].currentInitiative.conditionsChanged = false;
-
         InitiativeCardContainer hold = arr[i];
         //Delete the old card
         arr.removeAt(i);
         //Call the function to create a new card with the following parameters from the old card and the updated user parameters
         secondaryEditInitiativeCard(
             hold.currentInitiative.editedName.toString(),
-            hold.currentInitiative.editedInitiativeCount.toString(),
+            hold.currentInitiative.editedInitiativeCount!,
             hold.currentInitiative.totalHealth,
             hold.currentInitiative.currentHealth,
             hold.currentInitiative.conditionsArray,
@@ -566,6 +587,10 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
+  /// _diceRollerMenu()
+  /// Parameters:
+  /// Returns: N/A (void)
+  /// Description: Method display a dialog box for the dice roller feature
   void _diceRollerMenu() {
     log("Dice Roller Button Pressed");
     showDialog(
@@ -582,22 +607,20 @@ class _MyHomePageState extends State<MyHomePage> {
             children: [
               TextFormField(
                 controller: numDiceController,
-                decoration: InputDecoration(hintText: 'Number of Dice'),
+                decoration: const InputDecoration(hintText: 'Number of Dice'),
               ),
               TextFormField(
                 controller: diceTypeController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                     hintText:
                         'Dice Type (enter number of sides ONLY (ex: type 20 for a d20))'),
               ),
               TextFormField(
                 controller: modifierController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                     hintText: 'Modifier (type 0 for no modifier)'),
               ),
-              Container(
-                child: Text(diceOutput),
-              ),
+              Text(diceOutput),
             ],
           )),
           actions: [
@@ -606,22 +629,31 @@ class _MyHomePageState extends State<MyHomePage> {
               child: const Text('Cancel'),
             ),
             TextButton(
-                onPressed: () {
+                onPressed: () async {
                   int numDice = int.parse(numDiceController.text);
                   int diceType = int.parse(diceTypeController.text);
                   int diceModifier = int.parse(modifierController.text);
 
-                  setState(() {
-                    diceOutput = diceRoller(numDice, diceType, diceModifier);
-                  });
+                  diceOutput = diceRoller(numDice, diceType, diceModifier);
+                  await Clipboard.setData(ClipboardData(text: diceOutput))
+                      .then((_) => {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                    content:
+                                        Text("Dice roll copied to clipboard!")))
+                          });
                 },
-                child: Text('Roll the Dice!'))
+                child: const Text('Roll the Dice!'))
           ],
         );
       },
     );
   }
 
+  /// diceRoller()
+  /// Parameters: int numDice, int diceType, int diceModifier
+  /// Returns: N/A (void)
+  /// Description: Supporting method for _diceRollerMenu(). This method actually does the RNG.
   String diceRoller(int numDice, int diceType, int diceModifier) {
     log("Dice Rolled!");
     int totalValue = 0;
@@ -631,7 +663,7 @@ class _MyHomePageState extends State<MyHomePage> {
       return "invalid number of dice";
     }
 
-    //Set up the print statement (flutter always formats this to be basically unreadable)
+    //Set up the print statement (Flutter always formats this to be basically unreadable) Lol - A.B.
     String result = (numDice.toString() +
         'd' +
         diceType.toString() +
@@ -658,8 +690,15 @@ class _MyHomePageState extends State<MyHomePage> {
     totalValue += diceModifier;
     //get the result
     result =
-        result + "+ " + diceModifier.toString() + " = " + totalValue.toString();
+        "$result+ $diceModifier = $totalValue";
     log(result);
     return result;
+  }
+
+  void toggleStarman() {
+    ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Bowie, eh? Excellent taste")));
+
+    Provider.of<StarmanProvider>(context, listen: false).toggleStarman();
   }
 }
