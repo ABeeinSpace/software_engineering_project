@@ -7,11 +7,8 @@ class Initiative {
   int? editedInitiativeCount;
   int? totalHealth;
   int? currentHealth;
-  List<Condition>? conditionsArray = [];
-  List<Condition> editedConditionsArray = [
-    Condition(
-        name: 'Screaming Crying Throwing Up', duration: 10, elapsedTime: 0)
-  ];
+  List<Condition> conditionsArray = [];
+
   bool conditionsChanged = false;
 
   Initiative(
@@ -19,7 +16,7 @@ class Initiative {
       required this.initiativeCount,
       this.totalHealth,
       this.currentHealth,
-      this.conditionsArray,
+      required this.conditionsArray,
       this.editedName,
       this.editedInitiativeCount});
 

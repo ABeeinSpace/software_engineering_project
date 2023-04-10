@@ -1,23 +1,23 @@
 class Condition implements Comparable<Condition> {
   String name;
-  int? duration;
+  int duration;
   int elapsedTime;
-  
-  Condition({required this.name, this.duration, required this.elapsedTime});
-  
-  
+
+  Condition(
+      {required this.name, required this.duration, required this.elapsedTime});
+
   get getName => name;
 
-  set setName( name) => this.name = name;
+  set setName(name) => this.name = name;
 
   get getDuration => duration;
 
-  set setDuration( duration) => this.duration = duration;
+  set setDuration(duration) => this.duration = duration;
 
   get getElapedTime => elapsedTime;
 
-  set setElapedTime( elapedTime) => elapsedTime = elapedTime;
-  
+  set setElapedTime(elapedTime) => elapsedTime = elapedTime;
+
   @override
   int compareTo(Condition other) {
     throw UnimplementedError();
@@ -28,4 +28,3 @@ class Condition implements Comparable<Condition> {
     return "$name      $duration      $elapsedTime";
   }
 }
-

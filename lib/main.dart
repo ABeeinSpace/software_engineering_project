@@ -239,7 +239,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   return;
                 }
                 editInitiativeCard(name, initiative, int.parse(currentHealth),
-                    int.parse(maxHealth));
+                    int.parse(maxHealth), []);
                 log(name);
                 log(initiative);
                 Navigator.pop(context);
@@ -253,8 +253,8 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
 //TODO: this is dumb. Too Bad!
-  void editInitiativeCard(
-      String name, String init, int currentHealth, int maxHealth) {
+  void editInitiativeCard(String name, String init, int currentHealth,
+      int maxHealth, List<Condition> conditionsArray) {
     setState(() {
       if (numOfThings == 0) {
         elevation = 15.0;
@@ -266,6 +266,7 @@ class _MyHomePageState extends State<MyHomePage> {
               name: name,
               initiativeCount: int.parse(init),
               currentHealth: currentHealth,
+              conditionsArray: conditionsArray,
               totalHealth: maxHealth),
           elevation));
       arr.sort();
@@ -328,6 +329,15 @@ class _MyHomePageState extends State<MyHomePage> {
       currentIndex = numOfThings - 1;
       roundNumber--;
       time -= 6;
+
+      //Loop over all of the initatives and all of their corrsesponding conditions and decrement the elapsed time by 6
+      for (int i = 0; i < arr.length; i++) {
+        for (int j = 0;
+            j < arr[i].currentInitiative.conditionsArray.length;
+            j++) {
+          arr[i].currentInitiative.conditionsArray[j].elapsedTime -= 6;
+        }
+      }
     }
 
     //Add the elevation to the card we want to look at now
@@ -390,6 +400,24 @@ class _MyHomePageState extends State<MyHomePage> {
       currentIndex = 0;
       roundNumber++;
       time += 6;
+
+      //Loop over all of the initatives and all of their corrsesponding conditions and increment the elapsed time by 6
+      for (int i = 0; i < arr.length; i++) {
+        for (int j = 0;
+            j < arr[i].currentInitiative.conditionsArray.length;
+            j++) {
+          arr[i].currentInitiative.conditionsArray[j].elapsedTime += 6;
+
+          //If the elapsed time equals or surpasses the duration, delete the condition
+          if (arr[i].currentInitiative.conditionsArray[j].elapsedTime >=
+              arr[i].currentInitiative.conditionsArray[j].duration) {
+            arr[i]
+                .currentInitiative
+                .conditionsArray
+                .remove(arr[i].currentInitiative.conditionsArray[j]);
+          }
+        }
+      }
     }
 
     //Add elevation to the card we are currently looking at
@@ -439,7 +467,7 @@ class _MyHomePageState extends State<MyHomePage> {
       String init,
       int? totalHealth,
       int? currentHealth,
-      List<Condition>? conditionsArray,
+      List<Condition> conditionsArray,
       String? editedName,
       int? editedInitiativeCount,
       double elevation) {
@@ -466,7 +494,7 @@ class _MyHomePageState extends State<MyHomePage> {
       String init,
       int? totalHealth,
       int? currentHealth,
-      List<Condition>? conditionsArray,
+      List<Condition> conditionsArray,
       String? editedName,
       int? editedInitiativeCount,
       double elevation,
@@ -495,21 +523,19 @@ class _MyHomePageState extends State<MyHomePage> {
     for (int i = 0; i < arr.length; i++) {
       //If the user edited the name or the initiative on the card
       if (arr[i].currentInitiative.conditionsChanged == true) {
-        log('doing the thing');
         arr[i].currentInitiative.conditionsChanged = false;
 
         InitiativeCardContainer hold = arr[i];
         //Delete the old card
         arr.removeAt(i);
-        log(hold.currentInitiative.editedConditionsArray[0].toString() +
-            'bitches');
+
         //Call the function to create a new card with the following parameters from the old card and the updated user parameters
         secondaryEditInitiativeCard(
             hold.currentInitiative.name,
             hold.currentInitiative.initiativeCount.toString(),
             hold.currentInitiative.totalHealth,
             hold.currentInitiative.currentHealth,
-            hold.currentInitiative.editedConditionsArray,
+            hold.currentInitiative.conditionsArray,
             hold.currentInitiative.name,
             hold.currentInitiative.initiativeCount,
             3.0);
@@ -519,7 +545,7 @@ class _MyHomePageState extends State<MyHomePage> {
           arr[i].currentInitiative.initiativeCount !=
               arr[i].currentInitiative.editedInitiativeCount) {
         //Create a hold variable to store the current card and allow it to be safely deleted
-        // log('doing the thing');
+
         arr[i].currentInitiative.conditionsChanged = false;
 
         InitiativeCardContainer hold = arr[i];

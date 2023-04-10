@@ -45,7 +45,7 @@ class _InitiativeCardState extends State<InitiativeCard> {
   Widget build(BuildContext context) {
     //This line grabs the current width of the window. I use it to set the width of the initiative cards to 60% of the width of the application's window
     double screenWidth = MediaQuery.of(context).size.width;
-    widget.currentInitiative.conditionsArray = initConditionsArray();
+    // widget.currentInitiative.conditionsArray = initConditionsArray();
 
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -156,7 +156,7 @@ class _InitiativeCardState extends State<InitiativeCard> {
                               padding: const EdgeInsets.all(8.0),
                               child: Column(
                                 children: widget
-                                    .currentInitiative.conditionsArray!
+                                    .currentInitiative.conditionsArray
                                     .map((e) => Text(e.toString()))
                                     .toList(),
                               ),
@@ -263,7 +263,8 @@ class _InitiativeCardState extends State<InitiativeCard> {
   }
 
   List<Condition> initConditionsArray() {
-    return widget.currentInitiative.editedConditionsArray;
+    List<Condition> conditionsArray = [];
+    return conditionsArray;
   }
 
   void activateCard() {
@@ -276,16 +277,13 @@ class _InitiativeCardState extends State<InitiativeCard> {
     });
   }
 
-  //TODO: this
-  void editConditionsCard(String name) {
-    widget.currentInitiative.editedConditionsArray
-        .add(Condition(name: name, duration: 10, elapsedTime: 0));
+  //Function that reads in the name, duration, and elapsed time of a condition
+  void editConditionsCard(String name, int duration, int elapsedTime) {
+    //Add the corresponding information into a new array element for the current initiative
+    widget.currentInitiative.conditionsArray.add(
+        Condition(name: name, duration: duration, elapsedTime: elapsedTime));
+    //Set the flag to show that a new condition has been added
     widget.currentInitiative.conditionsChanged = true;
-    log(widget.currentInitiative.conditionsChanged.toString());
-    widget.currentInitiative.conditionsArray = initConditionsArray();
-    widget.currentInitiative.editedConditionsArray = initConditionsArray();
-
-    // setState(() {});
   }
 
   //Stuff related to the diologue box
@@ -294,6 +292,8 @@ class _InitiativeCardState extends State<InitiativeCard> {
       context: context,
       builder: (_) {
         var condtionNameController = TextEditingController();
+        var durationController = TextEditingController();
+        var elapsedTimeController = TextEditingController();
         //var initiativeController = TextEditingController();
         return AlertDialog(
           title: const Text('Enter Condition Info'),
@@ -303,6 +303,16 @@ class _InitiativeCardState extends State<InitiativeCard> {
               TextFormField(
                 controller: condtionNameController,
                 decoration: const InputDecoration(hintText: 'Condition Name'),
+              ),
+              TextFormField(
+                controller: durationController,
+                decoration:
+                    const InputDecoration(hintText: 'Condition Duration'),
+              ),
+              TextFormField(
+                controller: elapsedTimeController,
+                decoration:
+                    const InputDecoration(hintText: 'Condition Elapsed Time'),
               ),
               // TextFormField(
               //   controller: initiativeController,
@@ -318,11 +328,14 @@ class _InitiativeCardState extends State<InitiativeCard> {
             TextButton(
               onPressed: () {
                 var conditionName = condtionNameController.text;
+                var duration = durationController.text;
+                var elapsedTime = elapsedTimeController.text;
                 //var initiative = initiativeController.text;
                 //editInitiativeCard(name, initiative);
-                editConditionsCard(conditionName); //TODO: This
+                editConditionsCard(conditionName, int.parse(duration),
+                    int.parse(elapsedTime)); //TODO: This
                 log(conditionName);
-                //log(initiative);
+
                 Navigator.pop(context);
               },
               child: const Text('Send'),
