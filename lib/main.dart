@@ -259,8 +259,8 @@ class _MyHomePageState extends State<MyHomePage> {
                   log("Get better ints, fucko");
                   return;
                 }
-                editInitiativeCard(name, initiativeInt, int.parse(currentHealth),
-                    int.parse(maxHealth), []);
+                editInitiativeCard(name, initiativeInt,
+                    int.parse(currentHealth), int.parse(maxHealth), []);
                 log(name);
                 log(initiative);
                 Navigator.pop(context);
@@ -303,7 +303,6 @@ class _MyHomePageState extends State<MyHomePage> {
       numOfThings++;
     });
   }
-
 
   /// _prevButtonPressed()
   /// Parameters:
@@ -353,7 +352,8 @@ class _MyHomePageState extends State<MyHomePage> {
           hold.currentInitiative.conditionsArray,
           hold.currentInitiative.editedName,
           hold.currentInitiative.editedInitiativeCount,
-          75.0, currentIndex);
+          75.0,
+          currentIndex);
     } else {
       elevationEditInitiativeCard(
           hold.currentInitiative.name,
@@ -364,7 +364,7 @@ class _MyHomePageState extends State<MyHomePage> {
           hold.currentInitiative.editedName,
           hold.currentInitiative.editedInitiativeCount,
           15.0,
-        currentIndex);
+          currentIndex);
     }
 
     //Remove the elevation of the card we just looked at
@@ -445,7 +445,8 @@ class _MyHomePageState extends State<MyHomePage> {
           hold.currentInitiative.conditionsArray,
           hold.currentInitiative.editedName,
           hold.currentInitiative.editedInitiativeCount,
-          75.0, currentIndex);
+          75.0,
+          currentIndex);
     } else {
       elevationEditInitiativeCard(
           hold.currentInitiative.name,
@@ -456,7 +457,7 @@ class _MyHomePageState extends State<MyHomePage> {
           hold.currentInitiative.editedName,
           hold.currentInitiative.editedInitiativeCount,
           15.0,
-        currentIndex);
+          currentIndex);
     }
     // addElevation(currentIndex, arr[currentIndex]);
 
@@ -511,7 +512,7 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-void elevationEditInitiativeCard(
+  void elevationEditInitiativeCard(
       //Read in all necessary parameters
       String name,
       int initiative,
@@ -544,8 +545,12 @@ void elevationEditInitiativeCard(
   void updateCards() {
     //Loop over the entire array
     for (int i = 0; i < arr.length; i++) {
+      if (arr[i].currentInitiative.toBeDeleted == true) {
+        arr.removeAt(i);
+        setState(() {});
+      }
       //If the user edited the name or the initiative on the card
-      if (arr[i].currentInitiative.conditionsChanged == true) {
+      else if (arr[i].currentInitiative.conditionsChanged == true) {
         arr[i].currentInitiative.conditionsChanged = false;
 
         InitiativeCardContainer hold = arr[i];
@@ -689,8 +694,7 @@ void elevationEditInitiativeCard(
     //add the modifier
     totalValue += diceModifier;
     //get the result
-    result =
-        "$result+ $diceModifier = $totalValue";
+    result = "$result+ $diceModifier = $totalValue";
     log(result);
     return result;
   }

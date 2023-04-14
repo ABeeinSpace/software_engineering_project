@@ -224,6 +224,13 @@ class _InitiativeCardState extends State<InitiativeCard> {
           )),
           actions: [
             TextButton(
+              onPressed: () {
+                widget.currentInitiative.toBeDeleted = true;
+                Navigator.pop(context);
+              },
+              child: const Text('Delete Card'),
+            ),
+            TextButton(
               onPressed: () => Navigator.pop(context),
               child: const Text('Cancel'),
             ),
@@ -237,9 +244,9 @@ class _InitiativeCardState extends State<InitiativeCard> {
 
                 //Update the corresponding initative with these name and initiative changes
                 if (initiative != "null") {
-                widget.currentInitiative.setEditedName(name);
-                widget.currentInitiative
-                    .setEditedInitiativeCount(int.parse(initiative));
+                  widget.currentInitiative.setEditedName(name);
+                  widget.currentInitiative
+                      .setEditedInitiativeCount(int.parse(initiative));
                 }
 
                 Navigator.pop(context);

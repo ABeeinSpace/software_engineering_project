@@ -10,6 +10,7 @@ class Initiative {
   List<Condition> conditionsArray = [];
 
   bool conditionsChanged = false;
+  bool toBeDeleted = false;
 
   Initiative(
       {required this.name,
