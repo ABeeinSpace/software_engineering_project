@@ -92,7 +92,7 @@ class _InitiativeCardState extends State<InitiativeCard> {
                                             style: BorderStyle.solid)),
                                     child: Align(
                                         child: Text(
-                                            "${widget.currentInitiative.currentHealth} / ${widget.currentInitiative.totalHealth}")),
+                                          "Health: ${widget.currentInitiative.currentHealth} / ${widget.currentInitiative.totalHealth}")),
                                   ),
                                 ]),
                               ),
