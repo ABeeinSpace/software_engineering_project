@@ -587,7 +587,7 @@ class _MyHomePageState extends State<MyHomePage> {
         //Call the function to create a new card with the following parameters from the old card and the updated user parameters
         secondaryEditInitiativeCard(
             hold.currentInitiative.editedName.toString(),
-            hold.currentInitiative.editedInitiativeCount!,
+            hold.currentInitiative.editedInitiativeCount!, //The "??" notation is a notation related to null values. If we attempt to use a null value, Flutter will use 0 instead. This prevents a crash, but may not be desirable from a UX standpoint
             hold.currentInitiative.totalHealth,
             hold.currentInitiative.currentHealth,
             hold.currentInitiative.conditionsArray,
