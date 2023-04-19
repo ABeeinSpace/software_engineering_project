@@ -309,7 +309,7 @@ class _MyHomePageState extends State<MyHomePage> {
   /// Returns: N/A (void)
   /// Description: Method responsible for handling button press events from the previous round button(s).
   void _prevButtonPressed() {
-    if (initiativeArray.length == 0) {
+    if (initiativeArray.isEmpty) {
       return;
     }
     //A setState call to edit the cards with the new elevation
@@ -396,7 +396,7 @@ class _MyHomePageState extends State<MyHomePage> {
   /// Description: Method responsible for handling button press events from the previous round button(s)
   /// Is a candidate to be moved into the initiative_card file
   void _nextButtonPressed() {
-    if (initiativeArray.length == 0) {
+    if (initiativeArray.isEmpty) {
       return;
     }
     //A setState call to edit the cards with the new elevation
