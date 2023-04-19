@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:software_engineering_project/initiative_card.dart';
 
 class StateManager extends ChangeNotifier {
   bool isActive;
