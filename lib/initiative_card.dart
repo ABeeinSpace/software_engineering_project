@@ -85,15 +85,9 @@ class _InitiativeCardState extends State<InitiativeCard> {
                                     child: Text(widget.currentInitiative.name),
                                   ),
                                   //TODO: Do the health bar (Which is probably going to Suck to do).
-                                  DecoratedBox(
-                                    decoration: BoxDecoration(
-                                        border: Border.all(
-                                            color: Colors.black,
-                                            style: BorderStyle.solid)),
-                                    child: Align(
-                                        child: Text(
-                                          "Health: ${widget.currentInitiative.currentHealth} / ${widget.currentInitiative.totalHealth}")),
-                                  ),
+                                  Align(
+                                      child: Text(
+                                        "Health: ${widget.currentInitiative.currentHealth} / ${widget.currentInitiative.totalHealth}")),
                                 ]),
                               ),
 
