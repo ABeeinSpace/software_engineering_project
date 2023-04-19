@@ -3,7 +3,7 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'package:software_engineering_project/StarmanProvider.dart';
+import 'package:software_engineering_project/starman_provider.dart';
 import 'condition.dart';
 import 'initiative_card.dart';
 import 'initiative.dart';

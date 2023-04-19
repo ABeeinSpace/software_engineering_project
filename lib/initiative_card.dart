@@ -2,7 +2,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:software_engineering_project/condition.dart';
-import 'package:software_engineering_project/StarmanProvider.dart';
+import 'package:software_engineering_project/starman_provider.dart';
 import 'initiative.dart';
 
 // ignore: must_be_immutable
