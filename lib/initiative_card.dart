@@ -263,16 +263,16 @@ class _InitiativeCardState extends State<InitiativeCard> {
   /// Parameters:
   /// Returns: N/A (void)
   /// Description: Method responsible for showing and hiding the Abilities drop-down/flyout.
-  void _showAbilitiesPanel() {
-    // InitativeCard will need to be converted to a stateful widget in order to get the icon to change state *fairly* automatically.
-    setState(() {
-      if (_shouldDisplayAbilitiesCard) {
-        _shouldDisplayAbilitiesCard = false;
-      } else {
-        _shouldDisplayAbilitiesCard = true;
-      }
-    });
-  }
+  // void _showAbilitiesPanel() {
+  //   // InitativeCard will need to be converted to a stateful widget in order to get the icon to change state *fairly* automatically.
+  //   setState(() {
+  //     if (_shouldDisplayAbilitiesCard) {
+  //       _shouldDisplayAbilitiesCard = false;
+  //     } else {
+  //       _shouldDisplayAbilitiesCard = true;
+  //     }
+  //   });
+  // }
 
   List<Condition> initConditionsArray() {
     List<Condition> conditionsArray = [];
