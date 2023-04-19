@@ -84,7 +84,7 @@ class _MyHomePageState extends State<MyHomePage> {
   int time = 0;
 
   //Array of initatives
-  List<InitiativeCardContainer> arr = [];
+  List<InitiativeCardContainer> initiativeArray = [];
 
   /// build()
   /// Parameters: BuildContext context
@@ -188,7 +188,7 @@ class _MyHomePageState extends State<MyHomePage> {
             textDirection: TextDirection.ltr,
             mainAxisAlignment: MainAxisAlignment.start,
             // crossAxisAlignment: CrossAxisAlignment.start,
-            children: arr),
+            children: initiativeArray),
       ),
 
       floatingActionButton: FloatingActionButton.extended(
@@ -291,7 +291,7 @@ class _MyHomePageState extends State<MyHomePage> {
       } else {
         elevation = 3.0;
       }
-      arr.add(InitiativeCardContainer.fromInitiative(
+      initiativeArray.add(InitiativeCardContainer.fromInitiative(
           Initiative(
               name: name,
               initiativeCount: initiative,
@@ -299,7 +299,7 @@ class _MyHomePageState extends State<MyHomePage> {
               conditionsArray: conditionsArray,
               totalHealth: maxHealth),
           elevation));
-      arr.sort();
+      initiativeArray.sort();
       numOfThings++;
     });
   }
@@ -309,7 +309,7 @@ class _MyHomePageState extends State<MyHomePage> {
   /// Returns: N/A (void)
   /// Description: Method responsible for handling button press events from the previous round button(s).
   void _prevButtonPressed() {
-    if (arr.length == 0) {
+    if (initiativeArray.length == 0) {
       return;
     }
     //A setState call to edit the cards with the new elevation
@@ -330,11 +330,12 @@ class _MyHomePageState extends State<MyHomePage> {
       time -= 6;
 
       //Loop over all of the initatives and all of their corrsesponding conditions and decrement the elapsed time by 6
-      for (int i = 0; i < arr.length; i++) {
+      for (int i = 0; i < initiativeArray.length; i++) {
         for (int j = 0;
-            j < arr[i].currentInitiative.conditionsArray.length;
+            j < initiativeArray[i].currentInitiative.conditionsArray.length;
             j++) {
-          arr[i].currentInitiative.conditionsArray[j].elapsedTime -= 6;
+          initiativeArray[i].currentInitiative.conditionsArray[j].elapsedTime -=
+              6;
         }
       }
     }
@@ -342,9 +343,9 @@ class _MyHomePageState extends State<MyHomePage> {
     //Add the elevation to the card we want to look at now
 
     //Create a hold variable to hold the current card so the card can be safely deleted
-    InitiativeCardContainer hold = arr[currentIndex];
+    InitiativeCardContainer hold = initiativeArray[currentIndex];
     //Delete the current card
-    arr.removeAt(currentIndex);
+    initiativeArray.removeAt(currentIndex);
     //Rebuild a new card with all of the same properties as the old card with the added elevation
     if (Provider.of<StarmanProvider>(context, listen: false).bowie == true) {
       elevationEditInitiativeCard(
@@ -373,9 +374,9 @@ class _MyHomePageState extends State<MyHomePage> {
     //Remove the elevation of the card we just looked at
 
     //Create a hold variable to hold the current card so the card can be safely deleted
-    InitiativeCardContainer pastHold = arr[pastIndex];
+    InitiativeCardContainer pastHold = initiativeArray[pastIndex];
     //Delete the current card
-    arr.removeAt(pastIndex);
+    initiativeArray.removeAt(pastIndex);
     //Rebuild a new card with all of the same properties as the old card with the removed elevation
     elevationEditInitiativeCard(
         pastHold.currentInitiative.name,
@@ -395,7 +396,7 @@ class _MyHomePageState extends State<MyHomePage> {
   /// Description: Method responsible for handling button press events from the previous round button(s)
   /// Is a candidate to be moved into the initiative_card file
   void _nextButtonPressed() {
-    if (arr.length == 0) {
+    if (initiativeArray.length == 0) {
       return;
     }
     //A setState call to edit the cards with the new elevation
@@ -418,19 +419,24 @@ class _MyHomePageState extends State<MyHomePage> {
       time += 6;
 
       //Loop over all of the initatives and all of their corrsesponding conditions and increment the elapsed time by 6
-      for (int i = 0; i < arr.length; i++) {
+      for (int i = 0; i < initiativeArray.length; i++) {
         for (int j = 0;
-            j < arr[i].currentInitiative.conditionsArray.length;
+            j < initiativeArray[i].currentInitiative.conditionsArray.length;
             j++) {
-          arr[i].currentInitiative.conditionsArray[j].elapsedTime += 6;
+          initiativeArray[i].currentInitiative.conditionsArray[j].elapsedTime +=
+              6;
 
           //If the elapsed time equals or surpasses the duration, delete the condition
-          if (arr[i].currentInitiative.conditionsArray[j].elapsedTime >=
-              arr[i].currentInitiative.conditionsArray[j].duration) {
-            arr[i]
-                .currentInitiative
-                .conditionsArray
-                .remove(arr[i].currentInitiative.conditionsArray[j]);
+          if (initiativeArray[i]
+                  .currentInitiative
+                  .conditionsArray[j]
+                  .elapsedTime >=
+              initiativeArray[i]
+                  .currentInitiative
+                  .conditionsArray[j]
+                  .duration) {
+            initiativeArray[i].currentInitiative.conditionsArray.remove(
+                initiativeArray[i].currentInitiative.conditionsArray[j]);
           }
         }
       }
@@ -439,9 +445,9 @@ class _MyHomePageState extends State<MyHomePage> {
     //Add elevation to the card we are currently looking at
 
     //Create a hold variable to hold the current card so the card can be safely deleted
-    InitiativeCardContainer hold = arr[currentIndex];
+    InitiativeCardContainer hold = initiativeArray[currentIndex];
     //Delete the current card
-    arr.removeAt(currentIndex);
+    initiativeArray.removeAt(currentIndex);
 
     if (Provider.of<StarmanProvider>(context, listen: false).bowie == true) {
       elevationEditInitiativeCard(
@@ -471,9 +477,9 @@ class _MyHomePageState extends State<MyHomePage> {
     //Remove elevation from the card we were just looking at
 
     //Create a hold variable to hold the current card so the card can be safely deleted
-    InitiativeCardContainer pastHold = arr[pastIndex];
+    InitiativeCardContainer pastHold = initiativeArray[pastIndex];
     //Delete the current card
-    arr.removeAt(pastIndex);
+    initiativeArray.removeAt(pastIndex);
 
     //Rebuild a new card with all of the same properties as the old card with the removed elevation
     elevationEditInitiativeCard(
@@ -505,7 +511,7 @@ class _MyHomePageState extends State<MyHomePage> {
     //Update the state
     setState(() {
       //Add a new card to the array with the given parameters
-      arr.add(InitiativeCardContainer.fromInitiative(
+      initiativeArray.add(InitiativeCardContainer.fromInitiative(
           Initiative(
               name: name,
               initiativeCount: init,
@@ -515,7 +521,7 @@ class _MyHomePageState extends State<MyHomePage> {
               editedName: editedName,
               editedInitiativeCount: (editedInitiativeCount)),
           elevation));
-      arr.sort();
+      initiativeArray.sort();
     });
   }
 
@@ -533,7 +539,7 @@ class _MyHomePageState extends State<MyHomePage> {
     //Update the state
     setState(() {
       //Add a new card to the array with the given parameters
-      arr.insert(
+      initiativeArray.insert(
           index,
           InitiativeCardContainer.fromInitiative(
               Initiative(
@@ -551,18 +557,18 @@ class _MyHomePageState extends State<MyHomePage> {
   //Method to update the cards when the update cards button is pressed
   void updateCards() {
     //Loop over the entire array
-    for (int i = 0; i < arr.length; i++) {
-      if (arr[i].currentInitiative.toBeDeleted == true) {
-        arr.removeAt(i);
+    for (int i = 0; i < initiativeArray.length; i++) {
+      if (initiativeArray[i].currentInitiative.toBeDeleted == true) {
+        initiativeArray.removeAt(i);
         setState(() {});
       }
       //If the user edited the name or the initiative on the card
-      else if (arr[i].currentInitiative.conditionsChanged == true) {
-        arr[i].currentInitiative.conditionsChanged = false;
+      else if (initiativeArray[i].currentInitiative.conditionsChanged == true) {
+        initiativeArray[i].currentInitiative.conditionsChanged = false;
 
-        InitiativeCardContainer hold = arr[i];
+        InitiativeCardContainer hold = initiativeArray[i];
         //Delete the old card
-        arr.removeAt(i);
+        initiativeArray.removeAt(i);
 
         //Call the function to create a new card with the following parameters from the old card and the updated user parameters
         secondaryEditInitiativeCard(
@@ -575,19 +581,21 @@ class _MyHomePageState extends State<MyHomePage> {
             hold.currentInitiative.initiativeCount,
             3.0);
         break;
-      } else if (arr[i].currentInitiative.name !=
-              arr[i].currentInitiative.editedName.toString() ||
-          arr[i].currentInitiative.initiativeCount !=
-                  arr[i].currentInitiative.editedInitiativeCount &&
-              arr[i].currentInitiative.editedInitiativeCount != null) {
+      } else if (initiativeArray[i].currentInitiative.name !=
+              initiativeArray[i].currentInitiative.editedName.toString() ||
+          initiativeArray[i].currentInitiative.initiativeCount !=
+                  initiativeArray[i].currentInitiative.editedInitiativeCount &&
+              initiativeArray[i].currentInitiative.editedInitiativeCount !=
+                  null) {
         //Create a hold variable to store the current card and allow it to be safely deleted
-        InitiativeCardContainer hold = arr[i];
+        InitiativeCardContainer hold = initiativeArray[i];
         //Delete the old card
-        arr.removeAt(i);
+        initiativeArray.removeAt(i);
         //Call the function to create a new card with the following parameters from the old card and the updated user parameters
         secondaryEditInitiativeCard(
             hold.currentInitiative.editedName.toString(),
-            hold.currentInitiative.editedInitiativeCount!, //The "??" notation is a notation related to null values. If we attempt to use a null value, Flutter will use 0 instead. This prevents a crash, but may not be desirable from a UX standpoint
+            hold.currentInitiative
+                .editedInitiativeCount!, //The "??" notation is a notation related to null values. If we attempt to use a null value, Flutter will use 0 instead. This prevents a crash, but may not be desirable from a UX standpoint
             hold.currentInitiative.totalHealth,
             hold.currentInitiative.currentHealth,
             hold.currentInitiative.conditionsArray,
@@ -707,8 +715,13 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void toggleStarman() {
-    ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Bowie, eh? Excellent taste")));
+    if (Provider.of<StarmanProvider>(context, listen: false).bowie == true) {
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("No Bowie then? Oh alright")));
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Bowie, eh? Excellent taste")));
+    }
 
     Provider.of<StarmanProvider>(context, listen: false).toggleStarman();
   }
