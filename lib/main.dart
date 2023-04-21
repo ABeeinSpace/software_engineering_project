@@ -589,20 +589,24 @@ class _MyHomePageState extends State<MyHomePage> {
                   null) {
         //Create a hold variable to store the current card and allow it to be safely deleted
         InitiativeCardContainer hold = initiativeArray[i];
-        //Delete the old card
-        initiativeArray.removeAt(i);
-        //Call the function to create a new card with the following parameters from the old card and the updated user parameters
-        secondaryEditInitiativeCard(
-            hold.currentInitiative.editedName.toString(),
-            hold.currentInitiative
-                .editedInitiativeCount!, //The "??" notation is a notation related to null values. If we attempt to use a null value, Flutter will use 0 instead. This prevents a crash, but may not be desirable from a UX standpoint
-            hold.currentInitiative.totalHealth,
-            hold.currentInitiative.currentHealth,
-            hold.currentInitiative.conditionsArray,
-            hold.currentInitiative.editedName,
-            hold.currentInitiative.editedInitiativeCount,
-            3.0);
-        break;
+        if (hold.currentInitiative.editedInitiativeCount == null) {
+          break; //This statement should bail us out of recreating cards if the user didn't input enough information.
+        } else {
+          //Delete the old card
+          initiativeArray.removeAt(i);
+          //Call the function to create a new card with the following parameters from the old card and the updated user parameters
+          secondaryEditInitiativeCard(
+              hold.currentInitiative.editedName.toString(),
+              hold.currentInitiative.editedInitiativeCount ??
+                  0, //The "??" notation is a notation related to null values. If we attempt to use a null value, Flutter will use 0 instead. This prevents a crash, but may not be desirable from a UX standpoint
+              hold.currentInitiative.totalHealth,
+              hold.currentInitiative.currentHealth,
+              hold.currentInitiative.conditionsArray,
+              hold.currentInitiative.editedName,
+              hold.currentInitiative.editedInitiativeCount,
+              3.0);
+          break;
+        }
       }
     }
   }
