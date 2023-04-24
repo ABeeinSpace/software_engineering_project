@@ -1,6 +1,6 @@
 {
-    "name": "software_engineering_project",
-    "short_name": "software_engineering_project",
+    "name": "Combat Scribe",
+    "short_name": "Combat Scribe",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
