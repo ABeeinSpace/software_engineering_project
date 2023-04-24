@@ -252,7 +252,6 @@ class _MyHomePageState extends State<MyHomePage> {
                 int initiativeInt;
                 var currentHealth = currentHealthController.text;
                 var maxHealth = maxHealthController.text;
-                // TODO: Actual form field validation
                 try {
                   initiativeInt = int.parse(initiative);
                 } catch (e) {
@@ -277,7 +276,6 @@ class _MyHomePageState extends State<MyHomePage> {
   /// Parameters: String name, String init, int currentHealth, int maxHealth
   /// Returns: N/A (void)
   /// Description: Method responsible for editing initiative blocks
-//TODO: this is dumb. Too Bad!
   void editInitiativeCard(String name, int initiative, int currentHealth,
       int maxHealth, List<Condition> conditionsArray) {
     setState(() {
@@ -687,6 +685,7 @@ class _MyHomePageState extends State<MyHomePage> {
     }
 
     //Set up the print statement (Flutter always formats this to be basically unreadable) Lol - A.B.
+    // ignore: prefer_interpolation_to_compose_strings
     String result = (numDice.toString() +
         'd' +
         diceType.toString() +

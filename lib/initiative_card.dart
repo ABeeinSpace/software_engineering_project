@@ -23,7 +23,6 @@ class InitiativeCard extends StatefulWidget {
 
 class _InitiativeCardState extends State<InitiativeCard> {
   bool _shouldDisplayConditionsCard = false;
-  bool _shouldDisplayAbilitiesCard = false;
   late StarmanProvider _elevationInfoProvider;
   bool isCardsTurn = false;
 
@@ -84,7 +83,6 @@ class _InitiativeCardState extends State<InitiativeCard> {
                                     alignment: Alignment.center,
                                     child: Text(widget.currentInitiative.name),
                                   ),
-                                  //TODO: Do the health bar (Which is probably going to Suck to do).
                                   Align(
                                       child: Text(
                                         "Health: ${widget.currentInitiative.currentHealth} / ${widget.currentInitiative.totalHealth}")),
@@ -346,7 +344,7 @@ class _InitiativeCardState extends State<InitiativeCard> {
                 //var initiative = initiativeController.text;
                 //editInitiativeCard(name, initiative);
                 editConditionsCard(conditionName, int.parse(duration),
-                    int.parse(elapsedTime)); //TODO: This
+                    int.parse(elapsedTime));
                 log(conditionName);
 
                 Navigator.pop(context);
