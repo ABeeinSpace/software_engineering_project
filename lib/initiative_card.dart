@@ -237,7 +237,7 @@ class _InitiativeCardState extends State<InitiativeCard> {
                 var totalHealth = maxHealthController.text;
 
                 //Update the corresponding initative with these name and initiative changes
-                if (initiative.isNotEmpty) {
+                if (initiative != null) {
                   widget.currentInitiative.setEditedName(name);
                   widget.currentInitiative
                       .setEditedInitiativeCount(int.parse(initiative));
