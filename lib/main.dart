@@ -1,3 +1,7 @@
+//Aidan Border
+//Andrea Morris
+//Joshua Rowe
+
 // import 'dart:developer'; //This import gives us access to the log() function. It can be safely removed when all buttons are properly implemented.
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
