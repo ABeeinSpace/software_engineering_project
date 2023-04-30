@@ -299,7 +299,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   /// _prevButtonPressed()
-  /// Parameters:
+  /// Parameters: N/A
   /// Returns: N/A (void)
   /// Description: Method responsible for handling button press events from the previous round button(s).
   void _prevButtonPressed() {
@@ -385,7 +385,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   /// _prevButtonPressed()
-  /// Parameters:
+  /// Parameters: N/A
   /// Returns: N/A (void)
   /// Description: Method responsible for handling button press events from the previous round button(s)
   /// Is a candidate to be moved into the initiative_card file
@@ -605,7 +605,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   /// _diceRollerMenu()
-  /// Parameters:
+  /// Parameters: N/A
   /// Returns: N/A (void)
   /// Description: Method display a dialog box for the dice roller feature
   void _diceRollerMenu() {
@@ -711,7 +711,7 @@ class _MyHomePageState extends State<MyHomePage> {
   void toggleStarman() {
     if (Provider.of<StarmanProvider>(context, listen: false).bowie == true) {
       ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("No Bowie then? Oh alright")));
+          const SnackBar(content: Text("No Bowie then? Oh alright"))); //Show a SnackBar when Starman is disabled.
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text("Bowie, eh? Excellent taste")));
