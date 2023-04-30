@@ -621,6 +621,7 @@ class _MyHomePageState extends State<MyHomePage> {
             hold.currentInitiative.editedInitiativeCount ??
                 hold.currentInitiative.initiativeCount,
             3.0);
+        break;
       }
     }
   }
