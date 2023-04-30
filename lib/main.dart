@@ -629,7 +629,7 @@ class _MyHomePageState extends State<MyHomePage> {
     showDialog(
       context: context,
       builder: (_) {
-        String diceOutput = "Result of roll goes here";
+        String diceOutput = "Result will be copied to the clipboard";
         var numDiceController = TextEditingController();
         var diceTypeController = TextEditingController();
         var modifierController = TextEditingController();
@@ -653,7 +653,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 decoration: const InputDecoration(
                     hintText: 'Modifier (type 0 for no modifier)'),
               ),
-              Text(diceOutput),
+              Text("Result will be copied to the clipboard"),
             ],
           )),
           actions: [
