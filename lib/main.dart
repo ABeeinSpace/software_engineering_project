@@ -597,7 +597,11 @@ class _MyHomePageState extends State<MyHomePage> {
           initiativeArray[i].currentInitiative.initiativeCount !=
                   initiativeArray[i].currentInitiative.editedInitiativeCount &&
               initiativeArray[i].currentInitiative.editedInitiativeCount !=
-                  null) {
+                  null ||
+          initiativeArray[i].currentInitiative.totalHealth !=
+              initiativeArray[i].currentInitiative.editedTotalHealth ||
+          initiativeArray[i].currentInitiative.currentHealth !=
+              initiativeArray[i].currentInitiative.editedCurrentHealth) {
         //Create a hold variable to store the current card and allow it to be safely deleted
         InitiativeCardContainer hold = initiativeArray[i];
         //Delete the old card
@@ -608,10 +612,10 @@ class _MyHomePageState extends State<MyHomePage> {
             hold.currentInitiative.editedInitiativeCount ??
                 hold.currentInitiative
                     .initiativeCount, //The "??" notation is a notation related to null values. If we attempt to use a null value, Flutter will use 0 instead. This prevents a crash, but may not be desirable from a UX standpoint
-            hold.currentInitiative.totalHealth ??
-                hold.currentInitiative.totalHealth,
-            hold.currentInitiative.currentHealth ??
-                hold.currentInitiative.currentHealth,
+            hold.currentInitiative.editedTotalHealth ??
+                hold.currentInitiative.editedTotalHealth,
+            hold.currentInitiative.editedCurrentHealth ??
+                hold.currentInitiative.editedCurrentHealth,
             hold.currentInitiative.conditionsArray,
             hold.currentInitiative.editedName ?? hold.currentInitiative.name,
             hold.currentInitiative.editedInitiativeCount ??
