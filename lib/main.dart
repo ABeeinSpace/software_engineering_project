@@ -570,6 +570,7 @@ class _MyHomePageState extends State<MyHomePage> {
     for (int i = 0; i < initiativeArray.length; i++) {
       if (initiativeArray[i].currentInitiative.toBeDeleted == true) {
         initiativeArray.removeAt(i);
+        numOfThings--;
         setState(() {});
       }
       //If the user edited the name or the initiative on the card
