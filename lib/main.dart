@@ -653,7 +653,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 decoration: const InputDecoration(
                     hintText: 'Modifier (type 0 for no modifier)'),
               ),
-              Text("Result will be copied to the clipboard"),
+              const Text("Result will be copied to the clipboard"),
             ],
           )),
           actions: [
