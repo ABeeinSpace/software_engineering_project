@@ -1,4 +1,4 @@
-import 'dart:developer'; //This import gives us access to the log() function. It can be safely removed when all buttons are properly implemented.
+// import 'dart:developer'; //This import gives us access to the log() function. It can be safely removed when all buttons are properly implemented.
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -199,7 +199,6 @@ class _MyHomePageState extends State<MyHomePage> {
       floatingActionButton: FloatingActionButton.extended(
         ///When the add initative button is pressed, open a dialog for the user to input their name
         onPressed: () async {
-          log("Button Pressed!");
           showAddCardDialog();
         },
         icon: const Icon(Icons.add),
@@ -260,13 +259,10 @@ class _MyHomePageState extends State<MyHomePage> {
                 try {
                   initiativeInt = int.parse(initiative);
                 } catch (e) {
-                  log("Get better ints, fucko");
                   return;
                 }
                 editInitiativeCard(name, initiativeInt,
                     int.parse(currentHealth), int.parse(maxHealth), []);
-                log(name);
-                log(initiative);
                 Navigator.pop(context);
               },
               child: const Text('OK'),
@@ -626,7 +622,6 @@ class _MyHomePageState extends State<MyHomePage> {
   /// Returns: N/A (void)
   /// Description: Method display a dialog box for the dice roller feature
   void _diceRollerMenu() {
-    log("Dice Roller Button Pressed");
     showDialog(
       context: context,
       builder: (_) {
@@ -689,11 +684,9 @@ class _MyHomePageState extends State<MyHomePage> {
   /// Returns: N/A (void)
   /// Description: Supporting method for _diceRollerMenu(). This method actually does the RNG.
   String diceRoller(int numDice, int diceType, int diceModifier) {
-    log("Dice Rolled!");
     int totalValue = 0;
 
     if (numDice <= 0) {
-      log("invalid number of dice");
       return "invalid number of dice";
     }
 
@@ -725,7 +718,6 @@ class _MyHomePageState extends State<MyHomePage> {
     totalValue += diceModifier;
     //get the result
     result = "$result+ $diceModifier = $totalValue";
-    log(result);
     return result;
   }
 

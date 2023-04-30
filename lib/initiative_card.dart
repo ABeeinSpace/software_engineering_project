@@ -1,4 +1,4 @@
-import 'dart:developer';
+// import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:software_engineering_project/condition.dart';
@@ -137,7 +137,6 @@ class _InitiativeCardState extends State<InitiativeCard> {
                         ElevatedButton(
                           child: const Text('Add Condition'),
                           onPressed: () {
-                            log("new button pressed!");
                             conditionBoxDialogBox();
                           },
                         ),
@@ -173,7 +172,6 @@ class _InitiativeCardState extends State<InitiativeCard> {
         _shouldDisplayConditionsCard = false;
       } else {
         _shouldDisplayConditionsCard = true;
-        log('button pressed');
       }
     });
   }
@@ -345,7 +343,6 @@ class _InitiativeCardState extends State<InitiativeCard> {
                 //editInitiativeCard(name, initiative);
                 editConditionsCard(conditionName, int.parse(duration),
                     int.parse(elapsedTime));
-                log(conditionName);
 
                 Navigator.pop(context);
               },
