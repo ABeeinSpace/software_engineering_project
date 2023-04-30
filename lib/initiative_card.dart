@@ -131,11 +131,11 @@ class _InitiativeCardState extends State<InitiativeCard> {
                           alignment: Alignment.topLeft,
                           child: Padding(
                             padding: EdgeInsets.all(8.0),
-                            child: Text("Conditions"),
+                            child: Text("Effects"),
                           ),
                         ),
                         ElevatedButton(
-                          child: const Text('Add Condition'),
+                          child: const Text('Add Effects'),
                           onPressed: () {
                             conditionBoxDialogBox();
                           },
