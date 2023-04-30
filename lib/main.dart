@@ -612,10 +612,10 @@ class _MyHomePageState extends State<MyHomePage> {
             hold.currentInitiative.editedInitiativeCount ??
                 hold.currentInitiative
                     .initiativeCount, //The "??" notation is a notation related to null values. If we attempt to use a null value, Flutter will use 0 instead. This prevents a crash, but may not be desirable from a UX standpoint
-            hold.currentInitiative.totalHealth ??
-                hold.currentInitiative.totalHealth,
-            hold.currentInitiative.currentHealth ??
-                hold.currentInitiative.currentHealth,
+            hold.currentInitiative.editedTotalHealth ??
+                hold.currentInitiative.editedTotalHealth,
+            hold.currentInitiative.editedCurrentHealth ??
+                hold.currentInitiative.editedCurrentHealth,
             hold.currentInitiative.conditionsArray,
             hold.currentInitiative.editedName ?? hold.currentInitiative.name,
             hold.currentInitiative.editedInitiativeCount ??
