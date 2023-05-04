@@ -7,6 +7,8 @@ class Initiative {
   int? editedInitiativeCount;
   int? totalHealth;
   int? currentHealth;
+  int? editedTotalHealth;
+  int? editedCurrentHealth;
   List<Condition> conditionsArray = [];
 
   bool conditionsChanged = false;
@@ -31,11 +33,17 @@ class Initiative {
 
   get getTotalHealth => totalHealth;
 
-  set setTotalHealth(totalHealth) => this.totalHealth = totalHealth;
+  setTotalHealth(totalHealth) => this.totalHealth = totalHealth;
+
+  setEditedTotalHealth(editedTotalHealth) =>
+      this.editedTotalHealth = editedTotalHealth;
 
   get getCurrentHealth => currentHealth;
 
-  set setCurrentHealth(currentHealth) => this.currentHealth = currentHealth;
+  setCurrentHealth(currentHealth) => this.currentHealth = currentHealth;
+
+  setEditedCurrentHealth(editedCurrentHealth) =>
+      this.editedCurrentHealth = editedCurrentHealth;
 
   get getConditionsArray => conditionsArray;
 

@@ -1,4 +1,7 @@
-// import 'dart:developer'; //This import gives us access to the log() function. It can be safely removed when all buttons are properly implemented.
+//Aidan Border
+//Andrea Morris
+//Joshua Rowe
+
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -136,12 +139,15 @@ class _MyHomePageState extends State<MyHomePage> {
             label: const Text('Time                 '),
           ),
 
+          //Button that when clicked calls the _prevButtonPressed function
           Align(
               alignment: Alignment.center,
               child: IconButton(
                   onPressed: _prevButtonPressed,
                   tooltip: "Previous round",
                   icon: const Icon(Icons.arrow_back))),
+
+          //Button that when clicked calls the _nextButtonPressed function
           Align(
             alignment: Alignment.center,
             child: IconButton(
@@ -157,6 +163,8 @@ class _MyHomePageState extends State<MyHomePage> {
                 tooltip: "Update Cards",
                 icon: const Icon(Icons.check)),
           ),
+
+          //Menu that gives the users options to open the dice roller or to turn on Starman
           PopupMenuButton(onSelected: (value) async {
             switch (value) {
               case 'Dice Roller':
@@ -268,23 +276,28 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  /// showAddCardDialog()
-  /// Parameters: String name, String init, int currentHealth, int maxHealth
+  /// editInitiativeCard()
+  /// Parameters: String name, int initiative, int currentHealth, int maxHealth, List<Condition> conditionsArray
   /// Returns: N/A (void)
   /// Description: Method responsible for editing initiative blocks
   void editInitiativeCard(String name, int initiative, int currentHealth,
       int maxHealth, List<Condition> conditionsArray) {
     setState(() {
+      //If this is the first card being added
       if (numOfThings == 0) {
+        //If starman is activated, add a 75 elveation to the card
         if (Provider.of<StarmanProvider>(context, listen: false).bowie ==
             true) {
           elevation = 75.0;
+          //If starman is not activated and a 15 elevation to the card
         } else {
           elevation = 15.0;
         }
+        //If it is not the first card create add a default elevation of 3
       } else {
         elevation = 3.0;
       }
+      //Create a new initiative card with the appropriate elevation
       initiativeArray.add(InitiativeCardContainer.fromInitiative(
           Initiative(
               name: name,
@@ -293,6 +306,7 @@ class _MyHomePageState extends State<MyHomePage> {
               conditionsArray: conditionsArray,
               totalHealth: maxHealth),
           elevation));
+      //Sort it into the correct spot in the array
       initiativeArray.sort();
       numOfThings++;
     });
@@ -436,13 +450,12 @@ class _MyHomePageState extends State<MyHomePage> {
       }
     }
 
-    //Add elevation to the card we are currently looking at
-
     //Create a hold variable to hold the current card so the card can be safely deleted
     InitiativeCardContainer hold = initiativeArray[currentIndex];
     //Delete the current card
     initiativeArray.removeAt(currentIndex);
 
+    //Build the card with appropriate elevation
     if (Provider.of<StarmanProvider>(context, listen: false).bowie == true) {
       elevationEditInitiativeCard(
           hold.currentInitiative.name,
@@ -548,12 +561,16 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  //Method to update the cards when the update cards button is pressed
+  /// updateCards()
+  /// Parameters: N/A
+  /// Returns: N/A (void)
+  /// Description: Method to update the cards when the update cards button is pressed
   void updateCards() {
     //Loop over the entire array
     for (int i = 0; i < initiativeArray.length; i++) {
       if (initiativeArray[i].currentInitiative.toBeDeleted == true) {
         initiativeArray.removeAt(i);
+        numOfThings--;
         setState(() {});
       }
       //If the user edited the name or the initiative on the card
@@ -580,7 +597,11 @@ class _MyHomePageState extends State<MyHomePage> {
           initiativeArray[i].currentInitiative.initiativeCount !=
                   initiativeArray[i].currentInitiative.editedInitiativeCount &&
               initiativeArray[i].currentInitiative.editedInitiativeCount !=
-                  null) {
+                  null ||
+          initiativeArray[i].currentInitiative.totalHealth !=
+              initiativeArray[i].currentInitiative.editedTotalHealth ||
+          initiativeArray[i].currentInitiative.currentHealth !=
+              initiativeArray[i].currentInitiative.editedCurrentHealth) {
         //Create a hold variable to store the current card and allow it to be safely deleted
         InitiativeCardContainer hold = initiativeArray[i];
         //Delete the old card
@@ -591,15 +612,16 @@ class _MyHomePageState extends State<MyHomePage> {
             hold.currentInitiative.editedInitiativeCount ??
                 hold.currentInitiative
                     .initiativeCount, //The "??" notation is a notation related to null values. If we attempt to use a null value, Flutter will use 0 instead. This prevents a crash, but may not be desirable from a UX standpoint
-            hold.currentInitiative.totalHealth ??
-                hold.currentInitiative.totalHealth,
-            hold.currentInitiative.currentHealth ??
-                hold.currentInitiative.currentHealth,
+            hold.currentInitiative.editedTotalHealth ??
+                hold.currentInitiative.editedTotalHealth,
+            hold.currentInitiative.editedCurrentHealth ??
+                hold.currentInitiative.editedCurrentHealth,
             hold.currentInitiative.conditionsArray,
             hold.currentInitiative.editedName ?? hold.currentInitiative.name,
             hold.currentInitiative.editedInitiativeCount ??
                 hold.currentInitiative.initiativeCount,
             3.0);
+        break;
       }
     }
   }
@@ -612,7 +634,7 @@ class _MyHomePageState extends State<MyHomePage> {
     showDialog(
       context: context,
       builder: (_) {
-        String diceOutput = "Result of roll goes here";
+        String diceOutput = "Result will be copied to the clipboard";
         var numDiceController = TextEditingController();
         var diceTypeController = TextEditingController();
         var modifierController = TextEditingController();
@@ -636,7 +658,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 decoration: const InputDecoration(
                     hintText: 'Modifier (type 0 for no modifier)'),
               ),
-              Text(diceOutput),
+              const Text("Result will be copied to the clipboard"),
             ],
           )),
           actions: [
@@ -708,6 +730,10 @@ class _MyHomePageState extends State<MyHomePage> {
     return result;
   }
 
+  /// toggleStarman()
+  /// Parameters: N/A
+  /// Returns: N/A (void)
+  /// Description: Allows users to activate or deactivate Starman, which adds extreme elevation
   void toggleStarman() {
     if (Provider.of<StarmanProvider>(context, listen: false).bowie == true) {
       ScaffoldMessenger.of(context).showSnackBar(

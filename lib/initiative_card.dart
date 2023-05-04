@@ -85,7 +85,7 @@ class _InitiativeCardState extends State<InitiativeCard> {
                                   ),
                                   Align(
                                       child: Text(
-                                        "Health: ${widget.currentInitiative.currentHealth} / ${widget.currentInitiative.totalHealth}")),
+                                          "Health: ${widget.currentInitiative.currentHealth} / ${widget.currentInitiative.totalHealth}")),
                                 ]),
                               ),
 
@@ -131,11 +131,11 @@ class _InitiativeCardState extends State<InitiativeCard> {
                           alignment: Alignment.topLeft,
                           child: Padding(
                             padding: EdgeInsets.all(8.0),
-                            child: Text("Conditions"),
+                            child: Text("Effects"),
                           ),
                         ),
                         ElevatedButton(
-                          child: const Text('Add Condition'),
+                          child: const Text('Add Effects'),
                           onPressed: () {
                             conditionBoxDialogBox();
                           },
@@ -232,11 +232,19 @@ class _InitiativeCardState extends State<InitiativeCard> {
                 //Save the inputted initiative into a variable
                 var initiative = initiativeController.text;
 
+                var currentHealth = currentHealthController.text;
+
+                var totalHealth = maxHealthController.text;
+
                 //Update the corresponding initative with these name and initiative changes
                 if (initiative.isNotEmpty) {
                   widget.currentInitiative.setEditedName(name);
                   widget.currentInitiative
                       .setEditedInitiativeCount(int.parse(initiative));
+                  widget.currentInitiative
+                      .setEditedCurrentHealth(int.parse(currentHealth));
+                  widget.currentInitiative
+                      .setEditedTotalHealth(int.parse((totalHealth)));
                 }
 
                 Navigator.pop(context);
@@ -341,8 +349,8 @@ class _InitiativeCardState extends State<InitiativeCard> {
                 var elapsedTime = elapsedTimeController.text;
                 //var initiative = initiativeController.text;
                 //editInitiativeCard(name, initiative);
-                editConditionsCard(conditionName, int.parse(duration),
-                    int.parse(elapsedTime));
+                editConditionsCard(
+                    conditionName, int.parse(duration), int.parse(elapsedTime));
 
                 Navigator.pop(context);
               },
