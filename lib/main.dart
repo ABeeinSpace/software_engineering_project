@@ -36,6 +36,10 @@ class MyApp extends StatelessWidget {
                 useMaterial3: true,
                 primarySwatch: Colors.purple,
               ),
+              darkTheme: ThemeData.dark(
+                useMaterial3: true
+                ), // standard dark theme
+              themeMode: ThemeMode.system, // device controls theme
               home: const MyHomePage(title: 'Combat Scribe'),
             );
           });
@@ -736,8 +740,9 @@ class _MyHomePageState extends State<MyHomePage> {
   /// Description: Allows users to activate or deactivate Starman, which adds extreme elevation
   void toggleStarman() {
     if (Provider.of<StarmanProvider>(context, listen: false).bowie == true) {
-      ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("No Bowie then? Oh alright"))); //Show a SnackBar when Starman is disabled.
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text(
+              "No Bowie then? Oh alright"))); //Show a SnackBar when Starman is disabled.
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text("Bowie, eh? Excellent taste")));
